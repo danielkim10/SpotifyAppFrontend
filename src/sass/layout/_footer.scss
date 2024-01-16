@@ -1,0 +1,31 @@
+@use '../abstracts/variables' as base;
+
+footer {
+    background: base.$spotify-black;
+    height: base.$footer-height
+}
+
+.transfer-playback-button {
+    padding: base.$padding-default;
+    margin: base.$margin-default;
+    align-items: center;
+    height: auto;
+    cursor: pointer;
+    background-color: base.$grey;
+    border-radius: 45px;
+    justify-content: space-between;
+}
+
+.transfer-playback-button:hover {
+    background-color: base.$light-grey;
+}
+
+.player-cover {
+    margin: auto;
+}
+
+.drawer{
+    width: auto;
+    height: 100px;
+}
+  

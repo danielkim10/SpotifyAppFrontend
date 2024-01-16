@@ -1,0 +1,22 @@
+@use '../abstracts/variables' as base;
+@import '../abstracts/mixins';
+
+.icon-button {
+    @include iconbuttons;
+}
+
+.icon-active {
+    @include iconbuttons($color: base.$spotify-green);
+}
+
+.lobby-buttons {
+    width: 95%;
+    height: calc((base.$default-height-calc - 90px) / 3);
+    margin: base.$margin-default !important;
+}
+
+.sort-menu {
+    width: 10%;
+    margin: base.$margin-default;
+    float: right;
+}

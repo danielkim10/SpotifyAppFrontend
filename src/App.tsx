@@ -1,24 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import Login from './pages/login'
+import Lobby from './pages/lobby'
+import Settings from './pages/settings'
+import Layout from "./components/Layout"
+import './App.scss';
+import Room from "./pages/room"
+import Library from "./pages/library"
+import About from "./pages/about"
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={<Login/>}
+            />
+          <Route element={<Layout/>}>
+            <Route 
+              path="/about" 
+              element={<About/>}
+            />
+            <Route
+              path="/lobby"
+              element={<Lobby/>}
+            />
+            <Route 
+              path="/library" 
+              element={<Library/>}
+            />
+            <Route 
+              path="/room" 
+              element={<Room />}
+            />
+            <Route
+              path="/settings"
+              element={<Settings/>}
+            />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

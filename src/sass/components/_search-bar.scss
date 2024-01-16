@@ -1,0 +1,27 @@
+@use '../abstracts/variables' as base;
+
+.search-bar {
+    background-color: base.$light-grey;
+    width: 95%;
+    margin: base.$margin-default !important;
+    font-size: base.$font-medium;
+    border-radius: 45px;
+
+    input {
+        color: base.$spotify-white;
+    }
+
+    svg {
+        color: base.$spotify-white;
+    }
+}
+
+.playlist-bar {
+    width: 70%;
+    float: left;
+}
+
+.track-bar {
+    width: 50%;
+    float: left;
+}

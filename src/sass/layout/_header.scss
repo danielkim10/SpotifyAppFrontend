@@ -1,0 +1,39 @@
+@use '../abstracts/variables' as base;
+
+header {
+    background: base.$spotify-black;
+    height: base.$header-height;
+    font-size: base.$font-large;
+}
+
+header .container {
+    // margin: 0 auto;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+.header-title {
+    
+}
+
+.profile-button {
+    padding: base.$padding-default;
+    margin: base.$margin-default;
+    align-items: center;
+    display: flex;
+    height: auto;
+    cursor: pointer;
+    background-color: base.$grey;
+    border-radius: 45px;
+    justify-content: space-between;
+}
+
+.profile-button:hover {
+    background-color: base.$light-grey;
+}
+
+.profile-button-items {
+    margin: 0px 2.5px 0px 2.5px;
+}

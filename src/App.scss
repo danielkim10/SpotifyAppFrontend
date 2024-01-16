@@ -1,0 +1,12 @@
+@use "sass/components";
+@use "sass/layout";
+@use "sass/pages";
+@use "sass/sections";
+
+.App {
+  text-align: center;
+  background: #000000;
+  min-height: 100vh;
+  min-width: 100vh;
+  color: #ffffff;
+}
