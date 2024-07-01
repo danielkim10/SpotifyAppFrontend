@@ -1,29 +1,29 @@
-// modules
 import { MouseEvent } from 'react';
 
-// interfaces
 import Playlist from '../../../interfaces/playlist';
-
-// components
 import CoverImage from '../CoverImage';
 
-const PlaylistItem = (props: { playlist: Playlist, onClick: () => void, onRightClick: (e: MouseEvent<HTMLDivElement>) => void }) => {
+const PlaylistItem = (props: {
+    playlist: Playlist,
+    onClick: () => void,
+    onRightClick: (e: MouseEvent<HTMLDivElement>, p: Playlist) => void
+}) => {
     const { playlist, onClick, onRightClick } = props;
 
-    const onContextMenu = (e: MouseEvent<HTMLDivElement>) => {
+    const onContextMenu = (e: MouseEvent<HTMLDivElement>, p: Playlist) => {
         e.preventDefault();
-        onRightClick(e);
+        onRightClick(e, p);
     }
 
     return (
-        <div className="playlist-object" onClick={onClick} onContextMenu={onContextMenu}>
-            <CoverImage id={playlist.id} url={playlist.images.length > 0 ? playlist.images[0].url : ""} size="m"/>
-            <div className="item-info">
-                <div>{playlist.name}</div>
-                <div>{playlist.owner.display_name}</div>
+        <div id="playlist-item" className="flex w-full cursor-pointer p-2 hover:bg-light-grey" onClick={onClick} onContextMenu={(e: MouseEvent<HTMLDivElement>) => onContextMenu(e, playlist)}>
+            <CoverImage id={playlist.id} url={playlist.images?.length > 0 ? playlist.images[0].url : ""} size="m"/>
+            <div className="text-left w-1/2 p-2">
+                <div id="playlist-name">{playlist.name}</div>
+                <div id="playlist-owner">{playlist.owner.display_name}</div>
             </div>
-            <div className="item-info">
-                <div>{playlist.tracks.total} tracks</div>
+            <div className="text-left w-1/2 p-2">
+                <div id="playlist-track-count">{playlist.tracks?.total} tracks</div>
             </div>
         </div>
     );

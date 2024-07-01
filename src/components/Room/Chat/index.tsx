@@ -1,20 +1,13 @@
-// modules
 import { useEffect, useState } from 'react';
 
-// helpers
-import User from '../../../interfaces/user';
-
-// components
 import ChatHeader from './ChatHeader';
 import ChatBody from './ChatBody';
 import ChatInput from './ChatInput';
 
-// mui components
 import Fab from '@mui/material/Fab';
-
-// mui icons
 import ChatRoundedIcon from '@mui/icons-material/ChatRounded';
 import useSocketContext from '../../../utilities/hooks/context/useSocketContext';
+import useUserContext from '../../../utilities/hooks/context/useUserContext';
 
 interface MessageEvent {
     text: string,
@@ -29,8 +22,8 @@ interface ServerMessageEvent {
     messageTemplate: string
 }
 
-const Chat = (props: {user: User}) => {
-    const { user } = props;
+const Chat = () => {
+    const user = useUserContext();
 
     const [messages, setMessages] = useState<MessageEvent[]>([]);
     const [open, setOpen] = useState(false);
@@ -72,7 +65,7 @@ const Chat = (props: {user: User}) => {
     }
 
     return (
-        <div className="chat-window">
+        <div id="chat" className="flex flex-col min-w-[300px] float-right">
             {
                 open ? 
                 <>
@@ -80,9 +73,11 @@ const Chat = (props: {user: User}) => {
                     <ChatBody messages={messages}/>
                     <ChatInput sendMessage={handleSendMessage}/>
                 </> :
+                <div id="chat-fab" className="flex-1">
                 <Fab onClick={() => toggleChatWindow(true)}>
                     <ChatRoundedIcon />
                 </Fab>
+                </div>
             }
         </div>
     );

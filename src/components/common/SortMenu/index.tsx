@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 
 import SortOption from '../../../interfaces/options/SortOption';
 
-import SortMenuButton from "./SortMenuButton";
-import SortMenuDropdown from "./SortMenuDropdown";
+import SortMenuButton from './SortMenuButton';
+import SortMenuDropdown from './SortMenuDropdown';
 
 const SortMenu = (props: { sortOptions: SortOption[], onOptionSelected: (so: SortOption, asc: boolean) => void }) => {
     const { sortOptions, onOptionSelected } = props;
@@ -34,7 +34,7 @@ const SortMenu = (props: { sortOptions: SortOption[], onOptionSelected: (so: Sor
     }
 
     return (
-        <div className="sort-menu">
+        <>
             <SortMenuButton
                 selectedOption={selectedOption}
                 setOpen={(b: boolean) => setOpen(b)}
@@ -49,7 +49,7 @@ const SortMenu = (props: { sortOptions: SortOption[], onOptionSelected: (so: Sor
                 selectOption={selectOption}
                 onClose={handleClose}
             />
-        </div>
+        </>
     );
 }
 

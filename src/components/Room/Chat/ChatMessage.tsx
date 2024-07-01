@@ -1,4 +1,3 @@
-// mui components
 import Avatar from '@mui/material/Avatar';
 
 interface MessageEvent {
@@ -14,7 +13,7 @@ const ChatMessage = (props: {message: MessageEvent}) => {
     const { message } = props;
 
     return (
-        <div>
+        <>
             <div>
                 {
                     message.imageURL === "" ? <Avatar alt={message.name}>{message.name.slice(0,1)}</Avatar>
@@ -26,7 +25,7 @@ const ChatMessage = (props: {message: MessageEvent}) => {
             <div>
                 {message.text}
             </div>
-        </div>
+        </>
     );
 }
 

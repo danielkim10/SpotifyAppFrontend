@@ -2,9 +2,10 @@ import { useContext } from 'react';
 
 import TokenContext from '../../../utilities/context/TokenContext';
 import PlayerContext from '../../../utilities/context/PlayerContext';
+import Button from '../../common/Button';
 
-const PlayerCover = (props: {product: string, deviceID: string, setTransfer: () => void}) => {
-    const { product, deviceID, setTransfer } = props;
+const PlayerCover = (props: {product: string, deviceID: string }) => {
+    const { product, deviceID } = props;
 
     const token = useContext(TokenContext);
     const player = useContext(PlayerContext);
@@ -21,7 +22,6 @@ const PlayerCover = (props: {product: string, deviceID: string, setTransfer: () 
 
         if (res.ok) {
             console.log("Playback transferred successfully");
-            setTransfer();
             player.setPlaybackTransferred(true);
         }
         else {
@@ -30,12 +30,10 @@ const PlayerCover = (props: {product: string, deviceID: string, setTransfer: () 
     }
 
     return (
-        <div className="player-cover">
+        <div className="m-auto">
             {
                 product === "premium" ?
-                <div className="transfer-playback-button" onClick={transferPlayback}>
-                    <b className="profile-button-items">Transfer Playback</b>
-                </div>
+                <Button label="Transfer Playback" bgColorScheme="grey" hasAvatar={false} avatarLabel="" handleClick={transferPlayback}/>
                 :
                 <span>Upgrade to a Spotify Premium subscription to access the web player</span>
             }

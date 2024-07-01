@@ -12,12 +12,12 @@ const TrackQueue = () => {
     const handleQueueClick = () => {
         var doc = document.getElementById("queue");
         if (openDrawer) {
-            doc?.classList.add("icon-button");
-            doc?.classList.remove("icon-active");
+            doc?.classList.add("text-white");
+            doc?.classList.remove("text-s-green");
         }
         else {
-            doc?.classList.add("icon-active");
-            doc?.classList.remove("icon-button");
+            doc?.classList.add("text-s-green");
+            doc?.classList.remove("text-white");
         }
         setOpenDrawer(!openDrawer);
     }
@@ -26,7 +26,7 @@ const TrackQueue = () => {
         <>
             <Tooltip title="Queue">
                 <IconButton aria-label="queue">
-                    <QueueMusicRoundedIcon id="queue" className="icon-button"/>
+                    <QueueMusicRoundedIcon id="queue" className="text-white"/>
                 </IconButton>
             </Tooltip>
             <TrackDrawer open={openDrawer} onClose={handleQueueClick}/>

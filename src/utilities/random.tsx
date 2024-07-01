@@ -1,4 +1,4 @@
-import ArtistInterface from "../interfaces/artist";
+import ArtistInterface from '../interfaces/artist';
 
 export const generateRoomCode = (length: number) => {
     var code = '';

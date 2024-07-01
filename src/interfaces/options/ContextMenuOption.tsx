@@ -1,6 +1,8 @@
 interface ContextMenuOption {
     name: string,
-    function: (a?: any) => void
+    iconName: string,
+    function: (a?: any) => void,
+    visible: boolean
 };
 
 export default ContextMenuOption;

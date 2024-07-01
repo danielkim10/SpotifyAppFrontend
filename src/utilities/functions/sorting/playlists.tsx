@@ -1,4 +1,4 @@
-import Playlist from "../../../interfaces/playlist";
+import Playlist from '../../../interfaces/playlist';
 
 export const sortPlaylistsByName = (a: Playlist, b: Playlist, asc: boolean) => {
     const ascending = asc ? 1 : -1;

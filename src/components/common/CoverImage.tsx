@@ -1,23 +1,28 @@
-// mui icons
-import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
-import MusicNoteRoundedIcon from "@mui/icons-material/MusicNoteRounded";
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
+import MusicNoteRoundedIcon from '@mui/icons-material/MusicNoteRounded';
 
-const CoverImage = (props: {id: string, url: string, size: string}) => {
-    const { id, url, size } = props;
+const CoverImage = (props: {id: string, url: string, size: string, canEdit?: boolean}) => {
+    const { id, url, size, canEdit } = props;
+
+    const sizes: {[key:string]:string} = {
+        'l': 'w-[150px] h-[150px]',
+        'm': 'min-w-[70px] min-h-[70px] max-w-[70px] max-h-[70px]',
+        's': 'w-[50px] h-[50px]'
+    };
 
     return (
         <>
             {
                 url ?
-                    <img src={url} className={size === "l" ? "custom-image-cover-l" : size === "m" ? "custom-image-cover-m" : "custom-image-cover-s"} alt=""/>
+                    <img src={url} className={`${sizes[size]} flex bg-grey object-cover float-left rounded ${canEdit ? 'cursor-pointer' : 'cursor-auto'}`} alt="" loading="lazy"/>
                 :
                 id === "liked-songs" ?
-                    <div className={size === "l" ? "liked-songs-cover-l" : size === "m" ? "liked-songs-cover-m" : "liked-songs-cover-s"}>
-                        <FavoriteRoundedIcon className="image-icon"/>
+                    <div id="liked-songs-cover" className={`${sizes[size]} flex bg-grey bg-liked-songs-cover float-left rounded ${canEdit ? 'cursor-pointer' : 'cursor-auto'}`}>
+                        <FavoriteRoundedIcon className="text-lg m-auto"/>
                     </div>
                 :
-                <div className={size === "l" ? "no-image-cover-l" : size === "m" ? "no-image-cover-m" : "no-image-cover-s"}>
-                    <MusicNoteRoundedIcon className="image-icon"/>
+                <div id="no-cover" className={`${sizes[size]} flex bg-grey float-left rounded ${canEdit ? 'cursor-pointer' : 'cursor-auto'}`}>
+                    <MusicNoteRoundedIcon className="text-lg m-auto"/>
                 </div>
             }
         </>

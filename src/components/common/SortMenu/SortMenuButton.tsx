@@ -1,6 +1,4 @@
-import Button from '@mui/material/Button';
-
-import SortRoundedIcon from '@mui/icons-material/SortRounded';
+import Button from '../Button';
 import SortOption from '../../../interfaces/options/SortOption';
 
 const SortButton = (props: {selectedOption: SortOption, setOpen: (b: boolean) => void, setAnchorElement: (el: HTMLElement | null) => void}) => {
@@ -12,10 +10,8 @@ const SortButton = (props: {selectedOption: SortOption, setOpen: (b: boolean) =>
     }
 
     return (
-        <div className="sort-button">
-            <Button variant="text" endIcon={<SortRoundedIcon />} onClick={handleButtonClick}>
-                {selectedOption.displayName}
-            </Button>
+        <div id="sort-button">
+            <Button label={selectedOption.displayName} endIcon="sort_rounded" bgColorScheme="grey" handleClick={handleButtonClick}/>
         </div>
     );
 }

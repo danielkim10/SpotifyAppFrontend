@@ -1,4 +1,4 @@
-import Track from "./track";
+import Track from './track';
 
 interface SavedTrack {
     added_at: string,

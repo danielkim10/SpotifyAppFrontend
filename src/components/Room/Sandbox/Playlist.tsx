@@ -9,12 +9,12 @@ const Playlist = (props: {playlist: LocalPlaylistInterface}) => {
     return (
         <div className="playlist-object">
             {/* <CoverImage id={playlist.id} url={playlist.images.length > 0 ? playlist.images[0].url : ""} size="m"/> */}
-            <div className="item-info">
+            <div className="text-left">
                 <div>{playlist.name}</div>
             </div>
-            {/* <div className="item-info">{playlist.tracks.total} tracks</div> */}
+            {/* <div className="text-left">{playlist.tracks.total} tracks</div> */}
             <IconButton>
-                <MoreHorizRounded className="icon-button"/>
+                <MoreHorizRounded className="text-white"/>
             </IconButton>
         </div>
     );

@@ -3,7 +3,7 @@ import SocketContext from '../../context/SocketContext';
 
 const useSocketContext = () => {
     const socket = useContext(SocketContext);
-    if (!socket || !socket.roomID) {
+    if (!socket) {
         throw new Error("Expected value for socket but received null");
     }
     return socket;

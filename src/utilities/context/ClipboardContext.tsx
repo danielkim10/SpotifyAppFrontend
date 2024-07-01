@@ -5,17 +5,23 @@ import Track from '../../interfaces/track';
 interface Clipboard {
     items: Array<Track>,
     open: boolean,
-    selectedItem: Track | null,
+    selectedItems: Array<Track>,
     openClipboard: (b: boolean) => void,
-    addItem: (t: Track) => void
+    addItems: (t: Track[]) => void,
+    selectItems: (t: Track[]) => void,
+    deselectItems: (t: Track[]) => void,
+    removeItems: (t: Track[]) => void
 };
 
 const clipboard = {
     items: [],
     open: false,
-    selectedItem: null,
+    selectedItems: [],
     openClipboard: (b: boolean) => null,
-    addItem: (t: Track) => null
+    addItems: (t: Track[]) => null,
+    selectItems: (t: Track[]) => null,
+    deselectItems: (t: Track[]) => null,
+    removeItems: (t: Track[]) => null
 };
 
 const ClipboardContext = createContext<Clipboard>(clipboard);

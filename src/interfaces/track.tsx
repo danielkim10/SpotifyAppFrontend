@@ -1,5 +1,5 @@
-import AlbumInterface from "./album";
-import ArtistInterface from "./artist";
+import AlbumInterface from './album';
+import ArtistInterface from './artist';
 
 interface Track {
     album: AlbumInterface,

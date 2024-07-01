@@ -1,7 +1,5 @@
-// modules
 import { useState, useEffect, useContext } from 'react'
 
-// styles
 import Track from '../../interfaces/track'
 
 import PlayerCover from './PlayerCover'
@@ -46,7 +44,7 @@ const track: any = {
 }
 
 const Player = () => {
-    const [myPlayer, setPlayer] = useState<Spotify.Player>()
+    const [myPlayer, setPlayer] = useState<Spotify.Player | null>(null)
     const [paused, setPaused] = useState(true)
     const [active, setActive] = useState(false)
     const [currentTrack, setCurrentTrack] = useState<CurrentTrack>(track)
@@ -67,8 +65,9 @@ const Player = () => {
         const script = document.createElement("script")
         script.src = "https://sdk.scdn.co/spotify-player.js"
         script.async = true
-    
         document.body.appendChild(script);
+
+        // let player: Spotify.Player | null = null;
         
         window.onSpotifyWebPlaybackSDKReady = () => {
             const player = new window.Spotify.Player({
@@ -87,11 +86,11 @@ const Player = () => {
             })
     
             player.addListener('player_state_changed', ( state => {
-
+                console.log("Player state changing");
                 if (!state) {
                     return;
                 }
-                console.log(state)
+                // console.log(state)
                 setCurrentTrack(state.track_window.current_track);
                 setRepeatMode(state.repeat_mode);
                 setShuffle(state.shuffle);
@@ -100,11 +99,11 @@ const Player = () => {
                 setDuration(state.duration);
             
             
-                player.getCurrentState().then( state => { 
+                player!!.getCurrentState().then( state => { 
                     (!state) ? setActive(false) : setActive(true) 
                 });
 
-                console.log(position)
+                // console.log(position)
                 console.log(state.position)
             
             }));
@@ -132,7 +131,7 @@ const Player = () => {
 
         return () => {
             console.log("Disconnecting")
-            myPlayer?.disconnect()
+            myPlayer?.disconnect();
             setPlaybackTransfer(false)
             playerContext.setPlaybackTransferred(false)
             document.body.removeChild(script);
@@ -140,6 +139,7 @@ const Player = () => {
     }, [])
 
     const handleTogglePlay = () => {
+        console.log('play button pressed');
         myPlayer?.togglePlay().then(() => {
             setPaused(!paused)
         });
@@ -191,10 +191,10 @@ const Player = () => {
     }
 
     return (
-        <div className="main-wrapper">
+        <div className="flex">
             {
-                !transferred ?
-                <PlayerCover product="premium" deviceID={deviceID} setTransfer={() => setPlaybackTransfer(true)}/> :
+                !playerContext.playbackTransferred ?
+                <PlayerCover product="premium" deviceID={deviceID}/> :
                 <>
                     <PlayerInfo track={currentTrack}/>
                     <div className="footer controls-main">

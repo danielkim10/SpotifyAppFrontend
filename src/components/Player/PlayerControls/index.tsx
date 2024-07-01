@@ -1,9 +1,9 @@
-import PlayerInfo from "./PlayerInfo";
-import PlayerControlsButtons from "./PlayerControlsButtons";
-import PlayerDurationSlider from "./PlayerDurationSlider";
-import PlayerVolumeSlider from "./PlayerVolumeSlider";
-import TrackQueue from "../../TrackQueue";
-import CurrentTrack from "../../../interfaces/currentTrack";
+import PlayerInfo from './PlayerInfo';
+import PlayerControlsButtons from './PlayerControlsButtons';
+import PlayerDurationSlider from './PlayerDurationSlider';
+import PlayerVolumeSlider from './PlayerVolumeSlider';
+import TrackQueue from '../../TrackQueue';
+import CurrentTrack from '../../../interfaces/currentTrack';
 
 const PlayerControls = (props: {
     currentTrack: CurrentTrack,

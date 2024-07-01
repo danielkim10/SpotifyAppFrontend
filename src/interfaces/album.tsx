@@ -1,5 +1,5 @@
-import ArtistInterface from "./artist";
-import ImageInterface from "./image";
+import ArtistInterface from './artist';
+import ImageInterface from './image';
 
 interface Album {
     album_type: string,

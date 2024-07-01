@@ -1,17 +1,16 @@
-// helpers
-import RoomMemberInterface from "../../interfaces/roommember";
+import RoomMemberInterface from '../../interfaces/member';
 
-const RoomItem = (props: {room: RoomMemberInterface}) => {
+const RoomItem = (props: { room: RoomMemberInterface }) => {
     const { room } = props;
 
     return (
-        <div className="track-object">
-            <div className="item-info">
+        <div className="bg-grey hover:bg-light-grey hover:cursor-pointer">
+            <div className="text-left">
                 <div>{room.room.name}</div>
                 <div>{room.user.name}</div>
             </div>
             <div>{room.room.description}</div>
-            <div className="item-info">
+            <div className="text-left">
                 <div>Last Accessed: {room.updatedAt.toString().substring(0,10)}</div>
                 <div>Created: {room.createdAt.toString().substring(0,10)}</div>
             </div>

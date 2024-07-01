@@ -30,7 +30,7 @@ const Settings = () => {
     }
 
     return (
-        <div className="body">
+        <div id="settings" className="flex">
             <Tabs value={tabValue} onChange={handleTabChange} aria-label="settings tab">
                 <Tab label="General"/>
                 <Tab label="Advanced"/>

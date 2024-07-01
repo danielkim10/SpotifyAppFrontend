@@ -1,10 +1,8 @@
-import { useState} from 'react';
-import Avatar from '@mui/material/Avatar';
-import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
-import ExpandLessRoundedIcon from '@mui/icons-material/ExpandLessRounded';
+import { useState } from 'react';
 
 import ProfileDropdown from './ProfileDropdown';
 import useUserContext from '../../../utilities/hooks/context/useUserContext';
+import Button from '../../common/Button';
 
 const ProfileButton = () => {
     const [open, setOpen] = useState(false);
@@ -23,19 +21,10 @@ const ProfileButton = () => {
     }
 
     return (
-        <>
-            <div className="profile-button" onClick={handleProfileClick}>
-                {
-                    user.images.length > 0 ?
-                    <Avatar alt={user.name} src={user.images[0].url} className="profile-button-items"/>
-                    :
-                    <Avatar alt={user.name} className="profile-button-items">{user.name.slice(0,1)}</Avatar>
-                }
-                <b className="profile-button-items">{user.name}</b>
-                {open ? <ExpandLessRoundedIcon className="profile-button-items"/> : <ExpandMoreRoundedIcon className="profile-button-items"/>}
-            </div>
+        <div className="absolute right-0 top-1/2 -translate-y-1/2">
+            <Button label={user.name} hasAvatar avatarImage={user.images.length > 0 ? user.images[0].url : ""} endIcon="dropdown" dropdownOpen={open} bgColorScheme="grey" handleClick={handleProfileClick}/>
             <ProfileDropdown open={open} anchorElement={anchorElement} closeCallback={handleClose} url={user.spotify_url}/>
-        </>
+        </div>
     );
 }
 

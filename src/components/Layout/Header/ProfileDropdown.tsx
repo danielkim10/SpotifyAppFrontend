@@ -1,18 +1,12 @@
-// modules
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-
-// mui components
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import Icon from '@mui/material/Icon';
 
-// mui icons
-import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
-import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
-import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
+import ContextMenuOption from '../../../interfaces/options/ContextMenuOption';
 
 const ProfileDropdown = (props: {open: boolean, anchorElement: HTMLElement | null, closeCallback: () => void, url: string}) => {
     const { open, anchorElement, closeCallback, url } = props;
@@ -41,43 +35,31 @@ const ProfileDropdown = (props: {open: boolean, anchorElement: HTMLElement | nul
         navigate("/");
     }
 
+    const contextMenuOptions: ContextMenuOption[] = [
+        { name: "View on Spotify", iconName: "open_in_new_rounded", function: handleOpenInNewWindowClick, visible: true },
+        { name: "Settings", iconName: "settings_rounded", function: handleSettingsClick, visible: true },
+        { name: "About", iconName: "info_rounded", function: handleAboutClick, visible: true },
+        { name: "Log out", iconName: "logout_rounded", function: handleLogout, visible: true }
+    ]
+
+    const optionClicked = (option: ContextMenuOption) => {
+        option.function();
+        closeCallback();
+    }
+
     return (
-        <>
-            <Menu open={open} anchorEl={anchorElement} onClose={closeCallback} anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}>
-                <MenuItem onClick={handleOpenInNewWindowClick}>
-                    <ListItemIcon>
-                        <OpenInNewRoundedIcon/>
-                    </ListItemIcon>
-                    <ListItemText>
-                        View on Spotify
-                    </ListItemText>
-                </MenuItem>
-                <MenuItem onClick={handleSettingsClick}>
-                    <ListItemIcon>
-                        <SettingsRoundedIcon/>
-                    </ListItemIcon>
-                    <ListItemText>
-                        Settings
-                    </ListItemText>
-                </MenuItem>
-                <MenuItem onClick={handleAboutClick}>
-                    <ListItemIcon>
-                        <InfoRoundedIcon/>
-                    </ListItemIcon>
-                    <ListItemText>
-                        About
-                    </ListItemText>
-                </MenuItem>
-                <MenuItem onClick={handleLogout}>
-                    <ListItemIcon>
-                        <LogoutRoundedIcon/>
-                    </ListItemIcon>
-                    <ListItemText>
-                        Log out
-                    </ListItemText>
-                </MenuItem>
-            </Menu>
-        </>
+        <Menu open={open} anchorEl={anchorElement} onClose={closeCallback} anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}>
+        {
+            contextMenuOptions.filter((option) => option.visible).map((option) => {
+                return (
+                    <MenuItem onClick={() => optionClicked(option)}>
+                        <ListItemIcon><Icon>{option.iconName}</Icon></ListItemIcon>
+                        <ListItemText>{option.name}</ListItemText>
+                    </MenuItem>
+                );
+            })
+        }
+        </Menu>
     );
 }
 

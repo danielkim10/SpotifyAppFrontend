@@ -1,102 +1,78 @@
-// modules
 import { useEffect, useState } from 'react';
-import { Outlet } from "react-router-dom";
+import { Outlet } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { io } from 'socket.io-client';
+import { Socket } from 'socket.io-client';
+import { DefaultEventsMap } from '@socket.io/component-emitter';
 
-// helpers
-import User from "../../interfaces/user";
+import User from '../../interfaces/user';
 import CurrentTrack from '../../interfaces/currentTrack';
 import UserContext from '../../utilities/context/UserContext';
-
 import TokenContext from '../../utilities/context/TokenContext';
 import HeaderContext from '../../utilities/context/HeaderContext';
 import PlayerContext from '../../utilities/context/PlayerContext';
-
-import Header from "./Header";
-import Footer from "./Footer";
-
-const user1 = {
-    id: "",
-    name: "NULL",
-    spotify_id: "",
-    spotify_url: "",
-    images: [],
-    product: "free"
-}
+import Header from './Header';
+import Footer from './Footer';
+import { getUserProfile } from '../../utilities/functions/api/local/User';
+import { getSpotifyProfile } from '../../utilities/functions/api/spotify/Me';
+import SocketContext from '../../utilities/context/SocketContext';
 
 const Layout = () => {
+    const [socket, setSocket] = useState<Socket<DefaultEventsMap, DefaultEventsMap> | null>(null)
     const [loading, setLoading] = useState(true);
     const [accessToken, setAccessToken] = useState("");
     const [refreshToken, setRefreshToken] = useState("");
-    const [user, setUser] = useState<User>(user1);
+    const [user, setUser] = useState<User | null>(null);
     const [headerName, setHeaderName] = useState("");
 
     const [playbackTransferred, setPlaybackTransferred] = useState(false);
     const [currentTrack, setCurrentTrack] = useState<CurrentTrack | null>(null);
 
     useEffect(() => {
-        const fetchSpotifyProfile = async (): Promise<any> => {
-            const res  = await fetch("https://api.spotify.com/v1/me", {
-                method: "GET", headers: { Authorization: `Bearer ${Cookies.get('access_token')}`}
-            });
-
-            const json = await res.json();
-            if (res.ok) {
-                console.log(json);
-
+        const fetchSpotifyProfile = async () => {
+            const spotifyProfile = await getSpotifyProfile(Cookies.get('access_token')!!);
+            if (spotifyProfile) {
+                const userID = await getUserProfile(spotifyProfile.display_name, spotifyProfile.id);
                 var user = {
-                    id: "",
-                    name: json.display_name,
-                    spotify_id: json.id,
-                    spotify_url: json.external_urls.spotify,
-                    images: json.images,
-                    product: json.product
+                    id: userID,
+                    name: spotifyProfile.display_name,
+                    spotify_id: spotifyProfile.id,
+                    spotify_url: spotifyProfile.external_urls.spotify,
+                    images: spotifyProfile.images,
+                    product: spotifyProfile.product
                 };
-                const resb = await fetch("http://localhost:5000/api/user/", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({name: json.display_name, spotify_id: json.id})
-                });
-                const json2 = await resb.json();
 
-                if (resb.ok) {
-                    user.id = json2.items._id;
-                    setUser(user);
-                    setLoading(false);
-                }
-                else {
-                    console.log(json2);
-                }
-            }
-            else {
+                setUser(user);
+                setLoading(false);
             }
         }
-
-        // if (Cookies.get('expiry_time') && Cookies.get('access_token')) {
-        //     console.log(Date.now() < parseInt(Cookies.get('expiry_time')!!.toString()))
-        //     if (Date.now() < parseInt(Cookies.get('expiry_time')!!.toString())) {
+        
+        fetchSpotifyProfile();
         setAccessToken(Cookies.get('access_token')!!.toString());
         setRefreshToken(Cookies.get('refresh_token')!!.toString());
-        //     }
-        //     else {
-        //         fetchSpotifyProfile()
-        //     }
-        // }
-        // else {
-        fetchSpotifyProfile();
-        // }
     }, []);
+
+    useEffect(() => {
+        const newSocket = io("http://localhost:5000")
+        setSocket(newSocket)
+
+        return () => {
+            socket?.disconnect()
+        }
+    }, [])
 
     return (
         <>
-            {!loading ?
+            {!loading && user && socket ?
                 <TokenContext.Provider value={{access_token: accessToken, refresh_token: refreshToken}}>
                     <UserContext.Provider value={user}>
                         <HeaderContext.Provider value={{name: headerName, callback: setHeaderName}}>
                             <PlayerContext.Provider value={{playbackTransferred: playbackTransferred, setPlaybackTransferred: setPlaybackTransferred, currentTrack: currentTrack, setCurrentTrack: setCurrentTrack}}>
-                                <Header/>
-                                <Outlet/>
-                                <Footer/>
+                                <SocketContext.Provider value={{socket: socket, roomID: ""}}>
+                                    <Header/>
+                                    <Outlet/>
+                                    <Footer/>
+                                </SocketContext.Provider>
                             </PlayerContext.Provider>
                         </HeaderContext.Provider>
                     </UserContext.Provider>

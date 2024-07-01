@@ -1,8 +1,7 @@
-// modules
 import { useState, KeyboardEvent } from 'react';
 
-// mui components
 import TextField from '@mui/material/TextField';
+import Input from '../../common/Input';
 
 const ChatInput = (props: {sendMessage: (m: string) => void}) => {
     const { sendMessage } = props;
@@ -17,7 +16,8 @@ const ChatInput = (props: {sendMessage: (m: string) => void}) => {
     }
 
     return (
-        <div className="chat-footer">
+        <div className="bg-grey w-full">
+            <Input/>
             <TextField id="" variant="outlined" value={message} onChange={(e) => setMessage(e.target.value)} onKeyDown={sanitizeMessage}/>
         </div>
     );

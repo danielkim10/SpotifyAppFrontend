@@ -5,7 +5,7 @@ const TrackDrawer = (props: {open: boolean, onClose: () => void}) => {
 
     return (
         <Drawer anchor="right" open={open} onClose={onClose}>
-            <div className="drawer">
+            <div className="w-auto">
                 No songs playing
             </div>
         </Drawer>

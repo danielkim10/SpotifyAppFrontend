@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import Button from '../../common/Button';
 
 const HomeButton = () => {
     const navigate = useNavigate();
@@ -8,11 +9,9 @@ const HomeButton = () => {
     }
 
     return (
-        <>
-            <div className="profile-button" onClick={handleHome}>
-                <b className="profile-button-items">Home</b>
-            </div>
-        </>
+        <div className="absolute left-0 top-1/2 -translate-y-1/2">
+            <Button label="Home" bgColorScheme="grey" handleClick={handleHome}/>
+        </div>
     );
 }
 

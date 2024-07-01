@@ -1,89 +1,40 @@
-// modules
 import { useState, useContext } from 'react';
-import ClipboardContext from '../../../utilities/context/ClipboardContext';
+
 import SidebarContext from '../../../utilities/context/SidebarContext';
-
-import useSidebarCallback from '../../../utilities/hooks/context/useSidebarCallback';
-
-// mui components
-import IconButton from '@mui/material/IconButton';
-
-import CreatePlaylistDialog from '../CreatePlaylistDialog';
-import SharePlaylistDialog from '../SharePlaylistDialog';
-
-// mui icons
-import AddBoxRoundedIcon from '@mui/icons-material/AddBoxRounded';
-import ContentPasteRoundedIcon from '@mui/icons-material/ContentPasteRounded';
-import HistoryRoundedIcon from '@mui/icons-material/HistoryRounded';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
-import FileUploadRoundedIcon from '@mui/icons-material/FileUploadRounded';
-import Clipboard from '../Clipboard';
+import PlaylistDetailsDialog from '../Dialog/PlaylistDetailsDialog';
+import SharePlaylistDialog from '../Dialog/SharePlaylistDialog';
+import Button from '../../common/Button';
 
 const SidebarDefault = () => {
-    const [createPlaylistDialogOpen, setCreatePlaylistDialogOpen] = useState(false);
+    const [playlsitDetailsDialogOpen, setPlaylistDetailsDialogOpen] = useState(false);
     const [sharePlaylistDialogOpen, setSharePlaylistDialogOpen] = useState(false);
+
     const sidebarContext = useContext(SidebarContext);
-    const clipboardContext = useContext(ClipboardContext);
 
     return (
-        <div className="sidebar">
-            <CreatePlaylistDialog open={createPlaylistDialogOpen} onClose={() => setCreatePlaylistDialogOpen(false)} />
+        <div className="h-full flex flex-col justify-between">
+            <PlaylistDetailsDialog open={playlsitDetailsDialogOpen} onClose={() => setPlaylistDetailsDialogOpen(false)} />
             <SharePlaylistDialog open={sharePlaylistDialogOpen} onClose={() => setSharePlaylistDialogOpen(false)} />
-            <Clipboard open={clipboardContext.open}/>
-            <div>
-                <div>
-                    <IconButton onClick={() => setCreatePlaylistDialogOpen(true)}>
-                        <AddBoxRoundedIcon className="icon-button"/>
-                    </IconButton>
-                </div>
-                <div>Create Playlist</div>
+            <div className="flex-1">
+                <Button label="Create Playlist" endIcon="add_circle_rounded" bgColorScheme="grey" handleClick={() => setPlaylistDetailsDialogOpen(true)}/>
             </div>
-            <div>
-                <div>
-                    <IconButton onClick={() => sidebarContext.callback(1)}>
-                        <SearchRoundedIcon className="icon-button"/>
-                    </IconButton>
-                </div>
-                <div>Search</div>
+            <div className="flex-1">
+                <Button label="Search" endIcon="search" bgColorScheme="grey" handleClick={() => sidebarContext.callback("Search")}/>
             </div>
-            <div>
-                <div>
-                    <IconButton onClick={() => sidebarContext.callback(2)}>
-                        <HistoryRoundedIcon className="icon-button"/>
-                    </IconButton>
-                </div>
-                <div>History</div>
+            <div className="flex-1">
+                <Button label="Clipboard" endIcon="assignment_rounded" bgColorScheme="grey" handleClick={() => sidebarContext.callback("Clipboard")}/>
             </div>
-
-            <div>
-                <div>
-                    <IconButton onClick={() => setSharePlaylistDialogOpen(true)}>
-                        <FileUploadRoundedIcon className="icon-button"/>
-                    </IconButton>
-                </div>
-                <div>Share Playlist</div>
+            <div className="flex-1">
+                <Button label="History" endIcon="history" bgColorScheme="grey" handleClick={() => sidebarContext.callback("History")}/>
             </div>
-
-            <div>
-                <div>
-                    <IconButton onClick={() => sidebarContext.callback(3)}>
-                        <SettingsRoundedIcon className="icon-button"/>
-                    </IconButton>
-                </div>
-                <div>Settings</div>
+            <div className="flex-1">
+                <Button label="Share Playlist" endIcon="share_rounded" bgColorScheme="grey" handleClick={() => setSharePlaylistDialogOpen(true)}/>
             </div>
-
-            <div>
-                <div>
-                    <IconButton onClick={() => clipboardContext.openClipboard(true)}>
-                        <ContentPasteRoundedIcon className="icon-button"/>
-                    </IconButton>
-                </div>
-                <div>Clipboard</div>
+            <div className="flex-1">
+                <Button label="Settings" endIcon="settings" bgColorScheme="grey" handleClick={() => sidebarContext.callback("Settings")}/>
             </div>
         </div>
-    )
+    );
 }
 
-export default SidebarDefault
+export default SidebarDefault;

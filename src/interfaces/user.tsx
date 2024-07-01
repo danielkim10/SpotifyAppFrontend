@@ -1,4 +1,4 @@
-import ImageInterface from "./image";
+import ImageInterface from './image';
 
 interface User {
     id: string,

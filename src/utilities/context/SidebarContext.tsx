@@ -1,13 +1,13 @@
 import { createContext } from 'react';
 
 interface Sidebar {
-    value: number,
-    callback: (n: number) => void
+    value: string,
+    callback: (s: string) => void
 };
 
 const sidebar = {
-    value: 0,
-    callback: (n: number) => null
+    value: "",
+    callback: (s: string) => null
 };
 
 const SidebarContext = createContext<Sidebar>(sidebar);

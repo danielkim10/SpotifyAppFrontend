@@ -1,30 +1,29 @@
-// modules
 import { useState } from 'react';
 
-// helpers
 import SidebarContext from '../../../utilities/context/SidebarContext';
-
-// components
 import SidebarDefault from './SidebarDefault';
 import SidebarHistory from './SidebarHistory';
 import SidebarSearch from './SidebarSearch';
 import SidebarSettings from './SidebarSettings';
+import SidebarClipboard from './SidebarClipboard';
 import SidebarHeader from './SidebarHeader';
 
 const Sidebar = () => {
-    const [option, setOption] = useState<number>(0);
+    const [option, setOption] = useState("");
 
     return (
         <SidebarContext.Provider value={{value: option, callback: (option) => setOption(option)}}>
-            <div className="actions-sidebar">
+            <div className="bg-black min-w-[300px] max-h-default-page-height my-5 pt-5">
                 <SidebarHeader/>
                 {                    
-                    option === 1 ?
+                    option === "Search" ?
                     <SidebarSearch/> :
-                    option === 2 ?
+                    option === "History" ?
                     <SidebarHistory/> :
-                    option === 3 ?
+                    option === "Settings" ?
                     <SidebarSettings/> :
+                    option === "Clipboard" ?
+                    <SidebarClipboard/> :
                     <SidebarDefault />
                 }
             </div>

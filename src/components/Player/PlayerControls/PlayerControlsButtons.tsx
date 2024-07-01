@@ -23,19 +23,19 @@ const PlayerControlsButtons = (props: {
     return (
         <>
             <IconButton aria-label="shuffle" onClick={handleShuffle}>
-                <ShuffleRoundedIcon id="shuffle" className={shuffle ? "icon-button" : "icon-active"}/>
+                <ShuffleRoundedIcon id="shuffle" className={shuffle ? "text-white" : "text-s-green"}/>
             </IconButton>
             <IconButton aria-label="skip-previous" onClick={handlePreviousTrack}>
-                <SkipPreviousRoundedIcon id="skip-previous" className="icon-button"/>
+                <SkipPreviousRoundedIcon id="skip-previous" className="text-white"/>
             </IconButton>
             <IconButton size="large" aria-label="play-pause" onClick={handleTogglePlay}>
-                {paused ? <PlayCircleFilledWhiteRoundedIcon id="play-pause" className="icon-button" fontSize="large"/> : <PauseCircleFilledRoundedIcon className="icon-button" fontSize="large"/>}
+                {paused ? <PlayCircleFilledWhiteRoundedIcon id="play-pause" className="text-white" fontSize="large"/> : <PauseCircleFilledRoundedIcon className="text-white" fontSize="large"/>}
             </IconButton>
             <IconButton aria-label="skip-next" onClick={handleNextTrack}>
-                <SkipNextRoundedIcon id="skip-next" className="icon-button"/>
+                <SkipNextRoundedIcon id="skip-next" className="text-white"/>
             </IconButton>
             <IconButton aria-label="repeat" onClick={handleRepeat}>
-                {repeatMode === 2 ? <RepeatOneRoundedIcon id="repeat-one" className="icon-active"/> : <RepeatRoundedIcon id="repeat" className={repeatMode === 1 ? "icon-active" : "icon-button"}/>}
+                {repeatMode === 2 ? <RepeatOneRoundedIcon id="repeat-one" className="text-s-green"/> : <RepeatRoundedIcon id="repeat" className={repeatMode === 1 ? "text-s-green" : "text-white"}/>}
             </IconButton>
         </>
     );

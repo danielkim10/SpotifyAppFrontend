@@ -19,7 +19,7 @@ const PlayerVolumeSlider = (props: {
         <>
             <Tooltip title={volume === 0 ? "Unmute" : "Mute"}>
                 <IconButton aria-label="mute-unmute" onClick={handleMute}>
-                    {volume === 0 ? <VolumeOffRounded className="icon-button"/> : (volume > 0 && volume < 50 ? <VolumeDownRounded className="icon-button"/> : <VolumeUpRounded className="icon-button"/>)}
+                    {volume === 0 ? <VolumeOffRounded className="text-white"/> : (volume > 0 && volume < 50 ? <VolumeDownRounded className="text-white"/> : <VolumeUpRounded className="text-white"/>)}
                 </IconButton>
             </Tooltip>
             <Slider aria-label="volume" className="volume-slider" value={volume} defaultValue={30} onChange={handleVolumeChange}/>

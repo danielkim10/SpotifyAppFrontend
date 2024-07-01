@@ -1,9 +1,7 @@
-// modules
 import { useState } from 'react';
 import Cookies from 'js-cookie';
 
-// mui components
-import Button from '@mui/material/Button';
+import Button from './common/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from'@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -36,7 +34,7 @@ const RefreshTokenDialog = () => {
                 <DialogContentText>Your access token has expired. Please refresh to continue.</DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={refreshToken}>Refresh</Button>
+                <Button label="Refresh" endIcon="none" handleClick={refreshToken}/>
             </DialogActions>
         </Dialog>
     );

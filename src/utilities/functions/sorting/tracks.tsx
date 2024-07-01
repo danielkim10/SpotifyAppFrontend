@@ -1,4 +1,4 @@
-import Track from "../../../interfaces/track";
+import Track from '../../../interfaces/track';
 
 export const sortTrackByName = (a: Track, b: Track, asc: boolean) => {
     return 1;

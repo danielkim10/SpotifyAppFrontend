@@ -1,12 +1,8 @@
-// interfaces
-import SearchBarInterface from '../../interfaces/searchBar';
-
-// mui components
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 
-// mui icons
+import SearchBarInterface from '../../interfaces/searchBar';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 

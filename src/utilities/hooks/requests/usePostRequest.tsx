@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const usePostRequest = (url: string, data: string) => {
     useEffect(() => {
@@ -10,6 +10,7 @@ const usePostRequest = (url: string, data: string) => {
             const json = await res.json();
             if (res.ok) {
                 console.log(json);
+                return json;
             }
             else {
                 console.log(json.error);

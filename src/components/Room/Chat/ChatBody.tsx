@@ -1,7 +1,3 @@
-// modules
-import { useState } from 'react';
-
-// components
 import ChatMessage from './ChatMessage';
 
 interface MessageEvent {
@@ -17,7 +13,7 @@ const ChatBody = (props: {messages: MessageEvent[]}) => {
     const { messages } = props;
 
     return (
-        <div className="chat-body">
+        <div className="w-full min-h-[150px] bg-grey">
             {
                 messages.map(m => {
                     return <ChatMessage message={m} />
