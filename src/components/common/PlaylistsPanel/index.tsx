@@ -86,7 +86,7 @@ const PlaylistsPanel = (props: {
     }
 
     return (
-        <div id="playlists-panel" className="bg-black w-1/2 mx-2 p-5 max-h-[calc(100vh_-_184px)]">
+        <div id="playlists-panel" className="bg-black w-full mx-2 p-5 max-h-[calc(100vh_-_184px)]">
             <ContextMenu open={contextMenuOpen} anchorPosition={contextMenuPosition} options={contextMenuOptions} onClose={() => setContextMenuOpen(false)}/>
             <div id="playlists-panel-title" className="pb-5">
                 <b className="text-2xl">{panelTitle}</b>

@@ -24,12 +24,12 @@ const SidebarDefault = () => {
             <div className="flex-1">
                 <Button label="Clipboard" endIcon="assignment_rounded" bgColorScheme="grey" handleClick={() => sidebarContext.callback("Clipboard")}/>
             </div>
-            <div className="flex-1">
+            {/*<div className="flex-1">
                 <Button label="History" endIcon="history" bgColorScheme="grey" handleClick={() => sidebarContext.callback("History")}/>
-            </div>
-            <div className="flex-1">
+            </div>*/}
+            {/*<div className="flex-1">
                 <Button label="Share Playlist" endIcon="share_rounded" bgColorScheme="grey" handleClick={() => setSharePlaylistDialogOpen(true)}/>
-            </div>
+            </div>*/}
             <div className="flex-1">
                 <Button label="Settings" endIcon="settings" bgColorScheme="grey" handleClick={() => sidebarContext.callback("Settings")}/>
             </div>

@@ -73,7 +73,7 @@ const TracksPanel = (props: {
     }
 
     return (
-        <div id="tracks-panel" className="bg-black w-1/2 mx-2 p-5 max-h-[calc(100vh_-_180px)]">
+        <div id="tracks-panel" className="bg-black w-full mx-2 p-5 max-h-[calc(100vh_-_180px)]">
             <ContextMenu open={contextMenuOpen} anchorPosition={contextMenuPosition} options={contextMenuOptions} onClose={() => setContextMenuOpen(false)}/>
             {
                 selectedPlaylist ? 

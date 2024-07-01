@@ -37,8 +37,8 @@ const ProfileDropdown = (props: {open: boolean, anchorElement: HTMLElement | nul
 
     const contextMenuOptions: ContextMenuOption[] = [
         { name: "View on Spotify", iconName: "open_in_new_rounded", function: handleOpenInNewWindowClick, visible: true },
-        { name: "Settings", iconName: "settings_rounded", function: handleSettingsClick, visible: true },
-        { name: "About", iconName: "info_rounded", function: handleAboutClick, visible: true },
+        /*{ name: "Settings", iconName: "settings_rounded", function: handleSettingsClick, visible: true },
+        { name: "About", iconName: "info_rounded", function: handleAboutClick, visible: true },*/
         { name: "Log out", iconName: "logout_rounded", function: handleLogout, visible: true }
     ]
 

@@ -300,12 +300,12 @@ const Sandbox = () => {
     ];
 
     const contextMenuOptionsTrack: ContextMenuOption[] = [
-        { name: "Play", iconName: "play_arrow_rounded", function: () => null, visible: focusedTrack !== null },
+        /*{ name: "Play", iconName: "play_arrow_rounded", function: () => null, visible: focusedTrack !== null },*/
         { name: "Paste", iconName: "content_paste_rounded", function: onPaste, visible: clipboard.selectedItems.length > 0 },
         { name: "Add to Clipboard", iconName: "content_paste_go_rounded", function: () => null, visible: focusedTrack !== null },
         { name: "Remove from this playlist", iconName: "remove_circle_rounded", function: removeFromPlaylist, visible: focusedTrack !== null },
         { name: "Copy Link", iconName: "content_copy_rounded", function: () => null, visible: focusedTrack !== null },
-        { name: "Share to chat", iconName: "share_rounded", function: () => null, visible: focusedTrack !== null }
+        /*{ name: "Share to chat", iconName: "share_rounded", function: () => null, visible: focusedTrack !== null }*/
     ];
 
     const selectPlaylist = (id: string) => {
@@ -338,7 +338,7 @@ const Sandbox = () => {
                     openContextMenuCallback={(t: Track | null) => { setFocusedTrack(t); console.log(t); }}
                 />
             }
-            {
+            {/*
                 selectedSharedPlaylist === "" ? 
                 <PlaylistsPanel
                     panelTitle="Shared Playlists"
@@ -358,7 +358,7 @@ const Sandbox = () => {
                     onCloseCallback={() => setSelectedSharedPlaylist("")}
                     openContextMenuCallback={(t: Track | null) => setFocusedTrack(t)}
                 />
-            }
+            */}
         </div>
     );
 }

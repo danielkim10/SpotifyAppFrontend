@@ -22,15 +22,15 @@ const Lobby = () => {
     return (
         <div id="lobby" className="flex min-h-default-page-height p-5">
             <div className="bg-black w-1/2 m-2 p-2">
-                <div id="create-room-button" className="h-1/3">
+                <div id="create-room-button" className="h-1/2">
                     <Button label="Create Room" bgColorScheme="grey" handleClick={() => setCreateRoomDialogOpen(true)}/>
                 </div>
-                <div id="join-room-button" className="h-1/3">
+                <div id="join-room-button" className="h-1/2">
                     <Button label="Join Room" bgColorScheme="grey" handleClick={() => setJoinRoomDialogOpen(true)}/>
                 </div>
-                <div id="view-library-button" className="h-1/3">
+                {/*<div id="view-library-button" className="h-1/3">
                     <Button label="View Library" bgColorScheme="grey" handleClick={() => navigate("/library")}/>
-                </div>
+                </div>*/}
             </div>
             <div className="bg-black w-1/2 m-2 p-2">
                 <RoomList rooms={rooms}/>

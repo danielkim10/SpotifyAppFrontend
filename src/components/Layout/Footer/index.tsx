@@ -8,9 +8,9 @@ const Footer = () => {
 
     return (
         <footer className="bg-black min-h-default-footer-height">
-            {
+            {/*
                 token.access_token ? <Player/> : <></>
-            }
+            */}
         </footer>
     );
 }

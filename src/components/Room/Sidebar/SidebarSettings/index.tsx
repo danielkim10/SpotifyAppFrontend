@@ -74,7 +74,7 @@ const SidebarSettings = () => {
     return (
         <div id="sidebar-settings" className="h-[calc(h-full_-_[40px])]">
             <EditRoomDetails />
-            <MemberHistory />
+            {/*<MemberHistory />*/}
             <Button label="Delete room" bgColorScheme="red" handleClick={() => setDeleteRoomDialogOpen(true)}/>
             <DeleteRoomDialog open={deleteRoomDialogOpen} roomID={socketObject.roomID!!} onClose={() => setDeleteRoomDialogOpen(false)}/>
         </div>

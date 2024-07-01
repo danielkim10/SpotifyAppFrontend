@@ -109,7 +109,6 @@ const Room = () => {
                         message={messageInfo ? messageInfo.message : undefined}
                         action={
                             <>
-                                {/* <Button label="UNDO" bgColorScheme="grey" handleClick={handleSnackbarClose}/> */}
                                 <IconButton aria-label="close" color="inherit" sx={{ p: 0.5 }} onClick={handleSnackbarClose}>
                                     <CloseRoundedIcon />
                                 </IconButton>
