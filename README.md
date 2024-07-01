@@ -1,3 +1,17 @@
+# Spotify App Frontend
+
+Built with React, written in Typescript. Uses Socket.IO for real-time functionality.
+
+A link to the backend repository can be found here: https://github.com/danielkim10/SpotifyAppBackend.
+
+## Other necessary items
+
+A free Spotify account is required to use this application. Sign-up can be performed on https://open.spotify.com/.
+
+The link to Spotify's Web API documentation can be found here: https://developer.spotify.com/documentation/web-api.
+
+## Below is some Create React App default README text that can be ignored
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
