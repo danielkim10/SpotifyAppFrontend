@@ -22,7 +22,7 @@ interface ServerMessageEvent {
 
 const Chat = () => {
     const [messages, setMessages] = useState<MessageEvent[]>([]);
-    
+
     const user = useUserContext();
     const socketObject = useSocketContext();
     
@@ -56,7 +56,7 @@ const Chat = () => {
     }
 
     return (
-        <div id="chat" className="flex flex-col min-w-[300px] float-right max-h-default-page-height my-5">
+        <div id="chat" className="flex flex-col min-w-[300px] float-right max-h-default-page-height py-5">
             <ChatHeader/>
             <ChatBody messages={messages}/>
             <ChatInput sendMessage={handleSendMessage}/>
