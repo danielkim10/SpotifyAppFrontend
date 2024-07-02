@@ -5,17 +5,21 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { deleteRoom } from '../../../../utilities/functions/api/local/Room';
+import { deleteMembersForRoom } from '../../../../utilities/functions/api/local/Member';
 
 const DeleteRoomDialog = (props: { open: boolean, roomID: string, onClose: () => void }) => {
     const { open, roomID, onClose } = props;
 
     const onSubmit = async () => {
-        const res = await deleteRoom(roomID);
-        if (res) {
-            window.location.replace("http://localhost:3000/lobby")
-        }
-        else {
-            console.error("error");
+        const res2 = await deleteMembersForRoom(roomID);
+        if (res2) {
+            const res = await deleteRoom(roomID);
+            if (res) {
+                window.location.replace("http://localhost:3000/lobby")
+            }
+            else {
+                console.error("error");
+            }
         }
         onClose();
     }

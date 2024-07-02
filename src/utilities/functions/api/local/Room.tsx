@@ -27,5 +27,6 @@ export const deleteRoom = async (id: string): Promise<boolean> => {
         method: "DELETE",
         headers: { "Content-Type": "application/json" }
     });
+    
     return res.ok;
 }

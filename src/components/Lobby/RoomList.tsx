@@ -51,12 +51,12 @@ const RoomList = (props: { rooms: RoomMemberInterface[]}) => {
     };
 
     return (
-        <div className="max-h-[calc(100vh_-_184px)]">
+        <div className="max-h-default-page-height flex-auto overflow-y-scroll">
             <div className="relative flex">
                 <SearchBar searchBarInterface={searchBarInterface}/>
                 <div className="float-right"><SortMenu sortOptions={sortOptions} onOptionSelected={setSortOption}/></div>
             </div>
-            <ul className="my-auto ">
+            <ul className="">
             {
                 rooms.sort((a,b) => {
                     return selectedSortOption.sortFunction(a,b,sortAscending)

@@ -14,3 +14,11 @@ export const updateMember = async (roomID: string, userID: string) => {
         console.log(json.error);
     }
 }
+
+export const deleteMembersForRoom = async (roomID: string) => {
+    const res = await fetch(`${baseUrl}/room/${roomID}`, {
+        method: "DELETE", headers: { "Content-Type": "application/json" },
+    });
+
+    return res.ok;
+}
