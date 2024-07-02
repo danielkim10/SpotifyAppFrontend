@@ -13,8 +13,8 @@ import DeletePlaylistDialog from '../Dialog/DeletePlaylistDialog';
 import PlaylistDetailsDialog from '../Dialog/PlaylistDetailsDialog';
 import ClipboardContext from '../../../utilities/context/ClipboardContext';
 import Track from '../../../interfaces/track';
-import { getRoomPlaylists, updatePlaylistTrackCount } from '../../../utilities/functions/api/local/Playlist';
-import { addCustomPlaylistCoverImage, addItemsToPlaylist, createPlaylist } from '../../../utilities/functions/api/spotify/Playlist';
+import { updatePlaylistTrackCount } from '../../../utilities/functions/api/local/Playlist';
+import { addItemsToPlaylist, createPlaylist } from '../../../utilities/functions/api/spotify/Playlist';
 import { getTracksInPlaylist, removeTracksFromPlaylist } from '../../../utilities/functions/api/local/Track';
 import SnackPackContext from '../../../utilities/context/SnackPackContext';
 import { createDownload } from '../../../utilities/functions/api/local/Download';
@@ -31,16 +31,16 @@ const Sandbox = () => {
     const [playlistTracks, setPlaylistTracks] = useState<Dictionary<SavedTrack>>({});
 
     const [sharedPlaylists, setSharedPlaylists] = useState<Playlist[]>([]);
-    const [sharedPlaylistTracks, setSharedPlaylistTracks] = useState<Dictionary<SavedTrack>>({});
+    // const [sharedPlaylistTracks, setSharedPlaylistTracks] = useState<Dictionary<SavedTrack>>({});
 
     const [selectedPlaylist, setSelectedPlaylist] = useState("");
-    const [selectedSharedPlaylist, setSelectedSharedPlaylist] = useState("");
+    // const [selectedSharedPlaylist, setSelectedSharedPlaylist] = useState("");
 
     const [playlistDetailsDialogOpen, setPlaylistDetailsDialogOpen] = useState(false);
     const [deletePlaylistDialogOpen, setDeletePlaylistDialogOpen] = useState(false);
 
-    const [tracksPanelActive, setTracksPanelActive] = useState(false);
-    const [sharedTracksPanelActive, setSharedTracksPanelActive] = useState(false);
+    // const [tracksPanelActive, setTracksPanelActive] = useState(false);
+    // const [sharedTracksPanelActive, setSharedTracksPanelActive] = useState(false);
 
     const socketObject = useSocketContext();
     const user = useUserContext();
@@ -211,11 +211,11 @@ const Sandbox = () => {
         }   
     }
 
-    const addCoverImageToPlaylist = async (id: string) => {
-        if (focusedPlaylist) {
-            await addCustomPlaylistCoverImage(id, focusedPlaylist?.images[0].url, token.access_token);
-        }
-    }
+    // const addCoverImageToPlaylist = async (id: string) => {
+    //     if (focusedPlaylist) {
+    //         await addCustomPlaylistCoverImage(id, focusedPlaylist?.images[0].url, token.access_token);
+    //     }
+    // }
 
     // const addTracksToPlaylist = async (spotifyID: string) => {
     //     console.log(playlistTracks[id])
@@ -228,10 +228,6 @@ const Sandbox = () => {
     //     }
     // }
 
-    const editPlaylist = async (id: string) => {
-        
-    }
-
     const cacheRoomPlaylistData = (insertVal: {}) => {
         setPlaylistTracks(playlistTracks => ({
             ...playlistTracks,
@@ -239,12 +235,12 @@ const Sandbox = () => {
         }));
     }
 
-    const cacheSharedPlaylistData = (insertVal: {}) => {
-        setSharedPlaylistTracks(playlistTracks => ({
-            ...playlistTracks,
-            ...insertVal
-        }));
-    }
+    // const cacheSharedPlaylistData = (insertVal: {}) => {
+    //     setSharedPlaylistTracks(playlistTracks => ({
+    //         ...playlistTracks,
+    //         ...insertVal
+    //     }));
+    // }
 
     const onPaste = async () => {
         if (focusedPlaylist) {

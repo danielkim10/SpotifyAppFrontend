@@ -9,17 +9,17 @@ import DialogTitle from '@mui/material/DialogTitle';
 import PlaylistInterface from '../../../interfaces/playlist';
 import TokenContext from '../../../utilities/context/TokenContext';
 import useSocketContext from '../../../utilities/hooks/context/useSocketContext';
-import { recordAction } from '../../../utilities/functions/api/local/Action';
-import useUserContext from '../../../utilities/hooks/context/useUserContext';
+// import { recordAction } from '../../../utilities/functions/api/local/Action';
+// import useUserContext from '../../../utilities/hooks/context/useUserContext';
 
 const SharePlaylistDialog = (props: { open: boolean, onClose: () => void }) => {
     const { open, onClose } = props;
 
     const [playlistData, setPlaylistData] = useState<Array<PlaylistInterface>>([]);
-    const [selected, setSelected] = useState([]);
+    // const [selected, setSelected] = useState([]);
     
     const token = useContext(TokenContext);
-    const user = useUserContext();
+    // const user = useUserContext();
     const socketObject = useSocketContext();
 
     useEffect(() => {

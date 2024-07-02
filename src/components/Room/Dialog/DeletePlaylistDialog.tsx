@@ -7,8 +7,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 import useSocketContext from '../../../utilities/hooks/context/useSocketContext';
 import Playlist from '../../../interfaces/playlist';
-import useUserContext from '../../../utilities/hooks/context/useUserContext';
-import { recordAction } from '../../../utilities/functions/api/local/Action';
+// import useUserContext from '../../../utilities/hooks/context/useUserContext';
+// import { recordAction } from '../../../utilities/functions/api/local/Action';
 import { deletePlaylist } from '../../../utilities/functions/api/local/Playlist';
 import { useContext } from 'react';
 import SnackPackContext from '../../../utilities/context/SnackPackContext';
@@ -17,7 +17,7 @@ const DeletePlaylistDialog = (props: {open: boolean, playlist: Playlist | null, 
     const { open, playlist, onClose } = props;
 
     const socketObject = useSocketContext();
-    const user = useUserContext();
+    // const user = useUserContext();
     const snackPack = useContext(SnackPackContext);
 
     const onSubmit = async () => {
@@ -26,7 +26,7 @@ const DeletePlaylistDialog = (props: {open: boolean, playlist: Playlist | null, 
             if (res) {
                 socketObject.socket.emit('client:delete-playlist', playlist, socketObject.roomID);
                 snackPack.changeSnackPackMessage(`Playlist ${playlist.name} deleted`);
-                await recordAction([user.id], [playlist.name], 4, socketObject.roomID);
+                // await recordAction([user.id], [playlist.name], 4, socketObject.roomID);
             }
         }
         onClose();

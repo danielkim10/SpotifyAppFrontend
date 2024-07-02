@@ -11,7 +11,7 @@ import useUserContext from '../../../utilities/hooks/context/useUserContext';
 import useSocketContext from '../../../utilities/hooks/context/useSocketContext';
 
 import Playlist from '../../../interfaces/playlist';
-import { recordAction } from '../../../utilities/functions/api/local/Action';
+// import { recordAction } from '../../../utilities/functions/api/local/Action';
 import { createPlaylist, editPlaylist } from '../../../utilities/functions/api/local/Playlist';
 import SnackPackContext from '../../../utilities/context/SnackPackContext';
 
@@ -44,8 +44,7 @@ const PlaylistDetailsDialog = (props: {open: boolean, playlist?: Playlist | null
 
                 socketObject.socket.emit('client:create-playlist', playlistModified, socketObject.roomID);
                 snackPack.changeSnackPackMessage(`Playlist ${name} created`)
-                await recordAction([user.id], [playlistModified.name], 3, socketObject.roomID);
-
+                // await recordAction([user.id], [playlistModified.name], 3, socketObject.roomID);
                 resetFields();
             }
         }
