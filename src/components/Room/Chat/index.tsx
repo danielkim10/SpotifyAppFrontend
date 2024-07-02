@@ -4,8 +4,6 @@ import ChatHeader from './ChatHeader';
 import ChatBody from './ChatBody';
 import ChatInput from './ChatInput';
 
-import Fab from '@mui/material/Fab';
-import ChatRoundedIcon from '@mui/icons-material/ChatRounded';
 import useSocketContext from '../../../utilities/hooks/context/useSocketContext';
 import useUserContext from '../../../utilities/hooks/context/useUserContext';
 
@@ -23,20 +21,13 @@ interface ServerMessageEvent {
 }
 
 const Chat = () => {
-    const user = useUserContext();
-
     const [messages, setMessages] = useState<MessageEvent[]>([]);
-    const [open, setOpen] = useState(false);
-
+    
+    const user = useUserContext();
     const socketObject = useSocketContext();
     
-
-    const toggleChatWindow = (value: boolean) => {
-        setOpen(value);
-    }
-    
     useEffect(() => {
-        socketObject.socket.on('chat:receive-message', (data) => { 
+        socketObject.socket.on('server:receive-message', (data) => { 
             console.log(data);
             setMessages([...messages, data]);
         });
@@ -54,7 +45,7 @@ const Chat = () => {
 
     const handleSendMessage = (message: string) => {
         console.log('message', message);
-        socketObject.socket.emit('chat:send-message', {
+        socketObject.socket.emit('client:send-message', {
             text: message,
             socketID: socketObject.socket.id,
             userID: user.id,
@@ -65,20 +56,10 @@ const Chat = () => {
     }
 
     return (
-        <div id="chat" className="flex flex-col min-w-[300px] float-right">
-            {
-                open ? 
-                <>
-                    <ChatHeader toggleChatWindow={toggleChatWindow}/>
-                    <ChatBody messages={messages}/>
-                    <ChatInput sendMessage={handleSendMessage}/>
-                </> :
-                <div id="chat-fab" className="flex-1">
-                <Fab onClick={() => toggleChatWindow(true)}>
-                    <ChatRoundedIcon />
-                </Fab>
-                </div>
-            }
+        <div id="chat" className="flex flex-col min-w-[300px] float-right max-h-default-page-height my-5">
+            <ChatHeader/>
+            <ChatBody messages={messages}/>
+            <ChatInput sendMessage={handleSendMessage}/>
         </div>
     );
 }
