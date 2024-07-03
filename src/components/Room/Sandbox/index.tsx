@@ -18,6 +18,7 @@ import { addItemsToPlaylist, createPlaylist } from '../../../utilities/functions
 import { getTracksInPlaylist, removeTracksFromPlaylist } from '../../../utilities/functions/api/local/Track';
 import SnackPackContext from '../../../utilities/context/SnackPackContext';
 import { createDownload } from '../../../utilities/functions/api/local/Download';
+import RoomDeletedDialog from '../Dialog/RoomDeletedDialog';
 
 interface playlistTrack {
     order: Number,
@@ -38,6 +39,7 @@ const Sandbox = () => {
 
     const [playlistDetailsDialogOpen, setPlaylistDetailsDialogOpen] = useState(false);
     const [deletePlaylistDialogOpen, setDeletePlaylistDialogOpen] = useState(false);
+    const [roomDeletedDialogOpen, setRoomDeletedDialogOpen] = useState(false);
 
     // const [tracksPanelActive, setTracksPanelActive] = useState(false);
     // const [sharedTracksPanelActive, setSharedTracksPanelActive] = useState(false);
@@ -97,6 +99,10 @@ const Sandbox = () => {
 
         socketObject.socket.on('server:playlist-downloaded', (data) => {
 
+        });
+
+        socketObject.socket.on('server:room-deleted', () => {
+            setRoomDeletedDialogOpen(true);
         });
 
     }, [socketObject, playlists, sharedPlaylists]);
@@ -308,11 +314,17 @@ const Sandbox = () => {
         setSelectedPlaylist(id);
         getRoomPlaylistTracks(id);
     }
+
+    const roomDeletedOnClose = () => {
+        window.location.replace("http://localhost:3000/lobby")
+        setRoomDeletedDialogOpen(false)
+    }
     
     return (
         <div id="sandbox" className="flex w-full px-1 py-5">
             <PlaylistDetailsDialog open={playlistDetailsDialogOpen} playlist={focusedPlaylist} onClose={() => setPlaylistDetailsDialogOpen(false)}/>
             <DeletePlaylistDialog open={deletePlaylistDialogOpen} playlist={focusedPlaylist} onClose={() => setDeletePlaylistDialogOpen(false)}/>
+            <RoomDeletedDialog open={roomDeletedDialogOpen} onClose={roomDeletedOnClose}/>
             {
                 selectedPlaylist === "" ? 
                 <PlaylistsPanel

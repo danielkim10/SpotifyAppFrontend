@@ -6,16 +6,20 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { deleteRoom } from '../../../../utilities/functions/api/local/Room';
 import { deleteMembersForRoom } from '../../../../utilities/functions/api/local/Member';
+import useSocketContext from '../../../../utilities/hooks/context/useSocketContext';
 
 const DeleteRoomDialog = (props: { open: boolean, roomID: string, onClose: () => void }) => {
     const { open, roomID, onClose } = props;
+
+    const socketObject = useSocketContext();
 
     const onSubmit = async () => {
         const res2 = await deleteMembersForRoom(roomID);
         if (res2) {
             const res = await deleteRoom(roomID);
             if (res) {
-                window.location.replace("http://localhost:3000/lobby")
+                socketObject.socket.emit('client:delete-room', roomID);
+                window.location.replace("http://localhost:3000/lobby");
             }
             else {
                 console.error("error");
