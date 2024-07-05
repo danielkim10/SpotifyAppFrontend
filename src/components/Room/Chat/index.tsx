@@ -56,7 +56,7 @@ const Chat = () => {
     }
 
     return (
-        <div id="chat" className="flex flex-col min-w-[300px] float-right max-h-default-page-height py-5">
+        <div id="chat" className="flex flex-col min-w-[300px] float-right py-5">
             <ChatHeader/>
             <ChatBody messages={messages}/>
             <ChatInput sendMessage={handleSendMessage}/>

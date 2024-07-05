@@ -321,7 +321,7 @@ const Sandbox = () => {
     }
     
     return (
-        <div id="sandbox" className="flex w-full px-1 py-5">
+        <div id="sandbox" className="w-full max-h-default-page-height p-5">
             <PlaylistDetailsDialog open={playlistDetailsDialogOpen} playlist={focusedPlaylist} onClose={() => setPlaylistDetailsDialogOpen(false)}/>
             <DeletePlaylistDialog open={deletePlaylistDialogOpen} playlist={focusedPlaylist} onClose={() => setDeletePlaylistDialogOpen(false)}/>
             <RoomDeletedDialog open={roomDeletedDialogOpen} onClose={roomDeletedOnClose}/>

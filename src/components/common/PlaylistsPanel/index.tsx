@@ -86,27 +86,29 @@ const PlaylistsPanel = (props: {
     }
 
     return (
-        <div id="playlists-panel" className="bg-black w-full mx-2 p-5 max-h-[calc(100vh_-_184px)]">
-            <ContextMenu open={contextMenuOpen} anchorPosition={contextMenuPosition} options={contextMenuOptions} onClose={() => setContextMenuOpen(false)}/>
-            <div id="playlists-panel-title" className="pb-5">
-                <b className="text-2xl">{panelTitle}</b>
-            </div>
-            <div className="flex">
-                <div className="w-1/2 float-left">
-                    <SearchBar searchBarInterface={searchBarInterfacePlaylist} />
+        <div id="playlists-panel" className="bg-black w-full flex flex-col p-5">
+            <div className="flex-auto">
+                <ContextMenu open={contextMenuOpen} anchorPosition={contextMenuPosition} options={contextMenuOptions} onClose={() => setContextMenuOpen(false)}/>
+                <div id="playlists-panel-title" className="pb-5">
+                    <b className="text-2xl">{panelTitle}</b>
                 </div>
-                <div className="w-1/2 float-right">
-                    <SortMenu sortOptions={sortOptions} onOptionSelected={setSortOption}/>
+                <div className="flex">
+                    <div className="w-1/2 float-left">
+                        <SearchBar searchBarInterface={searchBarInterfacePlaylist} />
+                    </div>
+                    <div className="w-1/2 float-right">
+                        <SortMenu sortOptions={sortOptions} onOptionSelected={setSortOption}/>
+                    </div>
+                </div>
+                <div>
+                    Name TrackCount LastUpdated LastDownloaded
                 </div>
             </div>
-            <div>
-                Name TrackCount LastUpdated LastDownloaded
-            </div>
+            <div className="flex-auto ">
             {
                 playlistLoading ?
                 <CircularProgress/> :
-                <div id="playlists-panel-container" className="w-full overflow-x-hidden overflow-y-auto">
-                    <ul>
+                    <ul  className="max-h-playlist-height flex-auto overflow-y-scroll w-full overflow-x-hidden">
                     {
                         playlistTracks["liked-songs"] ?
                         <li className="p-[2px] first:pt-0">
@@ -132,8 +134,8 @@ const PlaylistsPanel = (props: {
                         </>
                     }
                     </ul>
-                </div>
             }
+            </div>
         </div>
     );
 }

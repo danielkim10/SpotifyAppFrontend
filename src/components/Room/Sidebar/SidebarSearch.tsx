@@ -129,15 +129,17 @@ const SidebarSearch = () => {
     ];
 
     return (
-        <div >
+        <div className="flex flex-col max-h-search-height">
             <ContextMenu open={contextMenuOpen} anchorPosition={contextMenuPosition} options={contextMenuOptions} onClose={() => setContextMenuOpen(false)}/>
-            <div className="my-[5px]"><SearchBar searchBarInterface={searchBarInterface}/></div>
-            
+            <div className="my-[5px]">
+                <SearchBar searchBarInterface={searchBarInterface}/>
+            </div>
+            <div className="flex-auto overflow-y-scroll overflow-x-hidden">
             {
                 loading ? 
                 <CircularProgress/> : 
                     tracks.length > 0 ?
-                    <ul className="max-h-search-height overflow-y-auto max-w-[300px] overflow-x-hidden">
+                    <ul className="max-w-[300px]">
                     {
                         tracks.map((track: TrackInterface) => {
                             return (
@@ -157,6 +159,7 @@ const SidebarSearch = () => {
                         No results
                     </>
             }
+            </div>
         </div>
     )
 }

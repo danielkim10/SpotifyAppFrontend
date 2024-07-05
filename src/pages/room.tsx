@@ -100,7 +100,7 @@ const Room = () => {
             <SnackbarContext.Provider value={{
                 changeSnackPackMessage: changeSnackPackMessage
             }}>
-                <div className="flex min-h-default-page-height">
+                <div className="flex">
                     <Snackbar key={messageInfo ? messageInfo.key : undefined}
                         open={snackbarOpen}
                         autoHideDuration={6000}

@@ -14,24 +14,28 @@ const JoinRoomDialog = (props: { open: boolean, onClose: () => void }) => {
     const { open, onClose } = props;
 
     const [code, setCode] = useState("");
+    const [error, setError] = useState(false);
 
     const navigate = useNavigate();
     const user = useUserContext();
 
     const attemptJoinRoom = async (password: string) => {
         const id = await joinRoom(password);
+        console.log(id);
         if (id) {
             const member = await updateMember(id, user.id);
             navigate({ pathname: "/room", search: createSearchParams({ id }).toString() });
         }
-        else {}
+        else {
+            setError(true);
+        }
     }
 
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>Join Room</DialogTitle>
             <DialogContent>
-                <TextField id="password" label="Password" variant="standard" onChange={(e) => setCode(e.target.value)}/>
+                <TextField id="password" label="Password" variant="standard" error={error} helperText="Invalid password" onChange={(e) => setCode(e.target.value)}/>
             </DialogContent>
             <DialogActions>
                 <Button label="Cancel" bgColorScheme="red" handleClick={onClose}/>

@@ -29,7 +29,8 @@ module.exports = {
     },
     maxHeight: {
       'search-height': 'calc(100vh - 286px)',
-      'default-page-height': 'calc(100vh - 180px)'
+      'default-page-height': 'calc(100vh - 180px)',
+      'playlist-height': 'calc(100vh - 400px)'
     },
     backgroundImage: {
       'liked-songs-cover': 'linear-gradient(135deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 30%, rgba(233,251,255,1) 100%)'
