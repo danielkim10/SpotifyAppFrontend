@@ -86,8 +86,8 @@ const PlaylistsPanel = (props: {
     }
 
     return (
-        <div id="playlists-panel" className="bg-black w-full flex flex-col p-5">
-            <div className="flex-auto">
+        <div id="playlists-panel" className="bg-black w-full h-full flex flex-col p-5">
+            <div className="">
                 <ContextMenu open={contextMenuOpen} anchorPosition={contextMenuPosition} options={contextMenuOptions} onClose={() => setContextMenuOpen(false)}/>
                 <div id="playlists-panel-title" className="pb-5">
                     <b className="text-2xl">{panelTitle}</b>
@@ -104,11 +104,11 @@ const PlaylistsPanel = (props: {
                     Name TrackCount LastUpdated LastDownloaded
                 </div>
             </div>
-            <div className="flex-auto ">
+            <div className="flex-auto overflow-y-scroll">
             {
                 playlistLoading ?
                 <CircularProgress/> :
-                    <ul  className="max-h-playlist-height flex-auto overflow-y-scroll w-full overflow-x-hidden">
+                    <ul className="flex-auto  w-full overflow-x-hidden">
                     {
                         playlistTracks["liked-songs"] ?
                         <li className="p-[2px] first:pt-0">

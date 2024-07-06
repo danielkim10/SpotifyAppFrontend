@@ -13,7 +13,7 @@ const Sidebar = () => {
 
     return (
         <SidebarContext.Provider value={{value: option, callback: (option) => setOption(option)}}>
-            <div className="bg-black min-w-[300px] max-h-default-page-height my-5 pt-5">
+            <div className="bg-black min-w-[300px] my-5 pt-5">
                 <SidebarHeader/>
                 {                    
                     option === "Search" ?

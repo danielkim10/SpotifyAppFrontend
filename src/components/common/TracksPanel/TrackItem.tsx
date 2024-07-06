@@ -56,29 +56,29 @@ const TrackItem = (props: {index: number, added: string, track: TrackInterface, 
 
     return (
         <tr className={`flex w-full p-[5px] ${selected ? `bg-lighter-grey`: `hover:bg-light-grey`}`} onMouseOver={() => setHover(true)} onMouseOut={() => setHover(false)} onClick={onClick} onDoubleClick={() => playTrack(track.uri)} onContextMenu={(e: MouseEvent<HTMLDivElement>) => openContextMenu(e, track)}>
-            <td className="min-w-[50px] max-w-[50px] cursor-pointer my-auto mx-0">
+            <td className="w-[50px] my-auto mx-0">
+                <p>{index}</p>
                 {
-                    hover ?
-                        <Tooltip title={`Play ${track.name} by ${formatMultipleArtists(track.artists)}`}>
-                            <IconButton onClick={() => playTrack(track.uri)}><PlayArrowRoundedIcon className="text-white"/></IconButton>
-                        </Tooltip>
-                        :
-                        <>{index}</>
+                    // hover ?
+                    //     <Tooltip title={`Play ${track.name} by ${formatMultipleArtists(track.artists)}`}>
+                    //         <IconButton onClick={() => playTrack(track.uri)}><PlayArrowRoundedIcon className="text-white"/></IconButton>
+                    //     </Tooltip>
+                    // : <></>
                 }
             </td>
-            <CoverImage id={track.id} url={track.album.images.length > 0 ? track.album.images[0].url : ""} size="s"/>
-            <td className="text-left px-1">
-                <div className="w-[200px] max-w-[200px] my-auto truncate">{track.name}</div>
-                <div className="w-[200px] max-w-[200px] my-auto truncate">{formatMultipleArtists(track.artists)}</div>
+            <td className="w-[50px]"><CoverImage id={track.id} url={track.album.images.length > 0 ? track.album.images[0].url : ""} size="s"/></td>
+            <td className="flex-1 text-left px-2">
+                <b className="my-auto truncate">{track.name}</b>
+                <p className="my-auto truncate">{formatMultipleArtists(track.artists)}</p>
             </td>
-            <td className="text-left px-1 my-auto">
-                <div className="w-[150px] max-w-[150px] my-auto truncate">{track.album.name}</div>
+            <td className="flex-1 text-left my-auto px-2">
+                <b className="truncate">{track.album.name}</b>
             </td>
-            <td className="text-left px-1 my-auto">
-                <div className="w-[100px] max-w-[150px] my-auto truncate">{added.substring(0, 10)}</div>
+            <td className="flex-1 text-left my-auto px-2">
+                <p className="truncate">{added.substring(0, 10)}</p>
             </td>
-            <td className="w-[50px] my-auto mx-0">
-                {convertMillisecondsToMinutes(track.duration_ms)}:{convertMillisecondsToSeconds(track.duration_ms)}
+            <td className="flex-1 text-left my-auto px-2">
+                <p>{convertMillisecondsToMinutes(track.duration_ms)}:{convertMillisecondsToSeconds(track.duration_ms)}</p>
             </td>
             
         </tr>

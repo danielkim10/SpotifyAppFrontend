@@ -73,28 +73,27 @@ const TracksPanel = (props: {
     }
 
     return (
-        <div id="tracks-panel" className="bg-black w-full mx-2 p-5 max-h-[calc(100vh_-_180px)]">
+        <div id="tracks-panel" className="bg-black w-full h-full p-5 flex flex-col">
             <ContextMenu open={contextMenuOpen} anchorPosition={contextMenuPosition} options={contextMenuOptions} onClose={() => setContextMenuOpen(false)}/>
             {
                 selectedPlaylist ? 
                 <>
                     <PanelHeader playlist={selectedPlaylist} showCloseButton={showCloseButton} onCloseCallback={onCloseCallback}/>
-                    <div className="max-h-[500px] overflow-y-auto">
+                    <div className="flex flex-col">
                     {
                         trackLoading
                         ?
                         <CircularProgress/>
                         :
                         <>
-                            
-                            <table id="tracks-panel-table" className="w-full m-auto">
+                            <table id="tracks-panel-table" className="w-full flex-auto overflow-y-scroll">
                                 <tr id="header-row" className="flex m-auto p-[5px]">
-                                    <th id="header-col-index" className="min-w-[50px]">#</th>
-                                    <th id="header-col-image" className="min-w-[50px]"></th>
-                                    <th id="header-col-title" className="min-w-[200px] text-left mx-1">Title</th>
-                                    <th id="header-col-album" className="min-w-[150px] text-left mx-1">Album</th>
-                                    <th id="header-col-date" className="min-w-[100px] text-left mx-1">Date Added</th>
-                                    <th id="header-col-time" className="text-left mx-1">Duration</th>
+                                    <th id="header-col-index" className="w-[50px]">#</th>
+                                    <th id="header-col-image" className="w-[50px]"></th>
+                                    <th id="header-col-title" className="flex-1 text-left px-2">Title</th>
+                                    <th id="header-col-album" className="flex-1 text-left px-2">Album</th>
+                                    <th id="header-col-date" className="flex-1 text-left px-2">Date Added</th>
+                                    <th id="header-col-time" className="flex-1 text-left px-2">Duration</th>
                                 </tr>
                                 {
                                     
