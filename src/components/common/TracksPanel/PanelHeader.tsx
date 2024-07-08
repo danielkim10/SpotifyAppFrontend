@@ -51,7 +51,7 @@ const PanelHeader = (props: {playlist: Playlist, showCloseButton: boolean, onClo
 
     return (
         <>
-            <div id="tracks-panel-header" className="flex">
+            <div id="tracks-panel-header" className="flex pb-5">
             <CoverImage id={playlist.id} url={playlist.images?.length > 0 ? playlist.images[0].url : ""} size="l"/>
             <div id="header-info" className="w-[calc(100%_-_150px)]">
                 {/* <Tooltip title={playlist.public ? "This playlist is public" : "This playlist is private"}>

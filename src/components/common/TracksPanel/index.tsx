@@ -93,7 +93,7 @@ const TracksPanel = (props: {
                                     <th id="header-col-title" className="flex-1 text-left px-2">Title</th>
                                     <th id="header-col-album" className="flex-1 text-left px-2">Album</th>
                                     <th id="header-col-date" className="flex-1 text-left px-2">Date Added</th>
-                                    <th id="header-col-time" className="flex-1 text-left px-2">Duration</th>
+                                    <th id="header-col-time" className="w-[100px] text-left px-2">Duration</th>
                                 </tr>
                                 {
                                     

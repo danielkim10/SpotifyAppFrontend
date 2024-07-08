@@ -10,7 +10,7 @@ const SortButton = (props: {selectedOption: SortOption, setOpen: (b: boolean) =>
     }
 
     return (
-        <div id="sort-button">
+        <div id="sort-button" className="w-auto">
             <Button label={selectedOption.displayName} endIcon="sort_rounded" bgColorScheme="grey" handleClick={handleButtonClick}/>
         </div>
     );

@@ -77,7 +77,7 @@ const TrackItem = (props: {index: number, added: string, track: TrackInterface, 
             <td className="flex-1 text-left my-auto px-2">
                 <p className="truncate">{added.substring(0, 10)}</p>
             </td>
-            <td className="flex-1 text-left my-auto px-2">
+            <td className="w-[100px] text-left my-auto px-2">
                 <p>{convertMillisecondsToMinutes(track.duration_ms)}:{convertMillisecondsToSeconds(track.duration_ms)}</p>
             </td>
             

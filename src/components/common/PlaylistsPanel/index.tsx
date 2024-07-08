@@ -93,10 +93,10 @@ const PlaylistsPanel = (props: {
                     <b className="text-2xl">{panelTitle}</b>
                 </div>
                 <div className="flex">
-                    <div className="w-1/2 float-left">
+                    <div className="float-left">
                         <SearchBar searchBarInterface={searchBarInterfacePlaylist} />
                     </div>
-                    <div className="w-1/2 float-right">
+                    <div className="float-right">
                         <SortMenu sortOptions={sortOptions} onOptionSelected={setSortOption}/>
                     </div>
                 </div>

@@ -20,7 +20,7 @@ const Button = (props: { label: string, hasAvatar?: boolean, avatarImage?: strin
     }
 
     return (
-        <div className={`flex p-[10px] m-[10px] h-max items-center cursor-pointer ${colorSchemes[bgColorScheme!!]} rounded-full justify-between `} onClick={handleClick}>
+        <div className={`flex p-[10px] m-[10px] h-max items-center cursor-pointer ${colorSchemes[bgColorScheme!!]} rounded-full justify-between w-auto`} onClick={handleClick}>
             {
                 hasAvatar ?
                     avatarImage ?
