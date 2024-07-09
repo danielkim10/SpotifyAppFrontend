@@ -9,7 +9,6 @@ import RoomInterface from '../../interfaces/room';
 import RoomMemberInterface from '../../interfaces/member';
 import RoomItem from './RoomItem';
 import SortMenu from '../common/SortMenu';
-import { sortRoomByName, sortRoomByOwner } from '../../utilities/sortFunctions';
 import { sortRooms } from '../../utilities/functions/sorting/rooms';
 import useUserContext from '../../utilities/hooks/context/useUserContext';
 import { updateMember } from '../../utilities/functions/api/local/Member';
@@ -62,7 +61,7 @@ const RoomList = (props: { rooms: RoomMemberInterface[]}) => {
                 rooms.sort((a,b) => {
                     return sortRooms(a, b, sortAscending, selectedSortOption.fieldName)
                 }).filter((room) => {
-                    return room.room.name.startsWith(searchText)
+                    return room.room.name.toLowerCase().startsWith(searchText.toLowerCase())
                 }).map(room => {
                     return <li key={room.room._id} className="p-2 first:pt-0 last:pb-0" onClick={() => joinRoom(room.room._id)}><RoomItem room={room} /></li>
                 })

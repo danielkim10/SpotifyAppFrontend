@@ -102,7 +102,7 @@ const TracksPanel = (props: {
                                         
                                         selectedPlaylistData.length > 0 ?
                                         selectedPlaylistData.filter((savedTrack: SavedTrack) => {
-                                            return savedTrack.track.name.startsWith(trackSearchText)
+                                            return savedTrack.track.name.toLowerCase().startsWith(trackSearchText.toLowerCase())
                                         }).map((savedTrack: SavedTrack, index: number) => {
                                             return (
                                                 <TrackItem

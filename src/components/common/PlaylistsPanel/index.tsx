@@ -132,7 +132,7 @@ const PlaylistsPanel = (props: {
                                 playlistData.sort((a,b) =>  { 
                                     return sortPlaylists(a, b, sortAscending, selectedSortOption.fieldName)
                                 }).filter((playlist: Playlist) => {
-                                    return playlist.name.startsWith(playlistSearchText)
+                                    return playlist.name.toLowerCase().startsWith(playlistSearchText.toLowerCase())
                                 }).map((playlist: Playlist, index: number) => {
                                     return (
                                         <PlaylistItem index={index + 1} key={playlist.id} playlist={playlist} onClick={() => selectPlaylistCallback(playlist.id)} onRightClick={(e: MouseEvent<HTMLDivElement>, p: Playlist) => onRightClick(e, p)} />
