@@ -51,27 +51,31 @@ const PanelHeader = (props: {playlist: Playlist, showCloseButton: boolean, onClo
 
     return (
         <>
-            <div id="tracks-panel-header" className="flex pb-5">
-            <CoverImage id={playlist.id} url={playlist.images?.length > 0 ? playlist.images[0].url : ""} size="l"/>
-            <div id="header-info" className="w-[calc(100%_-_150px)]">
-                {/* <Tooltip title={playlist.public ? "This playlist is public" : "This playlist is private"}>
-                    {
-                        playlist.public ? <PublicRoundedIcon/> : <PublicOffRoundedIcon/>
-                    }
-                </Tooltip> */}
-                <div id="playlist-name" className="w-full flex pl-[10px]"><b className="text-6xl">{playlist.name}</b></div>
-                <div id="playlist-description" className="w-full flex pl-[10px]">{playlist.description}</div>
-                <div id="playlist-owner" className="w-full flex pl-[10px]">{playlist.owner.name}</div>
-            </div>
-            {
-                showCloseButton ?
-                <Tooltip title="Back">
-                    <IconButton onClick={onCloseCallback}>
-                        <CloseRoundedIcon className="text-white"/>
-                    </IconButton>
-                </Tooltip> :
-                <></>
-            }
+            <div id="tracks-panel-header" className="w-full flex flex-row pb-5">
+                <div className="max-w-[150px]">
+                    <CoverImage id={playlist.id} url={playlist.images?.length > 0 ? playlist.images[0].url : ""} size="l"/>
+                </div>
+                <div className="flex-1 text-left px-5">
+                    {/* <Tooltip title={playlist.public ? "This playlist is public" : "This playlist is private"}>
+                        {
+                            playlist.public ? <PublicRoundedIcon/> : <PublicOffRoundedIcon/>
+                        }
+                    </Tooltip> */}
+                    <p className="text-6xl truncate">{playlist.name}</p>
+                    <div className="block">
+                        <p>{playlist.description}</p>
+                        <p>{playlist.owner.name}</p>
+                    </div>
+                </div>
+                {
+                    showCloseButton ?
+                    <Tooltip title="Back">
+                        <IconButton onClick={onCloseCallback}>
+                            <CloseRoundedIcon className="text-white"/>
+                        </IconButton>
+                    </Tooltip> :
+                    <></>
+                }
             </div>
             <SearchBar searchBarInterface={searchBarInterfaceTrack} />
             <SortMenu sortOptions={sortOptions} onOptionSelected={setSortOption}/>

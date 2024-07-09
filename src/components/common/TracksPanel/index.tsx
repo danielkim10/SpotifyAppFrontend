@@ -73,49 +73,53 @@ const TracksPanel = (props: {
     }
 
     return (
-        <div id="tracks-panel" className="bg-black w-full h-full p-5 flex flex-col">
+        <div id="tracks-panel" className="bg-black w-full h-full flex flex-col p-5">
             <ContextMenu open={contextMenuOpen} anchorPosition={contextMenuPosition} options={contextMenuOptions} onClose={() => setContextMenuOpen(false)}/>
             {
                 selectedPlaylist ? 
                 <>
                     <PanelHeader playlist={selectedPlaylist} showCloseButton={showCloseButton} onCloseCallback={onCloseCallback}/>
-                    <div className="flex flex-col">
+                    <div className="flex flex-auto overflow-y-scroll">
                     {
                         trackLoading
                         ?
                         <CircularProgress/>
                         :
                         <>
-                            <table id="tracks-panel-table" className="w-full flex-auto overflow-y-scroll">
-                                <tr id="header-row" className="flex m-auto p-[5px]">
-                                    <th id="header-col-index" className="w-[50px]">#</th>
-                                    <th id="header-col-image" className="w-[50px]"></th>
-                                    <th id="header-col-title" className="flex-1 text-left px-2">Title</th>
-                                    <th id="header-col-album" className="flex-1 text-left px-2">Album</th>
-                                    <th id="header-col-date" className="flex-1 text-left px-2">Date Added</th>
-                                    <th id="header-col-time" className="w-[100px] text-left px-2">Duration</th>
-                                </tr>
-                                {
-                                    
-                                    selectedPlaylistData.length > 0 ?
-                                    selectedPlaylistData.filter((savedTrack: SavedTrack) => {
-                                        return savedTrack.track.name.startsWith(trackSearchText)
-                                    }).map((savedTrack: SavedTrack, index: number) => {
-                                        return (
-                                            <TrackItem
-                                                index={index + 1}
-                                                added={savedTrack.added_at}
-                                                track={savedTrack.track}
-                                                selected={selectedTracks.findIndex((t) => t.id === savedTrack.track.id) >= 0}
-                                                onClickCallback={(e) => onClick(e,savedTrack.track)}
-                                                onRightClick={(e: MouseEvent<HTMLDivElement>, t: Track) => onRightClick(e, t)}
-                                            />
-                                        )
-                                    })
-                                    
-                                    :
-                                    <b>No tracks</b>
-                                }
+                            <table id="tracks-panel-table" className="w-full flex-auto overflow-x-hidden">
+                                <thead className="sticky top-0 z-10 bg-black">
+                                    <tr id="header-row" className="flex m-auto p-[5px]">
+                                        <th id="header-col-index" className="w-[50px]">#</th>
+                                        <th id="header-col-image" className="w-[50px]"></th>
+                                        <th id="header-col-title" className="flex-1 text-left px-2">Title</th>
+                                        <th id="header-col-album" className="flex-1 text-left px-2">Album</th>
+                                        <th id="header-col-date" className="flex-1 text-left px-2">Date Added</th>
+                                        <th id="header-col-time" className="w-[100px] text-left px-2">Duration</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        
+                                        selectedPlaylistData.length > 0 ?
+                                        selectedPlaylistData.filter((savedTrack: SavedTrack) => {
+                                            return savedTrack.track.name.startsWith(trackSearchText)
+                                        }).map((savedTrack: SavedTrack, index: number) => {
+                                            return (
+                                                <TrackItem
+                                                    index={index + 1}
+                                                    added={savedTrack.added_at}
+                                                    track={savedTrack.track}
+                                                    selected={selectedTracks.findIndex((t) => t.id === savedTrack.track.id) >= 0}
+                                                    onClickCallback={(e) => onClick(e,savedTrack.track)}
+                                                    onRightClick={(e: MouseEvent<HTMLDivElement>, t: Track) => onRightClick(e, t)}
+                                                />
+                                            )
+                                        })
+                                        
+                                        :
+                                        <b>No tracks</b>
+                                    }
+                                </tbody>
                             </table>
                         </>
                     }

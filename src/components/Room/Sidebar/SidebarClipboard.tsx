@@ -63,12 +63,13 @@ const SidebarClipboard = () => {
     ];
 
     return (
-        <>
+        <div className="flex flex-col max-h-search-height">
             <div className="flex items-center justify-center">
                 <Button label={clipboard.selectedItems.length === clipboard.items.length && clipboard.items.length > 0 ? "Deselect All" : "Select All"} bgColorScheme="grey" handleClick={selectAll}/>
                 <Button label="Delete" bgColorScheme="grey" handleClick={deleteAll}/>
             </div>
             <ContextMenu open={contextMenuOpen} anchorPosition={contextMenuPosition} options={contextMenuOptions} onClose={() => setContextMenuOpen(false)}/>
+            <div className="flex-auto overflow-y-scroll overflow-x-hidden">
             <ul>
             {
                 clipboard.items.map(track => {
@@ -85,7 +86,8 @@ const SidebarClipboard = () => {
                 })
             }
             </ul>
-        </>
+            </div>
+        </div>
     );
 }
 
