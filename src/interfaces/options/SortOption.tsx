@@ -1,7 +1,6 @@
 interface SortOption {
     fieldName: string,
-    displayName: string,
-    sortFunction: (a: any, b: any, asc: boolean) => number
+    displayName: string
 };
 
 export default SortOption;

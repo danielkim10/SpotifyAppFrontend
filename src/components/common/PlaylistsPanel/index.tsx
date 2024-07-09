@@ -4,7 +4,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Dictionary from '../../../interfaces/dictionary';
 import SortOption from '../../../interfaces/options/SortOption';
 import SavedTrack from '../../../interfaces/savedTrack';
-import { sortPlaylistsByName, sortPlaylistsByOwner } from '../../../utilities/functions/sorting/playlists';
+import { sortPlaylists } from '../../../utilities/functions/sorting/playlists';
 import PlaylistItem from './PlaylistItem';
 import SearchBar from '../SearchBar';
 import SortMenu from '../SortMenu';
@@ -16,8 +16,11 @@ import ContextMenu from '../ContextMenu';
 import Playlist from '../../../interfaces/playlist';
 
 const sortOptions: SortOption[] = [
-    { fieldName: "name", displayName: "Name", sortFunction: sortPlaylistsByName },
-    { fieldName: "owner", displayName: "Creator", sortFunction: sortPlaylistsByOwner }
+    { fieldName: "name", displayName: "Name" },
+    { fieldName: "owner", displayName: "Creator" },
+    { fieldName: "tracks", displayName: "Tracks" },
+    { fieldName: "updated", displayName: "Last Updated" },
+    { fieldName: "downloaded", displayName: "Last Downloaded" }
 ]
 
 const PlaylistsPanel = (props: {
@@ -127,7 +130,7 @@ const PlaylistsPanel = (props: {
                             {
                                 playlistData.length > 0 ?
                                 playlistData.sort((a,b) =>  { 
-                                    return selectedSortOption.sortFunction(a, b, sortAscending)
+                                    return sortPlaylists(a, b, sortAscending, selectedSortOption.fieldName)
                                 }).filter((playlist: Playlist) => {
                                     return playlist.name.startsWith(playlistSearchText)
                                 }).map((playlist: Playlist, index: number) => {

@@ -1,11 +1,20 @@
 import Playlist from '../../../interfaces/playlist';
 
-export const sortPlaylistsByName = (a: Playlist, b: Playlist, asc: boolean) => {
+export const sortPlaylists = (a: Playlist, b: Playlist, asc: boolean, field: string) => {
     const ascending = asc ? 1 : -1;
-    return a.name > b.name ? 1 * ascending : -1 * ascending;
-}
 
-export const sortPlaylistsByOwner = (a: Playlist, b: Playlist, asc: boolean) => {
-    const ascending = asc ? 1 : -1;
-    return a.owner.name > b.owner.name ? 1 * ascending : -1 * ascending;
+    switch (field) {
+        case "name":
+            return a.name.toLowerCase() > b.name.toLowerCase() ? 1 * ascending : -1 * ascending;
+        case "owner":
+            return a.owner.name.toLowerCase() > b.owner.name.toLowerCase() ? 1 * ascending : -1 * ascending;
+        case "tracks":
+            return a.updatedAt > b.updatedAt ? 1 * ascending : -1 * ascending;
+        case "updated":
+            return a.updatedAt > b.updatedAt ? 1 * ascending : -1 * ascending;
+        case "downloaded":
+            return a.updatedAt > b.updatedAt ? 1 * ascending : -1 * ascending;
+        default:
+            return 1;
+    }
 }

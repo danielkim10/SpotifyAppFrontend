@@ -10,14 +10,15 @@ import RoomMemberInterface from '../../interfaces/member';
 import RoomItem from './RoomItem';
 import SortMenu from '../common/SortMenu';
 import { sortRoomByName, sortRoomByOwner } from '../../utilities/sortFunctions';
+import { sortRooms } from '../../utilities/functions/sorting/rooms';
 import useUserContext from '../../utilities/hooks/context/useUserContext';
 import { updateMember } from '../../utilities/functions/api/local/Member';
 
 const sortOptions: SortOption[] = [
-    // {fieldName: "lastAccessed", displayName: "Last Accessed"},
-    {fieldName: "name", displayName: "Name", sortFunction: sortRoomByName},
-    {fieldName: "owner", displayName: "Owner", sortFunction: sortRoomByOwner},
-    // {fieldName: "createdAt", displayName: "Created"}
+    {fieldName: "lastAccessed", displayName: "Last Accessed"},
+    {fieldName: "name", displayName: "Name"},
+    {fieldName: "owner", displayName: "Owner"},
+    {fieldName: "createdAt", displayName: "Created"}
 ]
 
 const RoomList = (props: { rooms: RoomMemberInterface[]}) => {
@@ -59,7 +60,7 @@ const RoomList = (props: { rooms: RoomMemberInterface[]}) => {
             <ul className="">
             {
                 rooms.sort((a,b) => {
-                    return selectedSortOption.sortFunction(a,b,sortAscending)
+                    return sortRooms(a, b, sortAscending, selectedSortOption.fieldName)
                 }).filter((room) => {
                     return room.room.name.startsWith(searchText)
                 }).map(room => {

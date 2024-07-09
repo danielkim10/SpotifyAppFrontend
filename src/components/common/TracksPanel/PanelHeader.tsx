@@ -14,7 +14,7 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import PublicRoundedIcon from '@mui/icons-material/PublicRounded';
 import PublicOffRoundedIcon from '@mui/icons-material/PublicOffRounded';
 
-import { sortTrackByName, sortTracksByAlbum } from '../../../utilities/sortFunctions';
+import { sortTracks } from '../../../utilities/functions/sorting/tracks';
 
 const PanelHeader = (props: {playlist: Playlist, showCloseButton: boolean, onCloseCallback: () => void}) => {
     const { playlist, showCloseButton, onCloseCallback } = props;
@@ -37,11 +37,11 @@ const PanelHeader = (props: {playlist: Playlist, showCloseButton: boolean, onClo
     };
 
     const sortOptions: SortOption[] = [
-        { fieldName: "name", displayName: "Title", sortFunction: sortTrackByName },
-        // { fieldName: "artist", displayName: "Artist" },
-        { fieldName: "album", displayName: "Album", sortFunction: sortTracksByAlbum },
-        // { fieldName: "added", displayName: "Date added" },
-        // { fieldName: "duration", displayName: "Duration" }
+        { fieldName: "name", displayName: "Title" },
+        { fieldName: "artist", displayName: "Artist" },
+        { fieldName: "album", displayName: "Album" },
+        { fieldName: "added", displayName: "Date added" },
+        { fieldName: "duration", displayName: "Duration" }
     ]
 
     const setSortOption = (so: SortOption, asc: boolean) => {
@@ -61,7 +61,7 @@ const PanelHeader = (props: {playlist: Playlist, showCloseButton: boolean, onClo
                             playlist.public ? <PublicRoundedIcon/> : <PublicOffRoundedIcon/>
                         }
                     </Tooltip> */}
-                    <p className="text-6xl truncate">{playlist.name}</p>
+                    <p className="text-5xl truncate py-2">{playlist.name}</p>
                     <div className="block">
                         <p>{playlist.description}</p>
                         <p>{playlist.owner.name}</p>
