@@ -2,7 +2,6 @@ import { useState, useContext, MouseEvent } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import Dictionary from '../../../interfaces/dictionary';
-import PlaylistInterface from '../../../interfaces/playlist';
 import SortOption from '../../../interfaces/options/SortOption';
 import SavedTrack from '../../../interfaces/savedTrack';
 import { sortPlaylistsByName, sortPlaylistsByOwner } from '../../../utilities/functions/sorting/playlists';
@@ -24,7 +23,7 @@ const sortOptions: SortOption[] = [
 const PlaylistsPanel = (props: {
     panelTitle: string,
     emptyPanelPlaceholderText: string,
-    playlistData: PlaylistInterface[],
+    playlistData: Playlist[],
     playlistTracks: Dictionary<SavedTrack>,
     contextMenuOptions: ContextMenuOption[],
     selectPlaylistCallback: (s: string) => void,
@@ -86,7 +85,7 @@ const PlaylistsPanel = (props: {
     }
 
     return (
-        <div id="playlists-panel" className="bg-black w-full h-full flex flex-col p-5">
+        <div id="playlists-panel" className="bg-black flex flex-col w-full h-full p-5">
             <div className="">
                 <ContextMenu open={contextMenuOpen} anchorPosition={contextMenuPosition} options={contextMenuOptions} onClose={() => setContextMenuOpen(false)}/>
                 <div id="playlists-panel-title" className="pb-5">
@@ -100,40 +99,48 @@ const PlaylistsPanel = (props: {
                         <SortMenu sortOptions={sortOptions} onOptionSelected={setSortOption}/>
                     </div>
                 </div>
-                <div>
-                    Name TrackCount LastUpdated LastDownloaded
-                </div>
             </div>
             <div className="flex-auto overflow-y-scroll">
             {
                 playlistLoading ?
                 <CircularProgress/> :
-                    <ul className="flex-auto  w-full overflow-x-hidden">
-                    {
-                        playlistTracks["liked-songs"] ?
-                        <li className="p-[2px] first:pt-0">
-                            <PlaylistItem playlist={likedSongsPlaylist} onClick={() => selectPlaylistCallback("liked-songs")} onRightClick={(e: MouseEvent<HTMLDivElement>, p: Playlist) => onRightClick(e, p)} />
-                        </li> :
-                        <></>
-                    }
-                    {
-                        playlistData.length > 0 ?
-                        playlistData.sort((a,b) =>  { 
-                            return selectedSortOption.sortFunction(a, b, sortAscending)
-                        }).filter((playlist: PlaylistInterface) => {
-                            return playlist.name.startsWith(playlistSearchText)
-                        }).map((playlist: PlaylistInterface) => {
-                            return (
-                                <li key={playlist.id} className="p-[2px] first:pt-0">
-                                    <PlaylistItem key={playlist.id} playlist={playlist} onClick={() => selectPlaylistCallback(playlist.id)} onRightClick={(e: MouseEvent<HTMLDivElement>, p: Playlist) => onRightClick(e, p)} />
-                                </li>
-                            )}
-                        ) : 
-                        <>
-                            {emptyPanelPlaceholderText}
-                        </>
-                    }
-                    </ul>
+                    <table className="flex-auto w-full overflow-x-hidden">
+                        <thead className="sticky top-0 z-10 bg-black">
+                            <tr id="table-header" className="flex m-auto p-[5px]">
+                                <th id="col-header-index" className="w-[50px]">#</th>
+                                <th id="col-header-image" className="w-[72px]"></th>
+                                <th id="col-header-name" className="flex-1 text-left px-2">Name</th>
+                                <th id="col-header-owner" className="flex-1 text-left px-2">Owner</th>
+                                <th id="col-header-tracks" className="flex-1 text-left px-2">Tracks</th>
+                                <th id="col-header-updated" className="flex-1 text-left px-2">Last Updated</th>
+                                <th id="col-header-downloaded" className="flex-1 text-left px-2">Last Downloaded</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                // playlistTracks["liked-songs"] ?
+                                // <li className="p-[2px] first:pt-0">
+                                //     <PlaylistItem playlist={likedSongsPlaylist} onClick={() => selectPlaylistCallback("liked-songs")} onRightClick={(e: MouseEvent<HTMLDivElement>, p: Playlist) => onRightClick(e, p)} />
+                                // </li> :
+                                // <></>
+                            }
+                            {
+                                playlistData.length > 0 ?
+                                playlistData.sort((a,b) =>  { 
+                                    return selectedSortOption.sortFunction(a, b, sortAscending)
+                                }).filter((playlist: Playlist) => {
+                                    return playlist.name.startsWith(playlistSearchText)
+                                }).map((playlist: Playlist, index: number) => {
+                                    return (
+                                        <PlaylistItem index={index + 1} key={playlist.id} playlist={playlist} onClick={() => selectPlaylistCallback(playlist.id)} onRightClick={(e: MouseEvent<HTMLDivElement>, p: Playlist) => onRightClick(e, p)} />
+                                    )}
+                                ) : 
+                                <>
+                                    {emptyPanelPlaceholderText}
+                                </>
+                            }
+                        </tbody>
+                    </table>
             }
             </div>
         </div>

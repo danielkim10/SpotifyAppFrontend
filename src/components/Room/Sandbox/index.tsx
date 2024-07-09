@@ -31,7 +31,7 @@ const Sandbox = () => {
     const [playlists, setPlaylists] = useState<Playlist[]>([]);
     const [playlistTracks, setPlaylistTracks] = useState<Dictionary<SavedTrack>>({});
 
-    const [sharedPlaylists, setSharedPlaylists] = useState<Playlist[]>([]);
+    // const [sharedPlaylists, setSharedPlaylists] = useState<LocalPlaylist[]>([]);
     // const [sharedPlaylistTracks, setSharedPlaylistTracks] = useState<Dictionary<SavedTrack>>({});
 
     const [selectedPlaylist, setSelectedPlaylist] = useState("");
@@ -85,13 +85,13 @@ const Sandbox = () => {
             // ));
         });
 
-        socketObject.socket.on('server:share-playlist', (data) => {
-            setSharedPlaylists([...sharedPlaylists, data]);
-        });
+        // socketObject.socket.on('server:share-playlist', (data) => {
+        //     setSharedPlaylists([...sharedPlaylists, data]);
+        // });
 
-        socketObject.socket.on('server:hide-playlist', (data) => {
-            setSharedPlaylists(sharedPlaylists.filter(p => p.id !== data.id));
-        });
+        // socketObject.socket.on('server:hide-playlist', (data) => {
+        //     setSharedPlaylists(sharedPlaylists.filter(p => p.id !== data.id));
+        // });
 
         socketObject.socket.on('server:generate-code', (data) => {
             
@@ -105,7 +105,7 @@ const Sandbox = () => {
             setRoomDeletedDialogOpen(true);
         });
 
-    }, [socketObject, playlists, sharedPlaylists]);
+    }, [socketObject, playlists]);
 
     useEffect(() => {
         const getRoomPlaylists = async () => {
@@ -117,21 +117,23 @@ const Sandbox = () => {
             if (res.ok) {
                 let insertVal = {}
 
+                console.log(json);
+
                 for (var i in json.items) {
                     let tempInsertVal = {}
-                    json.items[i].external_urls = {
-                        spotify: ""
-                    };
-                    json.items[i].href = "";
+                //     json.items[i].external_urls = {
+                //         spotify: ""
+                //     };
+                //     json.items[i].href = "";
                     json.items[i].id = json.items[i]._id;
                     json.items[i].images = [{url: json.items[i].image}];
-                    json.items[i].snapshot_id = "";
-                    json.items[i].tracks = {
-                        href: "",
-                        total: json.items[i].tracks
-                    };
-                    json.items[i].type = "playlist";
-                    json.items[i].uri = "";
+                //     json.items[i].snapshot_id = "";
+                //     json.items[i].tracks = {
+                //         href: "",
+                //         total: json.items[i].tracks
+                //     };
+                //     json.items[i].type = "playlist";
+                //     json.items[i].uri = "";
 
                     tempInsertVal = {[json.items[i]._id]: []}
                     insertVal = {
@@ -144,7 +146,7 @@ const Sandbox = () => {
                     ...playlistTracks,
                     ...insertVal
                 }));
-                console.log(json);
+                // console.log(json);
             }
             else {
                 console.log(json.error);

@@ -61,7 +61,7 @@ const PanelHeader = (props: {playlist: Playlist, showCloseButton: boolean, onClo
                 </Tooltip> */}
                 <div id="playlist-name" className="w-full flex pl-[10px]"><b className="text-6xl">{playlist.name}</b></div>
                 <div id="playlist-description" className="w-full flex pl-[10px]">{playlist.description}</div>
-                <div id="playlist-owner" className="w-full flex pl-[10px]">{playlist.owner.display_name}</div>
+                <div id="playlist-owner" className="w-full flex pl-[10px]">{playlist.owner.name}</div>
             </div>
             {
                 showCloseButton ?

@@ -9,7 +9,7 @@ export const sortPlaylistByName = (a: Playlist, b: Playlist, asc: boolean) => {
 
 export const sortPlaylistByOwner = (a: Playlist, b: Playlist, asc: boolean) => {
     const ascending = asc ? 1 : -1;
-    return a.owner.display_name > b.owner.display_name ? 1 * ascending : -1 * ascending;
+    return a.owner.name > b.owner.name ? 1 * ascending : -1 * ascending;
 }
 
 export const sortTrackByName = (a: Track, b: Track, asc: boolean) => {
