@@ -17,3 +17,22 @@ export const formatMultipleArtists = (artists: ArtistInterface[]) => {
     }
     return artistsFormatted;
 }
+
+export const relativeDateFormatter = (date: string) => {
+    let currentDay = daysIntoYear(new Date());
+    let referenceDay = daysIntoYear(new Date(date));
+
+    if (currentDay - referenceDay === 0) {
+        return "Today";
+    }
+    else if (currentDay - referenceDay === 1) {
+        return "Yesterday";
+    }
+    else {
+        return `${currentDay - referenceDay} days ago`;
+    }
+}
+
+const daysIntoYear = (date: Date) => {
+    return (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - Date.UTC(date.getFullYear(), 0, 0)) / 24 / 60 / 60 / 1000;
+}

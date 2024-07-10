@@ -2,6 +2,7 @@ import { MouseEvent } from 'react';
 
 import Playlist from '../../../interfaces/playlist';
 import CoverImage from '../CoverImage';
+import { relativeDateFormatter } from '../../../utilities/random';
 
 const PlaylistItem = (props: {
     index: number,
@@ -23,7 +24,7 @@ const PlaylistItem = (props: {
             <td className="flex-1 text-left p-2 min-w-0"><p className="truncate">{playlist.name}</p></td>
             <td className="flex-1 text-left p-2"><p className="truncate">{playlist.owner.name}</p></td>
             <td className="flex-1 text-left p-2">{playlist.tracks?.total} tracks</td>
-            <td className="flex-1 text-left p-2">{playlist.updatedAt}</td>
+            <td className="flex-1 text-left p-2">{relativeDateFormatter(playlist.updatedAt)}</td>
             <td className="flex-1 text-left p-2">Never</td>
         </tr>
     );
