@@ -64,7 +64,7 @@ const Layout = () => {
     return (
         <>
             {!loading && user && socket ?
-                <TokenContext.Provider value={{access_token: accessToken, refresh_token: refreshToken}}>
+                <TokenContext.Provider value={{access_token: accessToken, refresh_token: refreshToken, setAccessToken: setAccessToken}}>
                     <UserContext.Provider value={user}>
                         <HeaderContext.Provider value={{name: headerName, callback: setHeaderName}}>
                             <PlayerContext.Provider value={{playbackTransferred: playbackTransferred, setPlaybackTransferred: setPlaybackTransferred, currentTrack: currentTrack, setCurrentTrack: setCurrentTrack}}>

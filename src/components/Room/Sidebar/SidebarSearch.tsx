@@ -13,6 +13,7 @@ import ContextMenuOption from '../../../interfaces/options/ContextMenuOption';
 import ContextMenu from '../../common/ContextMenu';
 import ClipboardContext from '../../../utilities/context/ClipboardContext';
 import SnackPackContext from '../../../utilities/context/SnackPackContext';
+import { refreshToken } from '../../../utilities/functions/api/local/Token';
 
 const SidebarSearch = () => {
     const [text, setText] = useState("");
@@ -37,25 +38,38 @@ const SidebarSearch = () => {
         if (text !== "" && text !== cachedText) {
             setLoading(true);
             const intervalID = setInterval(() => {
-                const search = async () => {
+                let retry = false;
+                const search = async (accessToken: string) => {
                     const res = await fetch("https://api.spotify.com/v1/search?" + new URLSearchParams({
                         q: text,
                         type: "track"
                     }), {
-                        method: "GET", headers: { Authorization: `Bearer ${token.access_token}` }
+                        method: "GET", headers: { Authorization: `Bearer ${accessToken}` }
                     })
                     const json = await res.json()
                     if (res.ok) {
-                        console.log(json)
                         setTracks(json.tracks.items);
                     }
                     else {
-                        console.error(json.error)
+                        if (res.status === 401 && !retry) {
+                            const refreshSuccess = await refreshToken(token.refresh_token);
+                            if (refreshSuccess.ok) {
+                                retry = true;
+                                token.setAccessToken(refreshSuccess.access_token);
+                                search(refreshSuccess.access_token);
+                            }
+                            else {
+                                console.log("The token failed to refresh")
+                            }
+                        }
+                        else {
+                            console.error(json.error)
+                        }
                     }
                     setLoading(false);
                     setCachedText(text)
                 }
-                search()
+                search(token.access_token)
             }, 1500)
 
             return () => clearInterval(intervalID)
@@ -137,7 +151,8 @@ const SidebarSearch = () => {
             <div className="flex-auto overflow-y-scroll overflow-x-hidden">
             {
                 loading ? 
-                <CircularProgress/> : 
+                <div className="mt-2 overflow-x-hidden overflow-y-hidden">
+                <CircularProgress/></div> : 
                     tracks.length > 0 ?
                     <ul className="max-w-[300px]">
                     {
