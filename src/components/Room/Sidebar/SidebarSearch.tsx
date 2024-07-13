@@ -1,8 +1,7 @@
-import { useState, useEffect, useContext, MouseEvent } from 'react'
+import { useState, useEffect, useContext, useRef, MouseEvent, useCallback } from 'react'
 
 import TokenContext from '../../../utilities/context/TokenContext';
 import SearchBar from "../../common/SearchBar"
-
 
 import CircularProgress from '@mui/material/CircularProgress';
 
@@ -19,8 +18,9 @@ const SidebarSearch = () => {
     const [text, setText] = useState("");
     const [cachedText, setCachedText] = useState("");
     const [loading, setLoading] = useState(false);
+    const [loadingMore, setLoadingMore] = useState(false);
 
-    const [tracks, setTracks] = useState([]);
+    const [tracks, setTracks] = useState<TrackInterface[]>([]);
     const [contextMenuOpen, setContextMenuOpen] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState<{top: number, left: number}>({top: 0, left: 0});
 
@@ -34,42 +34,51 @@ const SidebarSearch = () => {
     const clipboard = useContext(ClipboardContext);
     const snackPack = useContext(SnackPackContext);
 
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const [isBottom, setIsBottom] = useState(false);
+
+    const [nextLink, setNextLink] = useState("");
+    const [total, setTotal] = useState(0);
+
+    const search = useCallback(async (accessToken: string, searchQueryAPI: string, retry: boolean) => {
+        const res = await fetch((searchQueryAPI), {
+            method: "GET", headers: { Authorization: `Bearer ${accessToken}` }
+        })
+        const json = await res.json()
+        if (res.ok) {
+            setTracks([...tracks, ...json.tracks.items]);
+            setNextLink(json.tracks.next);
+            setTotal(json.tracks.total);
+        }
+        else {
+            if (res.status === 401 && !retry) {
+                const refreshSuccess = await refreshToken(token.refresh_token);
+                if (refreshSuccess.ok) {
+                    token.setAccessToken(refreshSuccess.access_token);
+                    search(refreshSuccess.access_token, searchQueryAPI, true);
+                }
+                else {
+                    console.log("The token failed to refresh")
+                }
+            }
+            else {
+                console.error(json.error)
+            }
+        }
+        setLoading(false);
+        setLoadingMore(false);
+        setCachedText(text)
+    }, [text, token, tracks])
+
     useEffect(() => {
         if (text !== "" && text !== cachedText) {
             setLoading(true);
             const intervalID = setInterval(() => {
-                let retry = false;
-                const search = async (accessToken: string) => {
-                    const res = await fetch("https://api.spotify.com/v1/search?" + new URLSearchParams({
-                        q: text,
-                        type: "track"
-                    }), {
-                        method: "GET", headers: { Authorization: `Bearer ${accessToken}` }
-                    })
-                    const json = await res.json()
-                    if (res.ok) {
-                        setTracks(json.tracks.items);
-                    }
-                    else {
-                        if (res.status === 401 && !retry) {
-                            const refreshSuccess = await refreshToken(token.refresh_token);
-                            if (refreshSuccess.ok) {
-                                retry = true;
-                                token.setAccessToken(refreshSuccess.access_token);
-                                search(refreshSuccess.access_token);
-                            }
-                            else {
-                                console.log("The token failed to refresh")
-                            }
-                        }
-                        else {
-                            console.error(json.error)
-                        }
-                    }
-                    setLoading(false);
-                    setCachedText(text)
-                }
-                search(token.access_token)
+                const searchQueryAPI = "https://api.spotify.com/v1/search?" + new URLSearchParams({
+                    q: text,
+                    type: "track"
+                })
+                search(token.access_token, searchQueryAPI, false)
             }, 1500)
 
             return () => clearInterval(intervalID)
@@ -77,8 +86,29 @@ const SidebarSearch = () => {
         else if (text === "") {
             setTracks([]);
             setLoading(false);
+            setLoadingMore(false);
+            setNextLink("");
+            setTotal(0);
         }
-    }, [text, cachedText, token])
+    }, [text, cachedText, token, search])
+
+    useEffect(() => {
+        const container = containerRef.current;
+        if (container) {
+            container.addEventListener('scroll', handleScroll);
+            return () => {
+                container.removeEventListener('scroll', handleScroll);
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        if (isBottom && tracks.length < total) {
+            setLoadingMore(true);
+            search(token.access_token, nextLink, false);
+            setIsBottom(false);
+        }
+    }, [isBottom, nextLink, search, token.access_token, total, tracks.length]);
 
     const searchBarInterface = {
         id: "item-search-textfield",
@@ -102,6 +132,13 @@ const SidebarSearch = () => {
         }
         else {
             setSelectedItems([...selectedItems, t])
+        }
+    }
+
+    const handleScroll = () => {
+        if (containerRef.current) {
+            const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+            setIsBottom(scrollTop + clientHeight >= scrollHeight);
         }
     }
 
@@ -148,13 +185,13 @@ const SidebarSearch = () => {
             <div className="my-[5px]">
                 <SearchBar searchBarInterface={searchBarInterface}/>
             </div>
-            <div className="flex-auto overflow-y-scroll overflow-x-hidden">
+            <div className="flex-auto overflow-y-scroll overflow-x-hidden" ref={containerRef}>
             {
                 loading ? 
                 <div className="mt-2 overflow-x-hidden overflow-y-hidden">
-                <CircularProgress/></div> : 
+                <CircularProgress/></div> :
                     tracks.length > 0 ?
-                    <ul className="max-w-[300px]">
+                    <><ul className="max-w-[300px]">
                     {
                         tracks.map((track: TrackInterface) => {
                             return (
@@ -169,7 +206,11 @@ const SidebarSearch = () => {
                             )
                         })
                     }
-                    </ul> : 
+                    </ul>
+                    {
+                        loadingMore ? <div className="mt-2 overflow-x-hidden overflow-y-hidden"><CircularProgress/></div> : <></>
+                    }
+                    </> : 
                     <>
                         No results
                     </>
