@@ -24,7 +24,7 @@ const ContextMenu = (props: {
             {
                 options.filter((option) => option.visible).map((option) => {
                     return (
-                        <MenuItem onClick={() => optionClicked(option)}>
+                        <MenuItem key={option.name} onClick={() => optionClicked(option)}>
                             <ListItemIcon><Icon>{option.iconName}</Icon></ListItemIcon>
                             <ListItemText>{option.name}</ListItemText>
                         </MenuItem>

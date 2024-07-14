@@ -55,7 +55,7 @@ const TrackItem = (props: {index: number, added: string, track: TrackInterface, 
     }
 
     return (
-        <tr className={`flex w-full p-[5px] ${selected ? `bg-lighter-grey`: `hover:bg-light-grey`}`} onMouseOver={() => setHover(true)} onMouseOut={() => setHover(false)} onClick={onClick} onDoubleClick={() => playTrack(track.uri)} onContextMenu={(e: MouseEvent<HTMLDivElement>) => openContextMenu(e, track)}>
+        <tr key={track.id} className={`flex w-full p-[5px] ${selected ? `bg-lighter-grey`: `hover:bg-light-grey`}`} onMouseOver={() => setHover(true)} onMouseOut={() => setHover(false)} onClick={onClick} onDoubleClick={() => playTrack(track.uri)} onContextMenu={(e: MouseEvent<HTMLDivElement>) => openContextMenu(e, track)}>
             <td className="w-[50px] my-auto mx-0">
                 <p>{index}</p>
                 {
