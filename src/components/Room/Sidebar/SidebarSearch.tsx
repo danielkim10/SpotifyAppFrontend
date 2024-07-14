@@ -40,13 +40,18 @@ const SidebarSearch = () => {
     const [nextLink, setNextLink] = useState("");
     const [total, setTotal] = useState(0);
 
-    const search = useCallback(async (accessToken: string, searchQueryAPI: string, retry: boolean) => {
+    const search = useCallback(async (accessToken: string, searchQueryAPI: string, appendToSearchResults: boolean, retry: boolean) => {
         const res = await fetch((searchQueryAPI), {
             method: "GET", headers: { Authorization: `Bearer ${accessToken}` }
         })
         const json = await res.json()
         if (res.ok) {
-            setTracks([...tracks, ...json.tracks.items]);
+            if (appendToSearchResults) {
+                setTracks([...tracks, ...json.tracks.items]);
+            }
+            else {
+                setTracks(json.tracks.items);
+            }
             setNextLink(json.tracks.next);
             setTotal(json.tracks.total);
         }
@@ -55,7 +60,7 @@ const SidebarSearch = () => {
                 const refreshSuccess = await refreshToken(token.refresh_token);
                 if (refreshSuccess.ok) {
                     token.setAccessToken(refreshSuccess.access_token);
-                    search(refreshSuccess.access_token, searchQueryAPI, true);
+                    search(refreshSuccess.access_token, searchQueryAPI, appendToSearchResults, true);
                 }
                 else {
                     console.log("The token failed to refresh")
@@ -78,7 +83,7 @@ const SidebarSearch = () => {
                     q: text,
                     type: "track"
                 })
-                search(token.access_token, searchQueryAPI, false)
+                search(token.access_token, searchQueryAPI, false, false)
             }, 1500)
 
             return () => clearInterval(intervalID)
@@ -105,7 +110,7 @@ const SidebarSearch = () => {
     useEffect(() => {
         if (isBottom && tracks.length < total) {
             setLoadingMore(true);
-            search(token.access_token, nextLink, false);
+            search(token.access_token, nextLink, true, false);
             setIsBottom(false);
         }
     }, [isBottom, nextLink, search, token.access_token, total, tracks.length]);
