@@ -1,6 +1,5 @@
-import { useState, useContext, MouseEvent } from 'react'
+import { useState, useEffect, useContext, useRef, MouseEvent } from 'react'
 import CircularProgress from '@mui/material/CircularProgress';
-import InfiniteScroll from 'react-infinite-scroll-component';
 
 import Track from '../../../interfaces/track';
 import TrackItem from './TrackItem';
@@ -10,6 +9,8 @@ import Playlist from '../../../interfaces/playlist';
 import TokenContext from '../../../utilities/context/TokenContext';
 import ContextMenuOption from '../../../interfaces/options/ContextMenuOption';
 import ContextMenu from '../ContextMenu';
+import useSocketContext from '../../../utilities/hooks/context/useSocketContext';
+import PlaylistDeletedDialog from './PlaylistDeletedDialog';
 
 const TracksPanel = (props: {
     cachePlaylist: (o: {}) => void,
@@ -18,35 +19,61 @@ const TracksPanel = (props: {
     showCloseButton: boolean,
     contextMenuOptions: ContextMenuOption[],
     onCloseCallback: () => void,
-    openContextMenuCallback: (t: Track | null) => void
+    openContextMenuCallback: (t: Track | null) => void,
+    scrollToBottomCallback: (id: string) => void
 }) => {
-    const { cachePlaylist, selectedPlaylist, selectedPlaylistData, showCloseButton, contextMenuOptions, onCloseCallback, openContextMenuCallback } = props;
+    const { cachePlaylist, selectedPlaylist, selectedPlaylistData, showCloseButton, contextMenuOptions, onCloseCallback, openContextMenuCallback, scrollToBottomCallback } = props;
 
     const [trackSearchText, setTrackSearchText] = useState("");
     const [trackLoading, setTrackLoading] = useState(false);
     const [contextMenuOpen, setContextMenuOpen] = useState(false);
+    const [playlistDeletedDialogOpen, setPlaylistDeletedDialogOpen] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState<{top: number, left: number}>({top: 0, left: 0});
     const [track, setTrack] = useState<Track | null>(null);
     const [selectedTracks, setSelectedTracks] = useState<Track[]>([]);
 
     const token = useContext(TokenContext)
+    const socketObject = useSocketContext();
 
-    // console.log(props);
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const [isBottom, setIsBottom] = useState(false);
 
-    // const getPlaylistTracks = async (playlistID: string) => {
-    //     const res = await fetch(`https://api.spotify.com/v1/playlists/${playlistID}/tracks`, {   
-    //         method: "GET", headers: { Authorization: `Bearer ${token.access_token}`}
-    //     });
-    //     const json = await res.json();
-    //     if (res.ok) {
-    //         var insertVal = {};
-    //         insertVal = {[playlistID]: json.items};
-    //         cachePlaylist(insertVal);
-    //     }
-    //     else {
-    //         console.log(json.error);
-    //     }
-    // }
+    useEffect(() => {
+        socketObject.socket.on('server:add-track-to-playlist', (data) => {
+
+        })
+
+        socketObject.socket.on('server:delete-playlist', (data) => {
+            if (selectedPlaylist && selectedPlaylist.id === data.id) {
+                setPlaylistDeletedDialogOpen(true);
+            }
+        })
+    }, [socketObject, selectedPlaylist])
+
+    useEffect(() => {
+        const container = containerRef.current;
+        if (container) {
+            container.addEventListener('scroll', handleScroll);
+            return () => {
+                container.removeEventListener('scroll', handleScroll);
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        if (isBottom) {
+            // setLoadingMore(true);
+            scrollToBottomCallback(selectedPlaylist!!.id);
+            setIsBottom(false);
+        }
+    }, [isBottom, scrollToBottomCallback, selectedPlaylist]);
+
+    const handleScroll = () => {
+        if (containerRef.current) {
+            const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+            setIsBottom(scrollTop + clientHeight >= scrollHeight);
+        }
+    }
 
     const onClick = (e: MouseEvent<HTMLDivElement>, t: Track | null) => {
         if (t === null) {
@@ -72,23 +99,29 @@ const TracksPanel = (props: {
         openContextMenuCallback(t);
     }
 
+    const playlistDeletedOnClose = () => {
+        setPlaylistDeletedDialogOpen(false);
+        onCloseCallback();
+    }
+
     return (
         <div id="tracks-panel" className="bg-black w-full h-full flex flex-col p-5">
             <ContextMenu open={contextMenuOpen} anchorPosition={contextMenuPosition} options={contextMenuOptions} onClose={() => setContextMenuOpen(false)}/>
+            <PlaylistDeletedDialog open={playlistDeletedDialogOpen} onClose={playlistDeletedOnClose}/>
             {
                 selectedPlaylist ? 
                 <>
                     <PanelHeader playlist={selectedPlaylist} showCloseButton={showCloseButton} onCloseCallback={onCloseCallback}/>
-                    <div className="flex flex-auto overflow-y-scroll">
+                    <div className="flex flex-auto overflow-y-scroll" ref={containerRef}>
                     {
                         trackLoading
                         ?
                         <CircularProgress/>
                         :
                         <>
-                            <table id="tracks-panel-table" className="w-full flex-auto overflow-x-hidden">
+                            <table id="tracks-panel-table" className="w-full flex-auto overflow-x-hidden" onContextMenu={(e: MouseEvent<HTMLDivElement>) => onRightClick(e, null)}>
                                 <thead className="sticky top-0 z-10 bg-black">
-                                    <tr id="header-row" className="flex m-auto p-[5px]">
+                                    <tr key="tracks-header" className="flex m-auto p-[5px]">
                                         <th id="header-col-index" className="w-[50px]">#</th>
                                         <th id="header-col-image" className="w-[50px]"></th>
                                         <th id="header-col-title" className="flex-1 text-left px-2">Title</th>
@@ -117,7 +150,9 @@ const TracksPanel = (props: {
                                         })
                                         
                                         :
-                                        <b>No tracks</b>
+                                        <tr>
+                                            <b>No tracks</b>
+                                        </tr>
                                     }
                                 </tbody>
                             </table>
@@ -126,8 +161,8 @@ const TracksPanel = (props: {
                     </div>
                 </>
                 :
-                <div id="tracks-panel-container-empty" className="m-auto top-1/2 relative">
-                    Select a playlist to view tracks
+                <div className="m-auto top-1/2 relative">
+                    {/* Select a playlist to view tracks */}
                 </div>
             }
         </div>

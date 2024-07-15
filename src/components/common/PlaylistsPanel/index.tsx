@@ -27,7 +27,7 @@ const PlaylistsPanel = (props: {
     panelTitle: string,
     emptyPanelPlaceholderText: string,
     playlistData: Playlist[],
-    playlistTracks: Dictionary<SavedTrack>,
+    playlistTracks: Dictionary<SavedTrack[]>,
     contextMenuOptions: ContextMenuOption[],
     selectPlaylistCallback: (s: string) => void,
     openContextMenuCallback: (p: Playlist) => void

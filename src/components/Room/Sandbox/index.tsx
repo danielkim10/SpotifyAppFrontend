@@ -29,7 +29,8 @@ interface playlistTrack {
 
 const Sandbox = () => {
     const [playlists, setPlaylists] = useState<Playlist[]>([]);
-    const [playlistTracks, setPlaylistTracks] = useState<Dictionary<SavedTrack>>({});
+    const [playlistTracks, setPlaylistTracks] = useState<Dictionary<SavedTrack[]>>({});
+    const [playlistTrackPage, setPlaylistTrackPage] = useState<Dictionary<Number>>({});
 
     // const [sharedPlaylists, setSharedPlaylists] = useState<LocalPlaylist[]>([]);
     // const [sharedPlaylistTracks, setSharedPlaylistTracks] = useState<Dictionary<SavedTrack>>({});
@@ -116,8 +117,7 @@ const Sandbox = () => {
             const json = await res.json();
             if (res.ok) {
                 let insertVal = {}
-
-                console.log(json);
+                let pageInsertVal = {}
 
                 for (var i in json.items) {
                     let tempInsertVal = {}
@@ -140,11 +140,21 @@ const Sandbox = () => {
                         ...insertVal,
                         ...tempInsertVal
                     }
+
+                    let pageTempInsert = {[json.items[i]._id]: 0}
+                    pageInsertVal = {
+                        ...pageInsertVal,
+                        ...pageTempInsert
+                    }
                 }
                 setPlaylists(json.items);
                 setPlaylistTracks(playlistTracks => ({
                     ...playlistTracks,
                     ...insertVal
+                }));
+                setPlaylistTrackPage(page => ({
+                    ...page,
+                    ...pageInsertVal
                 }));
                 // console.log(json);
             }
@@ -159,19 +169,26 @@ const Sandbox = () => {
     }, [socketObject.roomID]);
 
     const getRoomPlaylistTracks = async (playlistID: string) => {
-        const res = await fetch(`http://localhost:5000/api/track/${playlistID}`, {
+        const res = await fetch(`http://localhost:5000/api/track/${playlistID}?` + new URLSearchParams({
+            page: playlistTrackPage[playlistID].toString()
+        }), {
             method: "GET", headers: { "Content-Type": "application/json" }
         });
         const json = await res.json();
         if (res.ok) {
-            console.log(json);
+            setPlaylistTrackPage(page => ({
+                ...page,
+                ...{
+                    [playlistID]: Number(playlistTrackPage[playlistID]) + 1
+                }
+            }))
+
             let savedTracks = json.items.map((item: playlistTrack) => item.updatedAt)
             let trackIDs = json.items.map((item: playlistTrack) => item.spotify_id).join(",");
-            console.log(trackIDs);
+
             if (trackIDs.length > 0) {
                 populateTrackData(trackIDs, savedTracks, playlistID);
             }
-            // cacheRoomPlaylistData(insertVal);
         }
         else {
             console.error(json.error);
@@ -184,15 +201,13 @@ const Sandbox = () => {
         });
         const json = await res.json();
         if (res.ok) {
-            console.log(json);
-
             let tracks = []
             for (let i in savedTracks) {
                 tracks.push({added_at: savedTracks[i], track: json.tracks[i]})
             }
 
             let insertVal = {};
-            insertVal = {[playlistID]: tracks};
+            insertVal = {[playlistID]: [...playlistTracks[playlistID], ...tracks]};
             cacheRoomPlaylistData(insertVal);
         }
     }
@@ -216,7 +231,7 @@ const Sandbox = () => {
                 await createDownload(user.id, focusedPlaylist.id, snapshot_id);
                 snackPack.changeSnackPackMessage(`Downloaded playlist ${focusedPlaylist.name}`)
             }
-        }   
+        }
     }
 
     // const addCoverImageToPlaylist = async (id: string) => {
@@ -321,6 +336,10 @@ const Sandbox = () => {
         window.location.replace("http://localhost:3000/lobby")
         setRoomDeletedDialogOpen(false)
     }
+
+    const onScrollToBottomCallback = (id: string) => {
+        getRoomPlaylistTracks(id);
+    }
     
     return (
         <div id="sandbox" className="w-full max-h-default-page-height p-5">
@@ -346,6 +365,7 @@ const Sandbox = () => {
                     contextMenuOptions={contextMenuOptionsTrack}
                     onCloseCallback={() => setSelectedPlaylist("")}
                     openContextMenuCallback={(t: Track | null) => { setFocusedTrack(t); console.log(t); }}
+                    scrollToBottomCallback={(id: string) =>  onScrollToBottomCallback(id)}
                 />
             }
             {/*
