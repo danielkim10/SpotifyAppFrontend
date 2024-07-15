@@ -22,13 +22,13 @@ export const editPlaylist = async (userID: string, accessToken: string) => {
 }
 
 export const addCustomPlaylistCoverImage = async (playlistID: string, image: string, accessToken: string) => {
+    image = image.substring("data:image/png;base64,".length);
     const res = await fetch(`${baseUrl}/${playlistID}/images`, {
-        method: "PUT", headers: { Authorization: `Bearer ${accessToken}`},
-        body: JSON.stringify({ image })
+        method: "PUT", headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'image/jpeg' },
+        body: image
     });
-    const json = await res.json();
-    if (res.ok) { console.log(json); }
-    else { console.error(json.error); }
+    if (res.ok) { console.log(res.ok); }
+    else { console.error(res.ok); }
 }
 
 // returns snapshot_id: string

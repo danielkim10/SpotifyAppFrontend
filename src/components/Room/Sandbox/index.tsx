@@ -14,7 +14,7 @@ import PlaylistDetailsDialog from '../Dialog/PlaylistDetailsDialog';
 import ClipboardContext from '../../../utilities/context/ClipboardContext';
 import Track from '../../../interfaces/track';
 import { updatePlaylistTrackCount } from '../../../utilities/functions/api/local/Playlist';
-import { addItemsToPlaylist, createPlaylist } from '../../../utilities/functions/api/spotify/Playlist';
+import { addCustomPlaylistCoverImage, addItemsToPlaylist, createPlaylist } from '../../../utilities/functions/api/spotify/Playlist';
 import { getTracksInPlaylist, removeTracksFromPlaylist } from '../../../utilities/functions/api/local/Track';
 import SnackPackContext from '../../../utilities/context/SnackPackContext';
 import { createDownload } from '../../../utilities/functions/api/local/Download';
@@ -209,6 +209,10 @@ const Sandbox = () => {
     const addPlaylistToLibrary = async () => {
         if (focusedPlaylist) {
             const playlist = await createPlaylist(user.spotify_id, token.access_token, focusedPlaylist.name, focusedPlaylist.description);
+            if (playlist) {
+                const imageUploadSuccess = await addCustomPlaylistCoverImage(playlist.id, focusedPlaylist.images[0].url, token.access_token)
+                console.log(imageUploadSuccess);
+            }
             const tracks = await getTracksInPlaylist(focusedPlaylist.id);
             const trackURIs = tracks.map((track: Track) => {
                 return track.uri
@@ -222,7 +226,7 @@ const Sandbox = () => {
                         snapshot_id = new_snapshot_id.snapshot_id;
                     }
                 }
-                await createDownload(user.id, focusedPlaylist.id, snapshot_id);
+                // await createDownload(user.id, focusedPlaylist.id, snapshot_id);
                 snackPack.changeSnackPackMessage(`Downloaded playlist ${focusedPlaylist.name}`)
             }
         }

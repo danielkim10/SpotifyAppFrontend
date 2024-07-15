@@ -82,10 +82,30 @@ const PlaylistDetailsDialog = (props: {open: boolean, playlist?: Playlist | null
             reader.readAsDataURL(files[0]);
             reader.onload = () => {
                 if (reader.result) {
-                    setImage(reader.result.toString());
+                    resizeBase64Image(reader.result.toString(), 150, 150).then((result) => {
+                        if (typeof result === "string") {
+                            setImage(result)
+                        }
+                    });
                 }
             }
         }
+    }
+
+    const resizeBase64Image = (base64: string, newWidth: number, newHeight: number) => {
+        return new Promise((resolve, reject)=>{
+            const canvas = document.createElement("canvas");
+            canvas.width = newWidth;
+            canvas.height = newHeight;
+            let context = canvas.getContext("2d");
+            let img = document.createElement("img");
+            img.src = base64;
+            img.onload = function () {
+                context!!.scale(newWidth/img.width,  newHeight/img.height);
+                context!!.drawImage(img, 0, 0); 
+                resolve(canvas.toDataURL());               
+            }
+        });
     }
 
     const resetFields = () => {
