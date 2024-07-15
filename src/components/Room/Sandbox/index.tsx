@@ -31,19 +31,11 @@ const Sandbox = () => {
     const [playlists, setPlaylists] = useState<Playlist[]>([]);
     const [playlistTracks, setPlaylistTracks] = useState<Dictionary<SavedTrack[]>>({});
     const [playlistTrackPage, setPlaylistTrackPage] = useState<Dictionary<Number>>({});
-
-    // const [sharedPlaylists, setSharedPlaylists] = useState<LocalPlaylist[]>([]);
-    // const [sharedPlaylistTracks, setSharedPlaylistTracks] = useState<Dictionary<SavedTrack>>({});
-
     const [selectedPlaylist, setSelectedPlaylist] = useState("");
-    // const [selectedSharedPlaylist, setSelectedSharedPlaylist] = useState("");
 
     const [playlistDetailsDialogOpen, setPlaylistDetailsDialogOpen] = useState(false);
     const [deletePlaylistDialogOpen, setDeletePlaylistDialogOpen] = useState(false);
     const [roomDeletedDialogOpen, setRoomDeletedDialogOpen] = useState(false);
-
-    // const [tracksPanelActive, setTracksPanelActive] = useState(false);
-    // const [sharedTracksPanelActive, setSharedTracksPanelActive] = useState(false);
 
     const socketObject = useSocketContext();
     const user = useUserContext();
@@ -53,6 +45,12 @@ const Sandbox = () => {
 
     const [focusedPlaylist, setFocusedPlaylist] = useState<Playlist | null>(null);
     const [focusedTrack, setFocusedTrack] = useState<Track | null>(null);
+
+    // const [sharedPlaylists, setSharedPlaylists] = useState<LocalPlaylist[]>([]);
+    // const [sharedPlaylistTracks, setSharedPlaylistTracks] = useState<Dictionary<SavedTrack>>({});
+    // const [selectedSharedPlaylist, setSelectedSharedPlaylist] = useState("");
+    // const [tracksPanelActive, setTracksPanelActive] = useState(false);
+    // const [sharedTracksPanelActive, setSharedTracksPanelActive] = useState(false);
 
     useEffect(() => {
         socketObject.socket.on('server:create-playlist', (data) => {
@@ -105,7 +103,6 @@ const Sandbox = () => {
         socketObject.socket.on('server:room-deleted', () => {
             setRoomDeletedDialogOpen(true);
         });
-
     }, [socketObject, playlists]);
 
     useEffect(() => {
@@ -156,14 +153,11 @@ const Sandbox = () => {
                     ...page,
                     ...pageInsertVal
                 }));
-                // console.log(json);
             }
             else {
                 console.log(json.error);
             }
         }
-
-        // const items = await getRoomPlaylists(socketObject.roomID);
 
         getRoomPlaylists()
     }, [socketObject.roomID]);
@@ -234,36 +228,12 @@ const Sandbox = () => {
         }
     }
 
-    // const addCoverImageToPlaylist = async (id: string) => {
-    //     if (focusedPlaylist) {
-    //         await addCustomPlaylistCoverImage(id, focusedPlaylist?.images[0].url, token.access_token);
-    //     }
-    // }
-
-    // const addTracksToPlaylist = async (spotifyID: string) => {
-    //     console.log(playlistTracks[id])
-    //     if (playlistTracks[id].length > 0) {
-    //         var trackURIs = playlistTracks[id].map((track) => {
-    //             return track.track.uri
-    //         })
-    //         console.log(trackURIs)
-    //         await addItemsToPlaylist(spotifyID, token.access_token, trackURIs);
-    //     }
-    // }
-
     const cacheRoomPlaylistData = (insertVal: {}) => {
         setPlaylistTracks(playlistTracks => ({
             ...playlistTracks,
             ...insertVal
         }));
-    }
-
-    // const cacheSharedPlaylistData = (insertVal: {}) => {
-    //     setSharedPlaylistTracks(playlistTracks => ({
-    //         ...playlistTracks,
-    //         ...insertVal
-    //     }));
-    // }
+    }    
 
     const onPaste = async () => {
         if (focusedPlaylist) {
@@ -308,7 +278,6 @@ const Sandbox = () => {
             snackPack.changeSnackPackMessage(`Track ${focusedTrack.name} removed`);
             console.log(res);
         }
-        
     }
 
     const contextMenuOptionsPlaylist: ContextMenuOption[] = [
@@ -340,6 +309,30 @@ const Sandbox = () => {
     const onScrollToBottomCallback = (id: string) => {
         getRoomPlaylistTracks(id);
     }
+
+    // const cacheSharedPlaylistData = (insertVal: {}) => {
+    //     setSharedPlaylistTracks(playlistTracks => ({
+    //         ...playlistTracks,
+    //         ...insertVal
+    //     }));
+    // }
+
+    // const addCoverImageToPlaylist = async (id: string) => {
+    //     if (focusedPlaylist) {
+    //         await addCustomPlaylistCoverImage(id, focusedPlaylist?.images[0].url, token.access_token);
+    //     }
+    // }
+
+    // const addTracksToPlaylist = async (spotifyID: string) => {
+    //     console.log(playlistTracks[id])
+    //     if (playlistTracks[id].length > 0) {
+    //         var trackURIs = playlistTracks[id].map((track) => {
+    //             return track.track.uri
+    //         })
+    //         console.log(trackURIs)
+    //         await addItemsToPlaylist(spotifyID, token.access_token, trackURIs);
+    //     }
+    // }
     
     return (
         <div id="sandbox" className="w-full max-h-default-page-height p-5">
@@ -349,7 +342,7 @@ const Sandbox = () => {
             {
                 selectedPlaylist === "" ? 
                 <PlaylistsPanel
-                    panelTitle="Room Playlists"
+                    panelTitle="Playlists"
                     emptyPanelPlaceholderText="Playlists for this room appear here"
                     playlistData={playlists}
                     playlistTracks={playlistTracks}
