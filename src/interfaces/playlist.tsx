@@ -31,10 +31,7 @@ interface Playlist {
     },
     images: ImageInterface[],
     updatedAt: string,
-    tracks: {
-        href: string,
-        total: number
-    }
+    tracks: number
 };
 
 export default Playlist;

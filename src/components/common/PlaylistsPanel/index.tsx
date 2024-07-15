@@ -16,10 +16,10 @@ import ContextMenu from '../ContextMenu';
 import Playlist from '../../../interfaces/playlist';
 
 const sortOptions: SortOption[] = [
+    { fieldName: "updated", displayName: "Last Updated" },
     { fieldName: "name", displayName: "Name" },
     { fieldName: "owner", displayName: "Creator" },
     { fieldName: "tracks", displayName: "Tracks" },
-    { fieldName: "updated", displayName: "Last Updated" },
     { fieldName: "downloaded", displayName: "Last Downloaded" }
 ]
 
@@ -138,9 +138,9 @@ const PlaylistsPanel = (props: {
                                         <PlaylistItem index={index + 1} key={playlist.id} playlist={playlist} onClick={() => selectPlaylistCallback(playlist.id)} onRightClick={(e: MouseEvent<HTMLDivElement>, p: Playlist) => onRightClick(e, p)} />
                                     )}
                                 ) : 
-                                <>
-                                    {emptyPanelPlaceholderText}
-                                </>
+                                <tr>
+                                    <b>{emptyPanelPlaceholderText}</b>
+                                </tr>
                             }
                         </tbody>
                     </table>

@@ -37,10 +37,10 @@ const PanelHeader = (props: {playlist: Playlist, showCloseButton: boolean, onClo
     };
 
     const sortOptions: SortOption[] = [
+        { fieldName: "added", displayName: "Date added" },
         { fieldName: "name", displayName: "Title" },
         { fieldName: "artist", displayName: "Artist" },
         { fieldName: "album", displayName: "Album" },
-        { fieldName: "added", displayName: "Date added" },
         { fieldName: "duration", displayName: "Duration" }
     ]
 
