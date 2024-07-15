@@ -51,20 +51,35 @@ const RoomList = (props: { rooms: RoomMemberInterface[]}) => {
     };
 
     return (
-        <div className="max-h-default-page-height flex-auto overflow-y-scroll">
+        <div className="max-h-default-page-height flex-auto overflow-y-scroll p-2">
             <div className="relative flex">
                 <SearchBar searchBarInterface={searchBarInterface}/>
                 <div className="float-right"><SortMenu sortOptions={sortOptions} onOptionSelected={setSortOption}/></div>
             </div>
+            <table className="w-full flex-auto overflow-x-hidden">
+                <thead>
+                    <tr>
+                        <th className="flex-1 text-left">Name</th>
+                        <th className="flex-1 text-left">Owner</th>
+                        <th className="flex-1">Last Accessed</th>
+                        <th className="flex-1">Created</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        rooms.sort((a,b) => {
+                            return sortRooms(a, b, sortAscending, selectedSortOption.fieldName)
+                        }).filter((room) => {
+                            return room.room.name.toLowerCase().startsWith(searchText.toLowerCase())
+                        }).map(room => {
+                            return <RoomItem onClick={() => joinRoom(room.room._id)} room={room} />
+                        })
+                    }
+                </tbody>
+            </table>
             <ul className="">
             {
-                rooms.sort((a,b) => {
-                    return sortRooms(a, b, sortAscending, selectedSortOption.fieldName)
-                }).filter((room) => {
-                    return room.room.name.toLowerCase().startsWith(searchText.toLowerCase())
-                }).map(room => {
-                    return <li key={room.room._id} className="p-2 first:pt-0 last:pb-0" onClick={() => joinRoom(room.room._id)}><RoomItem room={room} /></li>
-                })
+                
             }
             </ul>
         </div>
