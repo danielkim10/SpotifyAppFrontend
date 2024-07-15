@@ -1,4 +1,5 @@
 import RoomMemberInterface from '../../interfaces/member';
+import { relativeDateFormatter } from '../../utilities/random';
 
 const RoomItem = (props: { room: RoomMemberInterface }) => {
     const { room } = props;
@@ -11,7 +12,7 @@ const RoomItem = (props: { room: RoomMemberInterface }) => {
             </div>
             <div>{room.room.description}</div>
             <div className="text-left">
-                <div>Last Accessed: {room.updatedAt.toString().substring(0,10)}</div>
+                <div>Last Accessed: {relativeDateFormatter(room.updatedAt.toString())}</div>
                 <div>Created: {room.createdAt.toString().substring(0,10)}</div>
             </div>
         </div>

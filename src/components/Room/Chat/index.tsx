@@ -27,8 +27,7 @@ const Chat = () => {
     const socketObject = useSocketContext();
     
     useEffect(() => {
-        socketObject.socket.on('server:receive-message', (data) => { 
-            console.log(data);
+        socketObject.socket.on('server:receive-message', (data) => {
             setMessages([...messages, data]);
         });
 

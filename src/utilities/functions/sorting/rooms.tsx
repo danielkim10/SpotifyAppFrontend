@@ -9,7 +9,7 @@ export const sortRooms = (a: Member, b: Member, asc: boolean, field: string) => 
         case "owner":
             return a.user.name.toLowerCase() > b.user.name.toLowerCase() ? 1 * ascending: -1 * ascending;
         case "lastAccessed":
-            return a.updatedAt > b.updatedAt ? 1 * ascending: -1 * ascending;
+            return a.updatedAt < b.updatedAt ? 1 * ascending: -1 * ascending;
         case "createdAt":
             return a.createdAt > b.createdAt ? 1 * ascending: -1 * ascending;
         default:
