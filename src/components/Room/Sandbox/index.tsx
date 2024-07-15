@@ -17,7 +17,7 @@ import { updatePlaylistTrackCount } from '../../../utilities/functions/api/local
 import { addCustomPlaylistCoverImage, addItemsToPlaylist, createPlaylist } from '../../../utilities/functions/api/spotify/Playlist';
 import { getTracksInPlaylist, removeTracksFromPlaylist } from '../../../utilities/functions/api/local/Track';
 import SnackPackContext from '../../../utilities/context/SnackPackContext';
-import { createDownload } from '../../../utilities/functions/api/local/Download';
+import { createDownload, getDownloadsByUser } from '../../../utilities/functions/api/local/Download';
 import RoomDeletedDialog from '../Dialog/RoomDeletedDialog';
 
 interface playlistTrack {
@@ -25,6 +25,14 @@ interface playlistTrack {
     playlist: String,
     spotify_id: String,
     updatedAt: String
+}
+
+interface DownloadObject {
+    createdAt: String,
+    playlist_id: String,
+    snapshot_id: String,
+    updatedAt: String,
+    user_id: String
 }
 
 const Sandbox = () => {
@@ -116,21 +124,10 @@ const Sandbox = () => {
                 let insertVal = {}
                 let pageInsertVal = {}
 
-                for (var i in json.items) {
+                for (let i in json.items) {
                     let tempInsertVal = {}
-                //     json.items[i].external_urls = {
-                //         spotify: ""
-                //     };
-                //     json.items[i].href = "";
                     json.items[i].id = json.items[i]._id;
                     json.items[i].images = [{url: json.items[i].image}];
-                //     json.items[i].snapshot_id = "";
-                //     json.items[i].tracks = {
-                //         href: "",
-                //         total: json.items[i].tracks
-                //     };
-                //     json.items[i].type = "playlist";
-                //     json.items[i].uri = "";
 
                     tempInsertVal = {[json.items[i]._id]: []}
                     insertVal = {
@@ -144,6 +141,24 @@ const Sandbox = () => {
                         ...pageTempInsert
                     }
                 }
+
+                // get download history for each playlist
+                
+                let playlistIDs = json.items.map((item: Playlist) => item.id).join(",");
+                if (playlistIDs) {
+                    const res2 = await getDownloadsByUser(user.id, playlistIDs);
+                    if (res2.ok) {
+                        let dict = Object.fromEntries(res2.json.items.map((item: DownloadObject) => [item.playlist_id, item.updatedAt]))
+                        console.log(dict);
+
+                        for (let j in json.items) {
+                            json.items[j].downloaded = dict[json.items[j].id]
+                        }
+                    }
+                }
+
+                console.log(json.items);
+
                 setPlaylists(json.items);
                 setPlaylistTracks(playlistTracks => ({
                     ...playlistTracks,
@@ -220,13 +235,13 @@ const Sandbox = () => {
 
             if (playlist.ok) {
                 let snapshot_id = playlist.snapshot_id;
-                if (trackURIs) {
+                if (trackURIs.length > 0) {
                     const new_snapshot_id = await addItemsToPlaylist(playlist.id, token.access_token, trackURIs);
                     if (new_snapshot_id.ok) {
                         snapshot_id = new_snapshot_id.snapshot_id;
                     }
                 }
-                // await createDownload(user.id, focusedPlaylist.id, snapshot_id);
+                await createDownload(user.id, focusedPlaylist.id, snapshot_id);
                 snackPack.changeSnackPackMessage(`Downloaded playlist ${focusedPlaylist.name}`)
             }
         }

@@ -1,13 +1,12 @@
 const baseUrl = "http://localhost:5000/api/download";
 
-export const getDownloadsByUser = async() => {
-    const res = await fetch(`${baseUrl}/`, {
+export const getDownloadsByUser = async(user_id: string, playlist_ids: string) => {
+    const res = await fetch(`${baseUrl}/${user_id}/${playlist_ids}`, {
         method: "GET", headers: { "Content-Type": "application/json" }
     });
 
     const json = await res.json();
-    if (res.ok) { console.log(json); }
-    else { console.error(json.error); }
+    return { ok: res.ok, json: json }
 }
 
 export const createDownload = async(user_id: string, playlist_id: string, snapshot_id: string) => {

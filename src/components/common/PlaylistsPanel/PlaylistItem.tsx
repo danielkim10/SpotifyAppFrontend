@@ -25,7 +25,7 @@ const PlaylistItem = (props: {
             <td className="flex-1 text-left p-2"><p className="truncate">{playlist.owner.name}</p></td>
             <td className="flex-1 text-left p-2">{playlist.tracks} tracks</td>
             <td className="flex-1 text-left p-2">{relativeDateFormatter(playlist.updatedAt)}</td>
-            <td className="flex-1 text-left p-2">Never</td>
+            <td className="flex-1 text-left p-2">{playlist.downloaded ? relativeDateFormatter(playlist.downloaded) : "Never"}</td>
         </tr>
     );
 }
