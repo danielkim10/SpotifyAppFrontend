@@ -25,10 +25,35 @@ const SearchBar = (props: {searchBarInterface: SearchBarInterface}) => {
                                 <CloseRoundedIcon/>
                             </IconButton>
                         </InputAdornment>
-                    )
+                    ),
+                    sx: {
+                        '& .MuiInputBase-input': {
+                            color: 'white'
+                        },
+                        '& .MuiSvgIcon-root': {
+                            color: 'white'
+                        },
+                    },
                 }
             }
             onChange={searchBarInterface.onChange}
+            sx={{
+                '& .MuiInputBase-root': {
+                    color: 'white'
+                },
+                '& .MuiInputLabel-root': {
+                    color: 'white'
+                },
+                '& .MuiOutlinedInput-notchedOutline': {
+                    border: 'none'
+                },
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                    border: 'none'
+                },
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    border: 'none'
+                },
+            }}
         />
     );
 }

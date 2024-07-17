@@ -17,7 +17,15 @@ const ChatInput = (props: {sendMessage: (m: string) => void}) => {
 
     return (
         <div className="bg-grey w-full float-end">
-            <TextField id="" variant="outlined" fullWidth placeholder="Type here to chat" value={message} onChange={(e) => setMessage(e.target.value)} onKeyDown={sanitizeMessage}/>
+            <TextField id="" variant="outlined" fullWidth placeholder="Type here to chat" value={message} onChange={(e) => setMessage(e.target.value)} onKeyDown={sanitizeMessage}
+                InputProps={{
+                    sx: {
+                        '& .MuiInputBase-input': {
+                            color: 'white'
+                        },
+                    },
+                }}
+                />
         </div>
     );
 }

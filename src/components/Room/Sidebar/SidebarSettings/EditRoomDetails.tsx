@@ -12,7 +12,6 @@ import useSocketContext from '../../../../utilities/hooks/context/useSocketConte
 
 const EditRoomDetails = () => {
     const [editMode, setEditMode] = useState(false);
-    const [codeVisible, setCodeVisible] = useState(false);
 
     const [roomName, setRoomName] = useState("");
     const [roomDescription, setRoomDescription] = useState("");
@@ -47,7 +46,7 @@ const EditRoomDetails = () => {
     }
 
     return (
-        <div>
+        <div className="flex flex-col">
             <div>
                 Room Details
             </div>
@@ -57,22 +56,53 @@ const EditRoomDetails = () => {
                     <Tooltip title="Edit"><EditRoundedIcon className="text-white"/></Tooltip>
                 </IconButton> : <></>
             }
-            <TextField className="text-white" value={roomName} disabled={!editMode} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRoomName(e.target.value)}/>
-            <TextField value={roomDescription} disabled={!editMode} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRoomDescription(e.target.value)}/>
-            
+            <TextField label="Room Name" value={roomName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRoomName(e.target.value)}
+                InputProps={{
+                    sx: {
+                        '& .MuiInputBase-input': {
+                            color: 'white'
+                        },
+                        
+                    },
+                }}
+                sx={{
+                    '& .MuiInputLabel-root': {
+                        color: 'white'
+                    },
+                }}
+                />
+            <TextField label="Room Description" value={roomDescription} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRoomDescription(e.target.value)}
+                InputProps={{
+                    sx: {
+                        '& .MuiInputBase-input': {
+                            color: 'white'
+                        },
+                    },
+                }}
+                sx={{
+                    '& .MuiInputLabel-root': {
+                        color: 'white'
+                    },
+                }}
+            />
             
             <div>
-                <TextField value={roomCode} type={!codeVisible ? "password" : "text"}/>
+                <TextField label="Password" value={roomCode} type="text"
+                    InputProps={{
+                        sx: {
+                            '& .MuiInputBase-input': {
+                                color: 'white'
+                            },
+                        },
+                    }}
+                    sx={{
+                        '& .MuiInputLabel-root': {
+                            color: 'white'
+                        },
+                    }}
+                />
                 <IconButton>
                     <Tooltip title="Copy" placement="bottom"><ContentCopyRoundedIcon className="text-white"/></Tooltip>
-                </IconButton>
-                
-                <IconButton onClick={() => setCodeVisible(!codeVisible)}>
-                    <Tooltip title={!codeVisible ? "Show" : "Hide"} placement="bottom">
-                    {
-                        !codeVisible ? <VisibilityOffRoundedIcon className="text-white"/> : <VisibilityRoundedIcon className="text-white"/>
-                    }
-                    </Tooltip>
                 </IconButton>
             </div>
             {
