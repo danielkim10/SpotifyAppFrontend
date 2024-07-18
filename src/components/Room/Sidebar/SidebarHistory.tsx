@@ -2,10 +2,12 @@ import { useState, useEffect, useContext } from 'react'
 
 import SidebarContext from '../../../utilities/context/SidebarContext'
 import useSocketContext from '../../../utilities/hooks/context/useSocketContext'
+import RoomContext from '../../../utilities/context/RoomContext';
 
 const SidebarHistory = () => {
     const sidebarOption = useContext(SidebarContext);
     const socketObject = useSocketContext();
+    const room = useContext(RoomContext);
     const [items, setItems] = useState<String[]>([]);
 
     const strings = {
@@ -26,7 +28,7 @@ const SidebarHistory = () => {
         sidebarOption.callback("History");
 
         const getRoomHistory = async () => {
-            const res = await fetch(`http://localhost:5000/api/action/${socketObject.roomID}`, {
+            const res = await fetch(`http://localhost:5000/api/action/${room.id}`, {
                 method: "GET", headers: { "Content-Type": "application/json" }
             })
             const json = await res.json();
@@ -42,7 +44,7 @@ const SidebarHistory = () => {
         }
         getRoomHistory();
 
-    }, [sidebarOption, socketObject.roomID]);
+    }, [sidebarOption, room.id]);
 
     return (
         <div className="h-[calc(h-full_-_[40px])]">

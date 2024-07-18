@@ -18,7 +18,7 @@ const DeleteRoomDialog = (props: { open: boolean, roomID: string, onClose: () =>
         if (res2) {
             const res = await deleteRoom(roomID);
             if (res) {
-                socketObject.socket.emit('client:delete-room', roomID);
+                socketObject.emit('client:delete-room', roomID);
                 window.location.replace("http://localhost:3000/lobby");
             }
             else {

@@ -12,21 +12,23 @@ import Playlist from '../../../interfaces/playlist';
 import { deletePlaylist } from '../../../utilities/functions/api/local/Playlist';
 import { useContext } from 'react';
 import SnackPackContext from '../../../utilities/context/SnackPackContext';
+import RoomContext from '../../../utilities/context/RoomContext';
 
 const DeletePlaylistDialog = (props: {open: boolean, playlist: Playlist | null, onClose: () => void}) => {
     const { open, playlist, onClose } = props;
 
     const socketObject = useSocketContext();
+    const room = useContext(RoomContext)
     // const user = useUserContext();
     const snackPack = useContext(SnackPackContext);
 
     const onSubmit = async () => {
-        if (playlist && socketObject.roomID) {
+        if (playlist && room.id) {
             const res = await deletePlaylist(playlist.id);
             if (res) {
-                socketObject.socket.emit('client:delete-playlist', playlist, socketObject.roomID);
+                socketObject.emit('client:delete-playlist', playlist, room.id);
                 snackPack.changeSnackPackMessage(`Playlist ${playlist.name} deleted`);
-                // await recordAction([user.id], [playlist.name], 4, socketObject.roomID);
+                // await recordAction([user.id], [playlist.name], 4, room.id);
             }
         }
         onClose();

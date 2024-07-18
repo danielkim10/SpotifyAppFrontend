@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import ChatHeader from './ChatHeader';
 import ChatBody from './ChatBody';
@@ -6,6 +6,7 @@ import ChatInput from './ChatInput';
 
 import useSocketContext from '../../../utilities/hooks/context/useSocketContext';
 import useUserContext from '../../../utilities/hooks/context/useUserContext';
+import RoomContext from '../../../utilities/context/RoomContext';
 
 interface MessageEvent {
     text: string,
@@ -25,17 +26,18 @@ const Chat = () => {
 
     const user = useUserContext();
     const socketObject = useSocketContext();
+    const room = useContext(RoomContext);
     
     useEffect(() => {
-        socketObject.socket.on('server:receive-message', (data) => {
+        socketObject.on('server:receive-message', (data) => {
             setMessages([...messages, data]);
         });
 
-        socketObject.socket.on('chat:receive-server-message', (data) => { 
+        socketObject.on('chat:receive-server-message', (data) => { 
             
         });
 
-        socketObject.socket.on('chat:receive-track-message', (data) => { 
+        socketObject.on('chat:receive-track-message', (data) => { 
             
         });
         
@@ -44,14 +46,14 @@ const Chat = () => {
 
     const handleSendMessage = (message: string) => {
         console.log('message', message);
-        socketObject.socket.emit('client:send-message', {
+        socketObject.emit('client:send-message', {
             text: message,
-            socketID: socketObject.socket.id,
+            socketID: socketObject.id,
             userID: user.id,
             name: user.name,
             imageURL: user.images.length > 0 ? user.images[0].url : "",
             timestamp: new Date()
-        }, socketObject.roomID);
+        }, room.id);
     }
 
     return (

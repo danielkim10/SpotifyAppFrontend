@@ -67,61 +67,61 @@ const Sandbox = () => {
     // const [sharedTracksPanelActive, setSharedTracksPanelActive] = useState(false);
 
     useEffect(() => {
-        socketObject.socket.on('server:create-playlist', (data) => {
+        socketObject.on('server:create-playlist', (data) => {
             console.log(data);
             setPlaylists([...playlists, data]);
         });
 
-        socketObject.socket.on('server:edit-playlist', (data) => {
+        socketObject.on('server:edit-playlist', (data) => {
             console.log(data);
             setPlaylists([...playlists.filter(p=>p.id !== data.id), data]);
         });
 
-        socketObject.socket.on('server:delete-playlist', (data) => {
+        socketObject.on('server:delete-playlist', (data) => {
             setPlaylists(playlists.filter(p => p.id !== data.id))
         });
 
-        socketObject.socket.on('server:add-track-to-playlist', (data) => {
+        socketObject.on('server:add-track-to-playlist', (data) => {
             setPlaylistTracks(playlistTracks => ({
                 ...playlistTracks,
                 ...data
             }));
         });
 
-        socketObject.socket.on('server:rearrange-playlist-content', (data) => {
+        socketObject.on('server:rearrange-playlist-content', (data) => {
             
         });
 
-        socketObject.socket.on('server:remove-track-from-playlist', (data) => {
+        socketObject.on('server:remove-track-from-playlist', (data) => {
             // setPlaylistTracks(playlistTracks => (
             //     playlistTracks.filter(p => p.id !== data.id)
             // ));
         });
 
-        // socketObject.socket.on('server:share-playlist', (data) => {
+        // socketObject.on('server:share-playlist', (data) => {
         //     setSharedPlaylists([...sharedPlaylists, data]);
         // });
 
-        // socketObject.socket.on('server:hide-playlist', (data) => {
+        // socketObject.on('server:hide-playlist', (data) => {
         //     setSharedPlaylists(sharedPlaylists.filter(p => p.id !== data.id));
         // });
 
-        socketObject.socket.on('server:generate-code', (data) => {
+        socketObject.on('server:generate-code', (data) => {
             
         });
 
-        socketObject.socket.on('server:playlist-downloaded', (data) => {
+        socketObject.on('server:playlist-downloaded', (data) => {
 
         });
 
-        socketObject.socket.on('server:room-deleted', () => {
+        socketObject.on('server:room-deleted', () => {
             setRoomDeletedDialogOpen(true);
         });
     }, [socketObject, playlists]);
 
     useEffect(() => {
         const getRoomPlaylists = async () => {
-            const res = await fetch(`http://localhost:5000/api/playlist/${socketObject.roomID}`, {
+            const res = await fetch(`http://localhost:5000/api/playlist/${room.id}`, {
                 method: "GET", headers: { "Content-Type": "application/json" }
             });
 
@@ -181,7 +181,7 @@ const Sandbox = () => {
         }
 
         getRoomPlaylists()
-    }, [socketObject.roomID]);
+    }, [room.id, user.id]);
 
     const getRoomPlaylistTracks = async (playlistID: string) => {
         const res = await fetch(`http://localhost:5000/api/track/${playlistID}?` + new URLSearchParams({
@@ -281,7 +281,7 @@ const Sandbox = () => {
             }
 
             let newKV = {[focusedPlaylist.id]: selectedPlaylistTracks}
-            socketObject.socket.emit("client:track-added-to-playlist", newKV, socketObject.roomID);
+            socketObject.emit("client:track-added-to-playlist", newKV, room.id);
 
             await createTrack(clipboard.selectedItems, focusedPlaylist.id);
             if (clipboard.selectedItems.length === 1) {
@@ -311,7 +311,7 @@ const Sandbox = () => {
     const removeFromPlaylist = async () => {
         if (focusedTrack) {
             const res = await removeTracksFromPlaylist(focusedTrack.id);
-            // socketObject.socket.emit("client-track-removed-from-playlist", "", socketObject.roomID);
+            // socketObject.emit("client-track-removed-from-playlist", "", room.id);
             snackPack.changeSnackPackMessage(`Track ${focusedTrack.name} removed`);
             console.log(res);
         }

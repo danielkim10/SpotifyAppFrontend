@@ -37,7 +37,7 @@ const SidebarSettings = () => {
             <EditRoomDetails />
             <Button label={user.id === room.owner ? "Delete room" : "Leave room"} bgColorScheme="red" handleClick={() => setDeleteRoomDialogOpen(true)}/>
             
-            <DeleteRoomDialog open={deleteRoomDialogOpen} roomID={socketObject.roomID!!} onClose={() => setDeleteRoomDialogOpen(false)}/>
+            <DeleteRoomDialog open={deleteRoomDialogOpen} roomID={room.id} onClose={() => setDeleteRoomDialogOpen(false)}/>
             {/* <LeaveRoomDialog open={leaveRoomDialogOpen} memberID={""} onClose={() => setLeaveRoomDialogOpen(false)}/> */}
         </div>
     )

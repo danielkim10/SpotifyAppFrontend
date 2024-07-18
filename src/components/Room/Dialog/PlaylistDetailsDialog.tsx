@@ -14,6 +14,7 @@ import Playlist from '../../../interfaces/playlist';
 // import { recordAction } from '../../../utilities/functions/api/local/Action';
 import { createPlaylist, editPlaylist } from '../../../utilities/functions/api/local/Playlist';
 import SnackPackContext from '../../../utilities/context/SnackPackContext';
+import RoomContext from '../../../utilities/context/RoomContext';
 
 const PlaylistDetailsDialog = (props: {open: boolean, playlist?: Playlist | null, onClose: () => void}) => {
     const { open, playlist, onClose } = props;
@@ -24,6 +25,7 @@ const PlaylistDetailsDialog = (props: {open: boolean, playlist?: Playlist | null
 
     const socketObject = useSocketContext();
     const user = useUserContext();
+    const room = useContext(RoomContext);
     const snackPack = useContext(SnackPackContext)
 
     useEffect(() => {
@@ -33,8 +35,8 @@ const PlaylistDetailsDialog = (props: {open: boolean, playlist?: Playlist | null
     }, [playlist])
 
     const onSubmitCreate = async () => {
-        if (socketObject.socket && socketObject.roomID) {
-            const newPlaylist = await createPlaylist(name, description, socketObject.roomID, user.id, image);
+        if (socketObject && room.id) {
+            const newPlaylist = await createPlaylist(name, description, room.id, user.id, image);
             if (newPlaylist) {
                 const playlistModified = {
                     ...newPlaylist,
@@ -42,9 +44,9 @@ const PlaylistDetailsDialog = (props: {open: boolean, playlist?: Playlist | null
                     images: [{url: newPlaylist.image}]
                 }
 
-                socketObject.socket.emit('client:create-playlist', playlistModified, socketObject.roomID);
+                socketObject.emit('client:create-playlist', playlistModified, room.id);
                 snackPack.changeSnackPackMessage(`Playlist ${name} created`)
-                // await recordAction([user.id], [playlistModified.name], 3, socketObject.roomID);
+                // await recordAction([user.id], [playlistModified.name], 3, room.id);
                 resetFields();
             }
         }
@@ -55,7 +57,7 @@ const PlaylistDetailsDialog = (props: {open: boolean, playlist?: Playlist | null
     }
 
     const onSubmitEdit = async () => {
-        if (socketObject.socket && playlist) {
+        if (socketObject && playlist) {
             const newPlaylist = await editPlaylist(playlist.id, name, description, image);
             if (newPlaylist) {
                 const playlistModified = {
@@ -63,9 +65,9 @@ const PlaylistDetailsDialog = (props: {open: boolean, playlist?: Playlist | null
                     id: newPlaylist._id,
                     images: [{url: newPlaylist.image}]
                 }
-                socketObject.socket.emit('client:edit-playlist', playlistModified, socketObject.roomID);
+                socketObject.emit('client:edit-playlist', playlistModified, room.id);
                 snackPack.changeSnackPackMessage(`Playlist ${name} edited`)
-                // await recordAction([user.id], [playlistModified.name], 4, socketObject.roomID);
+                // await recordAction([user.id], [playlistModified.name], 4, room.id);
                 resetFields();
             }
         }

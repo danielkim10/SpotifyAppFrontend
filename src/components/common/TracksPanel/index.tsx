@@ -39,11 +39,11 @@ const TracksPanel = (props: {
     const [isBottom, setIsBottom] = useState(false);
 
     useEffect(() => {
-        socketObject.socket.on('server:add-track-to-playlist', (data) => {
+        socketObject.on('server:add-track-to-playlist', (data) => {
 
         })
 
-        socketObject.socket.on('server:delete-playlist', (data) => {
+        socketObject.on('server:delete-playlist', (data) => {
             if (selectedPlaylist && selectedPlaylist.id === data.id) {
                 setPlaylistDeletedDialogOpen(true);
             }

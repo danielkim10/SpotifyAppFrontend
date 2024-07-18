@@ -35,7 +35,6 @@ const Room = () => {
 
     useEffect(() => {
         const room = new URL(window.location.href).searchParams.get("id");
-        socketObject.roomID = room;
 
         const getRoomDetails = async (roomID: string) => {
             const res = await getRoom(roomID);
@@ -48,16 +47,16 @@ const Room = () => {
 
         if (room) {
             getRoomDetails(room)
-            socketObject.socket.emit('client:join-room', room);
+            socketObject.emit('client:join-room', room);
         }
     }, [])
 
     useEffect(() => {
-        socketObject.socket.on("server:join-room", (data) => {
+        socketObject.on("server:join-room", (data) => {
             console.log(`Joined room ${data}`);
         });
 
-        socketObject.socket.on("server:change-snackpack", (data) => {
+        socketObject.on("server:change-snackpack", (data) => {
             changeSnackPackMessage(data);
         });
     }, [socketObject]);

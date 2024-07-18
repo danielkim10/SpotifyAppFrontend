@@ -9,6 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import PlaylistInterface from '../../../interfaces/playlist';
 import TokenContext from '../../../utilities/context/TokenContext';
 import useSocketContext from '../../../utilities/hooks/context/useSocketContext';
+import RoomContext from '../../../utilities/context/RoomContext';
 // import { recordAction } from '../../../utilities/functions/api/local/Action';
 // import useUserContext from '../../../utilities/hooks/context/useUserContext';
 
@@ -20,6 +21,7 @@ const SharePlaylistDialog = (props: { open: boolean, onClose: () => void }) => {
     
     const token = useContext(TokenContext);
     // const user = useUserContext();
+    const room = useContext(RoomContext);
     const socketObject = useSocketContext();
 
     useEffect(() => {
@@ -42,10 +44,10 @@ const SharePlaylistDialog = (props: { open: boolean, onClose: () => void }) => {
     }, [token])
 
     const sharePlaylists = async () => {
-        if (socketObject.socket && socketObject.roomID) {
-            socketObject.socket.emit("client:share-playlist", socketObject.roomID);
+        if (socketObject && room.id) {
+            socketObject.emit("client:share-playlist", room.id);
 
-            // await recordAction([user.id], [""], 4, socketObject.roomID);
+            // await recordAction([user.id], [""], 4, room.id);
         }
         onClose();
     }
