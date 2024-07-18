@@ -68,7 +68,7 @@ const Layout = () => {
                     <UserContext.Provider value={user}>
                         <HeaderContext.Provider value={{name: headerName, callback: setHeaderName}}>
                             <PlayerContext.Provider value={{playbackTransferred: playbackTransferred, setPlaybackTransferred: setPlaybackTransferred, currentTrack: currentTrack, setCurrentTrack: setCurrentTrack}}>
-                                <SocketContext.Provider value={{socket: socket, roomID: ""}}>
+                                <SocketContext.Provider value={ socket }>
                                     <Header/>
                                     <Outlet/>
                                     <Footer/>
