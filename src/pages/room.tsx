@@ -9,6 +9,8 @@ import useSocketContext from '../utilities/hooks/context/useSocketContext';
 import ClipboardContext from '../utilities/context/ClipboardContext';
 import Track from '../interfaces/track';
 import SnackbarContext from '../utilities/context/SnackPackContext';
+import { getRoom } from '../utilities/functions/api/local/Room';
+import RoomContext from '../utilities/context/RoomContext';
 
 interface SnackbarMessage {
     message: string,
@@ -16,9 +18,7 @@ interface SnackbarMessage {
 }
 
 const Room = () => {
-    const roomID = new URL(window.location.href).searchParams.get("id");
     const socketObject = useSocketContext();
-    socketObject.roomID = roomID;
     const user = useUserContext();
 
     const [clipboardOpen, setClipboardOpen] = useState(false);
@@ -29,9 +29,28 @@ const Room = () => {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [messageInfo, setMessageInfo] = useState<SnackbarMessage | null>(null);
 
+    const [roomID, setRoomID] = useState("");
+    const [roomName, setRoomName] = useState("");
+    const [roomOwner, setRoomOwner] = useState("");
+
     useEffect(() => {
-        socketObject.socket.emit('client:join-room', roomID);
-    }, []);
+        const room = new URL(window.location.href).searchParams.get("id");
+        socketObject.roomID = room;
+
+        const getRoomDetails = async (roomID: string) => {
+            const res = await getRoom(roomID);
+            setRoomID(res._id);
+            setRoomName(res.name);
+            setRoomOwner(res.owner._id);
+
+            document.title = res.name;
+        }
+
+        if (room) {
+            getRoomDetails(room)
+            socketObject.socket.emit('client:join-room', room);
+        }
+    }, [])
 
     useEffect(() => {
         socketObject.socket.on("server:join-room", (data) => {
@@ -100,23 +119,25 @@ const Room = () => {
             <SnackbarContext.Provider value={{
                 changeSnackPackMessage: changeSnackPackMessage
             }}>
-                <div className="flex min-h-default-page-height max-h-default-page-height">
-                    <Snackbar key={messageInfo ? messageInfo.key : undefined}
-                        open={snackbarOpen}
-                        autoHideDuration={6000}
-                        onClose={handleSnackbarClose}
-                        TransitionProps={{ onExited: handleExited }}
-                        message={messageInfo ? messageInfo.message : undefined}
-                        action={
-                            <>
-                                <IconButton aria-label="close" color="inherit" sx={{ p: 0.5 }} onClick={handleSnackbarClose}>
-                                    <CloseRoundedIcon />
-                                </IconButton>
-                            </>
-                        }
-                    />
-                    <RoomLayout />
-                </div>
+                <RoomContext.Provider value={{ id: roomID, name: roomName, owner: roomOwner }}>
+                    <div className="flex min-h-default-page-height max-h-default-page-height">
+                        <Snackbar key={messageInfo ? messageInfo.key : undefined}
+                            open={snackbarOpen}
+                            autoHideDuration={6000}
+                            onClose={handleSnackbarClose}
+                            TransitionProps={{ onExited: handleExited }}
+                            message={messageInfo ? messageInfo.message : undefined}
+                            action={
+                                <>
+                                    <IconButton aria-label="close" color="inherit" sx={{ p: 0.5 }} onClick={handleSnackbarClose}>
+                                        <CloseRoundedIcon />
+                                    </IconButton>
+                                </>
+                            }
+                        />
+                        <RoomLayout />
+                    </div>
+                </RoomContext.Provider>
             </SnackbarContext.Provider>
         </ClipboardContext.Provider>
     );

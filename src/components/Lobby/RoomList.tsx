@@ -51,14 +51,14 @@ const RoomList = (props: { rooms: RoomMemberInterface[]}) => {
     };
 
     return (
-        <div className="max-h-default-page-height flex-auto overflow-y-scroll p-2">
+        <div className="h-full flex flex-col overflow-y-scroll p-2">
             <div className="relative flex">
                 <SearchBar searchBarInterface={searchBarInterface}/>
                 <div className="float-right"><SortMenu sortOptions={sortOptions} onOptionSelected={setSortOption}/></div>
             </div>
-            <table className="w-full flex-auto overflow-x-hidden">
+            <table className="w-full overflow-x-hidden">
                 <thead>
-                    <tr>
+                    <tr className="flex">
                         <th className="flex-1 text-left">Name</th>
                         <th className="flex-1 text-left">Owner</th>
                         <th className="flex-1">Last Accessed</th>

@@ -6,33 +6,16 @@ import { generateRoomCode } from '../../../../utilities/random';
 import EditRoomDetails from './EditRoomDetails';
 import DeleteRoomDialog from './DeleteRoomDialog';
 import UserContext from '../../../../utilities/context/UserContext';
+import RoomContext from '../../../../utilities/context/RoomContext';
 
 const SidebarSettings = () => {
     const [deleteRoomDialogOpen, setDeleteRoomDialogOpen] = useState(false);
+    const [leaveRoomDialogOpen, setLeaveRoomDialogOpen] = useState(false);
     const [roomOwner, setRoomOwner] = useState("");
 
     const socketObject = useSocketContext();
     const user = useContext(UserContext);
-
-    useEffect(() => {
-        const getRoomDetails = async () => {
-            const res = await fetch(`http://localhost:5000/api/room/${socketObject.roomID}`, {
-                method: "GET", headers: { "Content-Type": "application/json" }
-            });
-            const json = await res.json();
-            if (res.ok) {
-                setRoomOwner(json.owner.name);
-                console.log(json.owner.name);
-                // setRoomName(json.name);
-                // setRoomDescription(json.description);
-                // setRoomCode(json.password);
-            }
-            else {
-                console.log(json.error);
-            }
-        }
-        getRoomDetails();
-    }, [socketObject.roomID]);
+    const room = useContext(RoomContext);
 
     const generateCode = async () => {
         const newCode = generateRoomCode(6);
@@ -52,8 +35,10 @@ const SidebarSettings = () => {
     return (
         <div id="sidebar-settings" className="flex-auto">
             <EditRoomDetails />
-            <Button label="Delete room" bgColorScheme="red" handleClick={() => setDeleteRoomDialogOpen(true)}/>
+            <Button label={user.id === room.owner ? "Delete room" : "Leave room"} bgColorScheme="red" handleClick={() => setDeleteRoomDialogOpen(true)}/>
+            
             <DeleteRoomDialog open={deleteRoomDialogOpen} roomID={socketObject.roomID!!} onClose={() => setDeleteRoomDialogOpen(false)}/>
+            {/* <LeaveRoomDialog open={leaveRoomDialogOpen} memberID={""} onClose={() => setLeaveRoomDialogOpen(false)}/> */}
         </div>
     )
 }

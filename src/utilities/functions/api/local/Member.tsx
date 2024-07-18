@@ -15,6 +15,14 @@ export const updateMember = async (roomID: string, userID: string) => {
     }
 }
 
+export const deleteMember = async (memberID: string) => {
+    const res = await fetch(`${baseUrl}/${memberID}`, {
+        method: "DELETE", headers: { "Content-Type": "application/json" },
+    });
+    
+    return res.ok;
+}
+
 export const deleteMembersForRoom = async (roomID: string) => {
     const res = await fetch(`${baseUrl}/room/${roomID}`, {
         method: "DELETE", headers: { "Content-Type": "application/json" },

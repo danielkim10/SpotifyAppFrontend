@@ -1,5 +1,4 @@
-import { useState, useContext, MouseEvent } from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
+import { useState, MouseEvent } from 'react';
 
 import Dictionary from '../../../interfaces/dictionary';
 import SortOption from '../../../interfaces/options/SortOption';
@@ -10,7 +9,6 @@ import SearchBar from '../SearchBar';
 import SortMenu from '../SortMenu';
 
 import useUserContext from '../../../utilities/hooks/context/useUserContext';
-import Track from '../../../interfaces/track';
 import ContextMenuOption from '../../../interfaces/options/ContextMenuOption';
 import ContextMenu from '../ContextMenu';
 import Playlist from '../../../interfaces/playlist';
@@ -34,38 +32,35 @@ const PlaylistsPanel = (props: {
 }) => {
     const { panelTitle, emptyPanelPlaceholderText, playlistData, playlistTracks, contextMenuOptions, selectPlaylistCallback, openContextMenuCallback } = props;
 
-    const [playlistLoading, setPlaylistLoading] = useState(false);
     const [playlistSearchText, setPlaylistSearchText] = useState("");
     const [selectedSortOption, setSelectedSortOption] = useState<SortOption>(sortOptions[0]);
     const [sortAscending, setSortAscending] = useState(true);
     const [contextMenuOpen, setContextMenuOpen] = useState(false);
     const [contextMenuPosition, setContextMenuPosition] = useState<{top: number, left: number}>({top: 0, left: 0});
 
-    const user = useUserContext();
-
-    const likedSongsPlaylist = {
-        collaborative: false,
-        description: "",
-        external_urls: {
-            spotify: ""
-        },
-        href: "",
-        id: "liked-songs",
-        images: [],
-        name: "Liked Songs",
-        owner: {
-            display_name: user.name,
-            id: user.spotify_id
-        },
-        public: false,
-        snapshot_id: "",
-        tracks: {
-            href: "",
-            total: 0
-        },
-        type: "playlist",
-        uri: ""
-    };
+    // const likedSongsPlaylist = {
+    //     collaborative: false,
+    //     description: "",
+    //     external_urls: {
+    //         spotify: ""
+    //     },
+    //     href: "",
+    //     id: "liked-songs",
+    //     images: [],
+    //     name: "Liked Songs",
+    //     owner: {
+    //         display_name: user.name,
+    //         id: user.spotify_id
+    //     },
+    //     public: false,
+    //     snapshot_id: "",
+    //     tracks: {
+    //         href: "",
+    //         total: 0
+    //     },
+    //     type: "playlist",
+    //     uri: ""
+    // };
 
     const searchBarInterfacePlaylist = {
         id: "playlist-search",
@@ -104,47 +99,36 @@ const PlaylistsPanel = (props: {
                 </div>
             </div>
             <div className="flex-auto overflow-y-scroll">
-            {
-                playlistLoading ?
-                <CircularProgress/> :
-                    <table className="flex-auto w-full overflow-x-hidden">
-                        <thead className="sticky top-0 z-10 bg-black">
-                            <tr id="table-header" className="flex m-auto p-[5px]">
-                                <th id="col-header-index" className="w-[50px]">#</th>
-                                <th id="col-header-image" className="w-[72px]"></th>
-                                <th id="col-header-name" className="flex-1 text-left px-2">Name</th>
-                                <th id="col-header-owner" className="flex-1 text-left px-2">Owner</th>
-                                <th id="col-header-tracks" className="flex-1 text-left px-2">Tracks</th>
-                                <th id="col-header-updated" className="flex-1 text-left px-2">Last Updated</th>
-                                <th id="col-header-downloaded" className="flex-1 text-left px-2">Last Downloaded</th>
+                <table className="flex-auto w-full overflow-x-hidden">
+                    <thead className="sticky top-0 z-10 bg-black">
+                        <tr id="table-header" className="flex m-auto p-[5px]">
+                            <th id="col-header-index" className="w-[50px]">#</th>
+                            <th id="col-header-image" className="w-[72px]"></th>
+                            <th id="col-header-name" className="flex-1 text-left px-2">Name</th>
+                            <th id="col-header-owner" className="flex-1 text-left px-2">Owner</th>
+                            <th id="col-header-tracks" className="flex-1 text-left px-2">Tracks</th>
+                            <th id="col-header-updated" className="flex-1 text-left px-2">Last Updated</th>
+                            <th id="col-header-downloaded" className="flex-1 text-left px-2">Last Downloaded</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            playlistData.length > 0 ?
+                            playlistData.sort((a,b) =>  { 
+                                return sortPlaylists(a, b, sortAscending, selectedSortOption.fieldName)
+                            }).filter((playlist: Playlist) => {
+                                return playlist.name.toLowerCase().startsWith(playlistSearchText.toLowerCase())
+                            }).map((playlist: Playlist, index: number) => {
+                                return (
+                                    <PlaylistItem index={index + 1} key={playlist.id} playlist={playlist} onClick={() => selectPlaylistCallback(playlist.id)} onRightClick={(e: MouseEvent<HTMLDivElement>, p: Playlist) => onRightClick(e, p)} />
+                                )}
+                            ) : 
+                            <tr>
+                                <b>{emptyPanelPlaceholderText}</b>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                // playlistTracks["liked-songs"] ?
-                                // <li className="p-[2px] first:pt-0">
-                                //     <PlaylistItem playlist={likedSongsPlaylist} onClick={() => selectPlaylistCallback("liked-songs")} onRightClick={(e: MouseEvent<HTMLDivElement>, p: Playlist) => onRightClick(e, p)} />
-                                // </li> :
-                                // <></>
-                            }
-                            {
-                                playlistData.length > 0 ?
-                                playlistData.sort((a,b) =>  { 
-                                    return sortPlaylists(a, b, sortAscending, selectedSortOption.fieldName)
-                                }).filter((playlist: Playlist) => {
-                                    return playlist.name.toLowerCase().startsWith(playlistSearchText.toLowerCase())
-                                }).map((playlist: Playlist, index: number) => {
-                                    return (
-                                        <PlaylistItem index={index + 1} key={playlist.id} playlist={playlist} onClick={() => selectPlaylistCallback(playlist.id)} onRightClick={(e: MouseEvent<HTMLDivElement>, p: Playlist) => onRightClick(e, p)} />
-                                    )}
-                                ) : 
-                                <tr>
-                                    <b>{emptyPanelPlaceholderText}</b>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-            }
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     );

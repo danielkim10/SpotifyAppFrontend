@@ -1,5 +1,14 @@
 const baseUrl = "http://localhost:5000/api/room";
 
+export const getRoom = async (roomID: string) => {
+    const res = await fetch(`${baseUrl}/${roomID}`, {
+        method: "GET", headers: { "Content-Type": "application/json" }
+    })
+    const json = await res.json()
+    if (res.ok) { return json }
+    else { return undefined; }
+}
+
 export const createRoom = async (name: string, description: string, password: string, id: string): Promise<string | undefined> => {
     const res = await fetch(baseUrl, {
         method: "POST",

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import Button from '../components/common/Button';
 import RoomMemberInterface from '../interfaces/member';
 
@@ -13,8 +13,10 @@ import useUserContext from '../utilities/hooks/context/useUserContext';
 const Lobby = () => {
     const [createRoomDialogOpen, setCreateRoomDialogOpen] = useState(false);
     const [joinRoomDialogOpen, setJoinRoomDialogOpen] = useState(false);
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const user = useUserContext();
+
+    document.title = "Lobby"
 
     useHeaderCallback("Lobby");
     const rooms: RoomMemberInterface[] = useGetRequest(`http://localhost:5000/api/member/user/${user.id}`, { "Content-Type": "application/json" });
