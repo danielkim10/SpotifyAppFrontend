@@ -19,6 +19,9 @@ import { getTracksInPlaylist, removeTracksFromPlaylist } from '../../../utilitie
 import SnackPackContext from '../../../utilities/context/SnackPackContext';
 import { createDownload, getDownloadsByUser } from '../../../utilities/functions/api/local/Download';
 import RoomDeletedDialog from '../Dialog/RoomDeletedDialog';
+import { refreshToken } from '../../../utilities/functions/api/local/Token';
+import RoomContext from '../../../utilities/context/RoomContext';
+import useHeaderCallback from '../../../utilities/hooks/context/useHeaderCallback';
 
 interface playlistTrack {
     order: Number,
@@ -48,11 +51,14 @@ const Sandbox = () => {
     const socketObject = useSocketContext();
     const user = useUserContext();
     const token = useContext(TokenContext);
+    const room = useContext(RoomContext);
     const clipboard = useContext(ClipboardContext);
     const snackPack = useContext(SnackPackContext);
 
     const [focusedPlaylist, setFocusedPlaylist] = useState<Playlist | null>(null);
     const [focusedTrack, setFocusedTrack] = useState<Track | null>(null);
+
+    useHeaderCallback(room.name);
 
     // const [sharedPlaylists, setSharedPlaylists] = useState<LocalPlaylist[]>([]);
     // const [sharedPlaylistTracks, setSharedPlaylistTracks] = useState<Dictionary<SavedTrack>>({});
@@ -196,7 +202,7 @@ const Sandbox = () => {
             let trackIDs = json.items.map((item: playlistTrack) => item.spotify_id).join(",");
 
             if (trackIDs.length > 0) {
-                populateTrackData(trackIDs, savedTracks, playlistID);
+                populateTrackData(trackIDs, savedTracks, playlistID, false);
             }
         }
         else {
@@ -204,7 +210,7 @@ const Sandbox = () => {
         }
     }
 
-    const populateTrackData = async (trackIDs: string, savedTracks: string[], playlistID: string) => {
+    const populateTrackData = async (trackIDs: string, savedTracks: string[], playlistID: string, retry: boolean) => {
         const res = await fetch(`https://api.spotify.com/v1/tracks?ids=${trackIDs}`, {
             method: "GET", headers: { Authorization: `Bearer ${token.access_token}`}
         });
@@ -218,6 +224,18 @@ const Sandbox = () => {
             let insertVal = {};
             insertVal = {[playlistID]: [...playlistTracks[playlistID], ...tracks]};
             cacheRoomPlaylistData(insertVal);
+        }
+        else {
+            if (res.status === 401 && !retry) {
+                const refreshSuccess = await refreshToken(token.refresh_token);
+                if (refreshSuccess.ok) {
+                    token.setAccessToken(refreshSuccess.access_token);
+                    populateTrackData(refreshSuccess.access_token, savedTracks, playlistID, true);
+                }
+                else {
+                    console.log("The token failed to refresh")
+                }
+            }
         }
     }
 
