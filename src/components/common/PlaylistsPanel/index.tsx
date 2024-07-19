@@ -89,7 +89,7 @@ const PlaylistsPanel = (props: {
                 <div id="playlists-panel-title" className="pb-5">
                     <b className="text-2xl">{panelTitle}</b>
                 </div>
-                <div className="flex">
+                <div className="">
                     <div className="float-left">
                         <SearchBar searchBarInterface={searchBarInterfacePlaylist} />
                     </div>

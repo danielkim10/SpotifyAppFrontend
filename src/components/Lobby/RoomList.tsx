@@ -44,44 +44,41 @@ const RoomList = (props: { rooms: RoomMemberInterface[]}) => {
     const searchBarInterface = {
         id: "room-search-textfield",
         placeholder: "Search for a room",
-        className: "bg-light-grey m-[10px] text-md rounded-full text-white",
+        className: "bg-light-grey text-md rounded-full text-white",
         value: searchText,
         onChange: (e: React.ChangeEvent<HTMLInputElement>) => setSearchText(e.target.value),
         onClear: () => setSearchText("")
     };
 
     return (
-        <div className="h-full flex flex-col overflow-y-scroll p-2">
-            <div className="relative flex">
-                <SearchBar searchBarInterface={searchBarInterface}/>
+        <div className="h-full w-full flex flex-col overflow-y-scroll p-2">
+            <div className="">
+                <div className="float-left"><SearchBar searchBarInterface={searchBarInterface}/></div>
                 <div className="float-right"><SortMenu sortOptions={sortOptions} onOptionSelected={setSortOption}/></div>
             </div>
-            <table className="w-full overflow-x-hidden">
-                <thead>
-                    <tr className="flex">
-                        <th className="flex-1 text-left">Name</th>
-                        <th className="flex-1 text-left">Owner</th>
-                        <th className="flex-1">Last Accessed</th>
-                        <th className="flex-1">Created</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        rooms.sort((a,b) => {
-                            return sortRooms(a, b, sortAscending, selectedSortOption.fieldName)
-                        }).filter((room) => {
-                            return room.room.name.toLowerCase().startsWith(searchText.toLowerCase())
-                        }).map(room => {
-                            return <RoomItem onClick={() => joinRoom(room.room._id)} room={room} />
-                        })
-                    }
-                </tbody>
-            </table>
-            <ul className="">
-            {
-                
-            }
-            </ul>
+            <div className="flex-auto overflow-y-scroll">
+                <table className="w-full flex-auto overflow-x-hidden">
+                    <thead className="sticky top-0 z-10 bg-black">
+                        <tr className="flex m-auto p-[5px]">
+                            <th className="flex-1 text-left px-2">Name</th>
+                            <th className="flex-1 text-left">Owner</th>
+                            <th className="flex-1 text-left">Last Accessed</th>
+                            <th className="flex-1 text-left">Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            rooms.sort((a,b) => {
+                                return sortRooms(a, b, sortAscending, selectedSortOption.fieldName)
+                            }).filter((room) => {
+                                return room.room.name.toLowerCase().startsWith(searchText.toLowerCase())
+                            }).map(room => {
+                                return <RoomItem onClick={() => joinRoom(room.room._id)} room={room} />
+                            })
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }

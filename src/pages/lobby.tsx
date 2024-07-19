@@ -22,7 +22,7 @@ const Lobby = () => {
     const rooms: RoomMemberInterface[] = useGetRequest(`http://localhost:5000/api/member/user/${user.id}`, { "Content-Type": "application/json" });
     
     return (
-        <div id="lobby" className="flex min-h-default-page-height p-5">
+        <div id="lobby" className="flex min-h-default-page-height max-h-default-page-height p-5">
             <div className="bg-black w-1/2 m-2 p-2">
                 <div id="create-room-button" className="h-1/2">
                     <Button label="Create Room" bgColorScheme="grey" handleClick={() => setCreateRoomDialogOpen(true)}/>
