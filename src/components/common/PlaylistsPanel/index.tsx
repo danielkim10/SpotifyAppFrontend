@@ -18,7 +18,7 @@ const sortOptions: SortOption[] = [
     { fieldName: "name", displayName: "Name" },
     { fieldName: "owner", displayName: "Creator" },
     { fieldName: "tracks", displayName: "Tracks" },
-    { fieldName: "downloaded", displayName: "Last Downloaded" }
+    // { fieldName: "downloaded", displayName: "Last Downloaded" }
 ]
 
 const PlaylistsPanel = (props: {

@@ -9,7 +9,7 @@ export const sortPlaylists = (a: Playlist, b: Playlist, asc: boolean, field: str
         case "owner":
             return a.owner.name.toLowerCase() < b.owner.name.toLowerCase() ? 1 * ascending : -1 * ascending;
         case "tracks":
-            return a.updatedAt < b.updatedAt ? 1 * ascending : -1 * ascending;
+            return a.tracks < b.tracks ? 1 * ascending : -1 * ascending;
         case "updated":
             return a.updatedAt < b.updatedAt ? 1 * ascending : -1 * ascending;
         case "downloaded":

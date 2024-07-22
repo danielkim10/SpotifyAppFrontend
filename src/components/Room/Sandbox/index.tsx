@@ -113,12 +113,11 @@ const Sandbox = () => {
         });
 
         socketObject.on('server:playlist-downloaded', (data) => {
-            const updatedPlaylist = playlists.find(p => p.id === data.playlist_id);
-            if (updatedPlaylist) {
-                updatedPlaylist.downloaded = data.updatedAt;
-                const filteredPlaylists = playlists.filter(p => p.id !== data.playlist_id);
-                setPlaylists([...filteredPlaylists, updatedPlaylist]);
-            }
+            const dataFormatted = {[data.playlist_id]: data.updatedAt}
+            setPlaylistDownloads(playlistDownloads => ({
+                ...playlistDownloads,
+                ...dataFormatted
+            }));
         });
 
         socketObject.on('server:room-deleted', () => {
