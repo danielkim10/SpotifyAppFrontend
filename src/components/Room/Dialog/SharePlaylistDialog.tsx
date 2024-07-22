@@ -24,24 +24,24 @@ const SharePlaylistDialog = (props: { open: boolean, onClose: () => void }) => {
     const room = useContext(RoomContext);
     const socketObject = useSocketContext();
 
-    useEffect(() => {
-        const fetchPlaylists = async(): Promise<any> => {
-            // setPlaylistLoading(true);
-            const res = await fetch("https://api.spotify.com/v1/me/playlists?limit=50", {
-                method: "GET", headers: { Authorization: `Bearer ${token.access_token}` }
-            });
-            const json = await res.json();
-            if (res.ok) {
-                setPlaylistData(json.items);
-            }
-            else {
-                console.log(json.error);
-            }
-            // setPlaylistLoading(false);
-        }
+    // useEffect(() => {
+    //     const fetchPlaylists = async(): Promise<any> => {
+    //         // setPlaylistLoading(true);
+    //         const res = await fetch("https://api.spotify.com/v1/me/playlists?limit=50", {
+    //             method: "GET", headers: { Authorization: `Bearer ${token.access_token}` }
+    //         });
+    //         const json = await res.json();
+    //         if (res.ok) {
+    //             setPlaylistData(json.items);
+    //         }
+    //         else {
+    //             console.log(json.error);
+    //         }
+    //         // setPlaylistLoading(false);
+    //     }
 
-        fetchPlaylists();
-    }, [token])
+    //     fetchPlaylists();
+    // }, [token])
 
     const sharePlaylists = async () => {
         if (socketObject && room.id) {
