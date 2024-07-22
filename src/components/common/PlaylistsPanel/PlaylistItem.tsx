@@ -8,9 +8,10 @@ const PlaylistItem = (props: {
     index: number,
     playlist: Playlist,
     onClick: () => void,
-    onRightClick: (e: MouseEvent<HTMLDivElement>, p: Playlist) => void
+    onRightClick: (e: MouseEvent<HTMLDivElement>, p: Playlist) => void,
+    playlistDownload: string | null
 }) => {
-    const { index, playlist, onClick, onRightClick } = props;
+    const { index, playlist, onClick, onRightClick, playlistDownload } = props;
 
     const onContextMenu = (e: MouseEvent<HTMLDivElement>, p: Playlist) => {
         e.preventDefault();
@@ -25,7 +26,7 @@ const PlaylistItem = (props: {
             <td className="flex-1 text-left p-2"><p className="truncate">{playlist.owner.name}</p></td>
             <td className="flex-1 text-left p-2">{playlist.tracks} tracks</td>
             <td className="flex-1 text-left p-2">{relativeDateFormatter(playlist.updatedAt)}</td>
-            <td className="flex-1 text-left p-2">{playlist.downloaded ? relativeDateFormatter(playlist.downloaded) : "Never"}</td>
+            <td className="flex-1 text-left p-2">{playlistDownload ? relativeDateFormatter(playlistDownload) : "Never"}</td>
         </tr>
     );
 }

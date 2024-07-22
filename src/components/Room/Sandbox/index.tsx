@@ -42,6 +42,7 @@ const Sandbox = () => {
     const [playlists, setPlaylists] = useState<Playlist[]>([]);
     const [playlistTracks, setPlaylistTracks] = useState<Dictionary<SavedTrack[]>>({});
     const [playlistTrackPage, setPlaylistTrackPage] = useState<Dictionary<Number>>({});
+    const [playlistDownloads, setPlaylistDownloads] = useState<Dictionary<string>>({});
     const [selectedPlaylist, setSelectedPlaylist] = useState("");
 
     const [playlistDetailsDialogOpen, setPlaylistDetailsDialogOpen] = useState(false);
@@ -160,12 +161,13 @@ const Sandbox = () => {
                 if (playlistIDs) {
                     const res2 = await getDownloadsByUser(user.id, playlistIDs);
                     if (res2.ok) {
-                        let dict = Object.fromEntries(res2.json.items.map((item: DownloadObject) => [item.playlist_id, item.updatedAt]))
+                        let dict: Dictionary<string> = Object.fromEntries(res2.json.items.map((item: DownloadObject) => [item.playlist_id, item.updatedAt]))
                         console.log(dict);
+                        setPlaylistDownloads(dict);
 
-                        for (let j in json.items) {
-                            json.items[j].downloaded = dict[json.items[j].id]
-                        }
+                        // for (let j in json.items) {
+                        //     json.items[j].downloaded = dict[json.items[j].id]
+                        // }
                     }
                 }
 
@@ -396,6 +398,7 @@ const Sandbox = () => {
                     contextMenuOptions={contextMenuOptionsPlaylist}
                     selectPlaylistCallback={(id) => selectPlaylist(id)}
                     openContextMenuCallback={(p: Playlist) => setFocusedPlaylist(p)}
+                    playlistDownloads={playlistDownloads}
                 /> :
                 <TracksPanel
                     cachePlaylist={cacheRoomPlaylistData}

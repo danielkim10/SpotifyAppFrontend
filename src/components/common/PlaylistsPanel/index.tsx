@@ -28,9 +28,10 @@ const PlaylistsPanel = (props: {
     playlistTracks: Dictionary<SavedTrack[]>,
     contextMenuOptions: ContextMenuOption[],
     selectPlaylistCallback: (s: string) => void,
-    openContextMenuCallback: (p: Playlist) => void
+    openContextMenuCallback: (p: Playlist) => void,
+    playlistDownloads: Dictionary<string>
 }) => {
-    const { panelTitle, emptyPanelPlaceholderText, playlistData, playlistTracks, contextMenuOptions, selectPlaylistCallback, openContextMenuCallback } = props;
+    const { panelTitle, emptyPanelPlaceholderText, playlistData, playlistTracks, contextMenuOptions, selectPlaylistCallback, openContextMenuCallback, playlistDownloads } = props;
 
     const [playlistSearchText, setPlaylistSearchText] = useState("");
     const [selectedSortOption, setSelectedSortOption] = useState<SortOption>(sortOptions[0]);
@@ -120,7 +121,7 @@ const PlaylistsPanel = (props: {
                                 return playlist.name.toLowerCase().startsWith(playlistSearchText.toLowerCase())
                             }).map((playlist: Playlist, index: number) => {
                                 return (
-                                    <PlaylistItem index={index + 1} key={playlist.id} playlist={playlist} onClick={() => selectPlaylistCallback(playlist.id)} onRightClick={(e: MouseEvent<HTMLDivElement>, p: Playlist) => onRightClick(e, p)} />
+                                    <PlaylistItem index={index + 1} key={playlist.id} playlist={playlist} playlistDownload={playlistDownloads[playlist.id]} onClick={() => selectPlaylistCallback(playlist.id)} onRightClick={(e: MouseEvent<HTMLDivElement>, p: Playlist) => onRightClick(e, p)} />
                                 )}
                             ) : 
                             <tr>
