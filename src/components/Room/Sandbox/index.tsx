@@ -69,13 +69,12 @@ const Sandbox = () => {
 
     useEffect(() => {
         socketObject.on('server:create-playlist', (data) => {
-            console.log(data);
             setPlaylists([...playlists, data]);
         });
 
         socketObject.on('server:edit-playlist', (data) => {
-            console.log(data);
-            const newPlaylists = playlists.filter(p => p.id !== data.id)
+            data.id = data._id
+            const newPlaylists = playlists.filter(p => p.id !== data._id)
             setPlaylists([...newPlaylists, data]);
         });
 
@@ -292,7 +291,7 @@ const Sandbox = () => {
             }
 
             let newKV = {[focusedPlaylist.id]: selectedPlaylistTracks}
-            socketObject.emit("client:track-added-to-playlist", newKV, room.id);
+            
 
             await createTrack(clipboard.selectedItems, focusedPlaylist.id);
             if (clipboard.selectedItems.length === 1) {
@@ -301,7 +300,10 @@ const Sandbox = () => {
             else {
                 snackPack.changeSnackPackMessage(`Added ${clipboard.selectedItems.length} tracks to playlist`)
             }
-            await updatePlaylistTrackCount(focusedPlaylist.id, selectedPlaylistTracks.length);
+            const updatedPlaylist = await updatePlaylistTrackCount(focusedPlaylist.id, focusedPlaylist.tracks + selectedPlaylistTracks.length);
+            console.log(updatedPlaylist)
+            socketObject.emit("client:track-added-to-playlist", newKV, room.id);
+            socketObject.emit("client:edit-playlist", updatedPlaylist, room.id);
         }
         
     }

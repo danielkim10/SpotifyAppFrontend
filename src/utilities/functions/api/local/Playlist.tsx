@@ -31,12 +31,12 @@ export const editPlaylist = async (playlistID: string, name: string, description
 }
 
 export const updatePlaylistTrackCount = async (id: string, tracks: number) => {
-    const res = await fetch(`${baseUrl}/${id}`, {
+    const res = await fetch(`${baseUrl}/update_count/${id}`, {
         method: "PATCH", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ tracks })
     });
     const json = await res.json();
-    if (res.ok) { console.log(json); }
+    if (res.ok) { return json; }
     else { console.error(json.error); }
 }
 
