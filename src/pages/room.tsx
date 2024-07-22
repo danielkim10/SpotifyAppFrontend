@@ -123,6 +123,7 @@ const Room = () => {
                         <Snackbar key={messageInfo ? messageInfo.key : undefined}
                             open={snackbarOpen}
                             autoHideDuration={6000}
+                            disableWindowBlurListener
                             onClose={handleSnackbarClose}
                             TransitionProps={{ onExited: handleExited }}
                             message={messageInfo ? messageInfo.message : undefined}

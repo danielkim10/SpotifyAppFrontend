@@ -1,10 +1,5 @@
 import { createContext } from 'react';
-
-interface Token {
-    access_token: string,
-    refresh_token: string,
-    setAccessToken: (t: string) => void
-};
+import Token from '../../interfaces/Token';
 
 const tokens = {
     access_token: "",

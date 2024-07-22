@@ -26,7 +26,7 @@ export const editPlaylist = async (playlistID: string, name: string, description
         body: JSON.stringify({ name, description, image })
     });
     const json = await res.json();
-    if (res.ok) { return json.items; }
+    if (res.ok) { return json; }
     else { console.error(json.error); }
 }
 

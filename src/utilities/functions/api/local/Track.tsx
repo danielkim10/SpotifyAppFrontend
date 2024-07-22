@@ -2,7 +2,10 @@ const baseUrl = "http://localhost:5000/api/track";
 const headers = { "Content-Type": "application/json" }
 
 export const getTracksInPlaylist = async (playlistID: string) => {
-    const res = await fetch(`${baseUrl}/${playlistID}`, {
+    const res = await fetch(`${baseUrl}/${playlistID}?` + new URLSearchParams({
+        page: "0",
+        limit: "0"
+    }), {
         method: "GET", headers: headers
     });
     const json = await res.json();

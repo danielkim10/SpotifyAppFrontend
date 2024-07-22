@@ -74,7 +74,8 @@ const Sandbox = () => {
 
         socketObject.on('server:edit-playlist', (data) => {
             console.log(data);
-            setPlaylists([...playlists.filter(p=>p.id !== data.id), data]);
+            const newPlaylists = playlists.filter(p => p.id !== data.id)
+            setPlaylists([...newPlaylists, data]);
         });
 
         socketObject.on('server:delete-playlist', (data) => {
@@ -111,7 +112,12 @@ const Sandbox = () => {
         });
 
         socketObject.on('server:playlist-downloaded', (data) => {
-
+            const updatedPlaylist = playlists.find(p => p.id === data.playlist_id);
+            if (updatedPlaylist) {
+                updatedPlaylist.downloaded = data.updatedAt;
+                const filteredPlaylists = playlists.filter(p => p.id !== data.playlist_id);
+                setPlaylists([...filteredPlaylists, updatedPlaylist]);
+            }
         });
 
         socketObject.on('server:room-deleted', () => {
@@ -185,7 +191,8 @@ const Sandbox = () => {
 
     const getRoomPlaylistTracks = async (playlistID: string) => {
         const res = await fetch(`http://localhost:5000/api/track/${playlistID}?` + new URLSearchParams({
-            page: playlistTrackPage[playlistID].toString()
+            page: playlistTrackPage[playlistID].toString(),
+            limit: "10"
         }), {
             method: "GET", headers: { "Content-Type": "application/json" }
         });
@@ -241,9 +248,9 @@ const Sandbox = () => {
 
     const addPlaylistToLibrary = async () => {
         if (focusedPlaylist) {
-            const playlist = await createPlaylist(user.spotify_id, token.access_token, focusedPlaylist.name, focusedPlaylist.description);
+            const playlist = await createPlaylist(user.spotify_id, token, focusedPlaylist.name, focusedPlaylist.description);
             if (playlist) {
-                const imageUploadSuccess = await addCustomPlaylistCoverImage(playlist.id, focusedPlaylist.images[0].url, token.access_token)
+                const imageUploadSuccess = await addCustomPlaylistCoverImage(playlist.id, focusedPlaylist.images[0].url, token)
                 console.log(imageUploadSuccess);
             }
             const tracks = await getTracksInPlaylist(focusedPlaylist.id);
@@ -254,13 +261,16 @@ const Sandbox = () => {
             if (playlist.ok) {
                 let snapshot_id = playlist.snapshot_id;
                 if (trackURIs.length > 0) {
-                    const new_snapshot_id = await addItemsToPlaylist(playlist.id, token.access_token, trackURIs);
+                    const new_snapshot_id = await addItemsToPlaylist(playlist.id, token, trackURIs);
                     if (new_snapshot_id.ok) {
                         snapshot_id = new_snapshot_id.snapshot_id;
                     }
                 }
-                await createDownload(user.id, focusedPlaylist.id, snapshot_id);
-                snackPack.changeSnackPackMessage(`Downloaded playlist ${focusedPlaylist.name}`)
+                const res = await createDownload(user.id, focusedPlaylist.id, snapshot_id);
+                if (res) {
+                    socketObject.emit("client:playlist-downloaded", res, room.id);
+                    snackPack.changeSnackPackMessage(`Downloaded playlist ${focusedPlaylist.name}`)
+                }
             }
         }
     }

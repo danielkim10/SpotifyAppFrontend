@@ -15,6 +15,6 @@ export const createDownload = async(user_id: string, playlist_id: string, snapsh
         body: JSON.stringify({user_id, playlist_id, snapshot_id})
     });
     const json = await res.json();
-    if (res.ok) { console.log(json); }
+    if (res.ok) { return json.items; }
     else { console.error(json.error); }
 }
