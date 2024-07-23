@@ -125,7 +125,7 @@ const PlaylistsPanel = (props: {
                                 )}
                             ) : 
                             <tr>
-                                <b>{emptyPanelPlaceholderText}</b>
+                                <td className="col-span-7"><b>{emptyPanelPlaceholderText}</b></td>
                             </tr>
                         }
                     </tbody>

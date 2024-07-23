@@ -160,16 +160,9 @@ const Sandbox = () => {
                     const res2 = await getDownloadsByUser(user.id, playlistIDs);
                     if (res2.ok) {
                         let dict: Dictionary<string> = Object.fromEntries(res2.json.items.map((item: DownloadObject) => [item.playlist_id, item.updatedAt]))
-                        console.log(dict);
                         setPlaylistDownloads(dict);
-
-                        // for (let j in json.items) {
-                        //     json.items[j].downloaded = dict[json.items[j].id]
-                        // }
                     }
                 }
-
-                console.log(json.items);
 
                 setPlaylists(json.items);
                 setPlaylistTracks(playlistTracks => ({
@@ -186,7 +179,9 @@ const Sandbox = () => {
             }
         }
 
-        getRoomPlaylists()
+        if (room.id) {
+            getRoomPlaylists()
+        }
     }, [room.id, user.id]);
 
     const getRoomPlaylistTracks = async (playlistID: string) => {
@@ -291,7 +286,6 @@ const Sandbox = () => {
             }
 
             let newKV = {[focusedPlaylist.id]: selectedPlaylistTracks}
-            
 
             await createTrack(clipboard.selectedItems, focusedPlaylist.id);
             if (clipboard.selectedItems.length === 1) {
@@ -301,7 +295,6 @@ const Sandbox = () => {
                 snackPack.changeSnackPackMessage(`Added ${clipboard.selectedItems.length} tracks to playlist`)
             }
             const updatedPlaylist = await updatePlaylistTrackCount(focusedPlaylist.id, focusedPlaylist.tracks + selectedPlaylistTracks.length);
-            console.log(updatedPlaylist)
             socketObject.emit("client:track-added-to-playlist", newKV, room.id);
             socketObject.emit("client:edit-playlist", updatedPlaylist, room.id);
         }

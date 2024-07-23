@@ -32,6 +32,7 @@ const Room = () => {
     const [roomID, setRoomID] = useState("");
     const [roomName, setRoomName] = useState("");
     const [roomOwner, setRoomOwner] = useState("");
+    const [roomPassword, setRoomPassword] = useState("");
 
     useEffect(() => {
         const room = new URL(window.location.href).searchParams.get("id");
@@ -41,6 +42,7 @@ const Room = () => {
             setRoomID(res._id);
             setRoomName(res.name);
             setRoomOwner(res.owner._id);
+            setRoomPassword(res.password);
 
             document.title = res.name;
         }
@@ -118,7 +120,7 @@ const Room = () => {
             <SnackbarContext.Provider value={{
                 changeSnackPackMessage: changeSnackPackMessage
             }}>
-                <RoomContext.Provider value={{ id: roomID, name: roomName, owner: roomOwner }}>
+                <RoomContext.Provider value={{ id: roomID, name: roomName, owner: roomOwner, password: roomPassword }}>
                     <div className="flex min-h-default-page-height max-h-default-page-height">
                         <Snackbar key={messageInfo ? messageInfo.key : undefined}
                             open={snackbarOpen}

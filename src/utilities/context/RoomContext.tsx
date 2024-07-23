@@ -3,13 +3,15 @@ import { createContext } from 'react';
 interface Room {
     id: string,
     name: string,
-    owner: string
+    owner: string,
+    password: string
 };
 
 const room = {
     id: "",
     name: "",
-    owner: ""
+    owner: "",
+    password: "",
 };
 
 const RoomContext = createContext<Room>(room);
