@@ -4,25 +4,25 @@ import Button from '../components/common/Button';
 import RoomMemberInterface from '../interfaces/member';
 
 import useHeaderCallback from '../utilities/hooks/context/useHeaderCallback';
-import CreateRoomDialog from '../components/Lobby/CreateRoomDialog';
-import JoinRoomDialog from '../components/Lobby/JoinRoomDialog';
-import RoomList from '../components/Lobby/RoomList';
+import CreateRoomDialog from '../components/Home/CreateRoomDialog';
+import JoinRoomDialog from '../components/Home/JoinRoomDialog';
+import RoomList from '../components/Home/RoomList';
 import useGetRequest from '../utilities/hooks/requests/useGetRequest';
 import useUserContext from '../utilities/hooks/context/useUserContext';
 
-const Lobby = () => {
+const Home = () => {
     const [createRoomDialogOpen, setCreateRoomDialogOpen] = useState(false);
     const [joinRoomDialogOpen, setJoinRoomDialogOpen] = useState(false);
     // const navigate = useNavigate();
     const user = useUserContext();
 
-    document.title = "Lobby"
+    document.title = "Home"
 
-    useHeaderCallback("Lobby");
+    useHeaderCallback("Socketfy");
     const rooms: RoomMemberInterface[] = useGetRequest(`http://localhost:5000/api/member/user/${user.id}`, { "Content-Type": "application/json" });
     
     return (
-        <div id="lobby" className="flex min-h-default-page-height max-h-default-page-height p-5">
+        <div className="flex min-h-default-page-height max-h-default-page-height p-5">
             <div className="bg-black w-1/2 m-2 p-2">
                 <div id="create-room-button" className="h-1/2">
                     <Button label="Create Room" bgColorScheme="grey" handleClick={() => setCreateRoomDialogOpen(true)}/>
@@ -43,4 +43,4 @@ const Lobby = () => {
     );
 }
 
-export default Lobby;
+export default Home;

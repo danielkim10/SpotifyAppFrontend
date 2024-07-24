@@ -17,18 +17,23 @@ const Login = () => {
     document.title = "Socketfy"
 
     return (
-        <div className="h-lvh">
+        <div className="">
             <div className="p-2">
             <b className="text-9xl">Socketfy</b>
             </div>
             <div className="p-2">
                 <b className="text-4xl">A real-time web application focusing on the collaborative creation of Spotify playlists</b>
             </div>
-            <div className="w-max mx-auto">
+            <div className="w-max mx-auto my-[100px]">
                 <Button label="Login" bgColorScheme="green" endIcon="login_rounded" handleClick={() => login()}/>
             </div>
             
             <table className="w-full mx-auto">
+                <tr className="flex">
+                    <td className="flex-1 col-span-3 my-5">
+                        <b className="text-4xl">Additional Links</b>
+                    </td>
+                </tr>
                 <tr className="flex">
                     <td className="flex-1 text-center p-5">
                         <a href="https://developer.spotify.com/documentation/web-api" target="_blank" rel="noreferrer">
@@ -40,6 +45,22 @@ const Login = () => {
                     </td>
                     <td className="flex-1 text-center p-5">
                         <img src={YouTubeLogo} alt="Demo" className="max-h-[80px] mx-auto"/>
+                    </td>
+                </tr>
+                <tr className="flex">
+                    <td className="flex-1 text-center p-2">
+                        <p className="my-2">Read the Spotify API documentation</p>
+                    </td>
+                    <td className="flex-1 text-center p-2">
+                        <p className="my-2">View the repository on Github</p>
+                    </td>
+                    <td className="flex-1 text-center p-2">
+                        <p className="my-2">Watch a recorded demo on YouTube</p>
+                    </td>
+                </tr>
+                <tr className="flex">
+                    <td className="flex-1 col-span-3 mt-10 mb-5">
+                        <b className="text-4xl">Tech Stack</b>
                     </td>
                 </tr>
                 <tr className="flex">
@@ -60,6 +81,17 @@ const Login = () => {
                     </td>
                 </tr>
                 <tr className="flex">
+                    <td className="flex-1 text-center p-2">
+                        <p className="my-2">Constructed with React and Material-UI</p>
+                    </td>
+                    <td className="flex-1 text-center p-2">
+                        <p className="my-2">Written in TypeScript</p>
+                    </td>
+                    <td className="flex-1 text-center p-2">
+                        <p className="my-2">Real-time communication built using Socket.IO</p>
+                    </td>
+                </tr>
+                <tr className="flex">
                     <td className="flex-1 text-center p-5">
                         <a href="https://nodejs.org/en" target="_blank" rel="noreferrer">
                             <img src={NodeJSLogo} alt="Node.js Documentation" className="max-h-[80px] mx-auto"/>
@@ -74,6 +106,17 @@ const Login = () => {
                         <a href="https://www.mongodb.com/" target="_blank" rel="noreferrer">
                             <img src={MongoDBLogo} alt="MongoDB Documentation" className="max-h-[80px] mx-auto"/>
                         </a>
+                    </td>
+                </tr>
+                <tr className="flex">
+                    <td className="flex-1 text-center p-2">
+                        <p className="my-2">Server created with Node.js</p>
+                    </td>
+                    <td className="flex-1 text-center p-2">
+                        <p className="my-2">Routing and middleware handled with Express</p>
+                    </td>
+                    <td className="flex-1 text-center p-2">
+                        <p className="my-2">Data stored with MongoDB</p>
                     </td>
                 </tr>
             </table>

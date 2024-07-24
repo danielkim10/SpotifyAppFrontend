@@ -5,7 +5,7 @@ const HomeButton = () => {
     const navigate = useNavigate();
 
     const handleHome = () => {
-        navigate("/lobby");
+        navigate("/home");
     }
 
     return (

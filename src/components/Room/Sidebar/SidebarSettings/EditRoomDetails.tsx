@@ -28,17 +28,18 @@ const EditRoomDetails = () => {
 
     return (
         <div className="flex flex-col my-5 px-5">
-            {
-                user.id === room.owner ?
-                <IconButton onClick={() => setEditMode(true)}>
-                    <Tooltip title="Edit"><EditRoundedIcon className="text-white"/></Tooltip>
-                </IconButton> : <></>
-            }
             <div className="py-2">
                 <TextField label="Room Name" value={room.name}
                     InputProps={{ 
                         sx: { '& .MuiInputBase-input': { color: 'white' }},
-                        readOnly: editMode
+                        readOnly: editMode,
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton onClick={() => setEditMode(false)}>
+                                    <Tooltip title="Edit" placement="bottom"><EditRoundedIcon className="text-white"/></Tooltip>
+                                </IconButton>
+                            </InputAdornment>
+                        )
                     }}
                     sx={{ '& .MuiInputLabel-root': { color: 'white' } }}
                 />
@@ -50,7 +51,7 @@ const EditRoomDetails = () => {
                         readOnly: true,
                         endAdornment: (
                             <InputAdornment position="end">
-                                <IconButton>
+                                <IconButton onClick={() => navigator.clipboard.writeText(room.password)}>
                                     <Tooltip title="Copy" placement="bottom"><ContentCopyRoundedIcon className="text-white"/></Tooltip>
                                 </IconButton>
                             </InputAdornment>
