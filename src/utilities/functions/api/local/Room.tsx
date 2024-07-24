@@ -27,7 +27,7 @@ export const joinRoom = async (password: string): Promise<string | undefined> =>
         body: JSON.stringify({ password })
     });
     const json = await res.json();
-    if (res.ok) { return json[0]._id; }
+    if (res.ok) { return json._id; }
     else { return undefined; }
 }
 

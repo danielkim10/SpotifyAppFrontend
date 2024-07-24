@@ -70,6 +70,10 @@ const Sandbox = () => {
     useEffect(() => {
         socketObject.on('server:create-playlist', (data) => {
             setPlaylists([...playlists, data]);
+            setPlaylistTracks(playlistTracks => ({
+                ...playlistTracks,
+                ...{[data._id]: []}
+            }));
         });
 
         socketObject.on('server:edit-playlist', (data) => {
@@ -80,6 +84,9 @@ const Sandbox = () => {
 
         socketObject.on('server:delete-playlist', (data) => {
             setPlaylists(playlists.filter(p => p.id !== data.id))
+            const newPlaylistTracks = playlistTracks;
+            delete newPlaylistTracks[data.id];
+            setPlaylistTracks(newPlaylistTracks);
         });
 
         socketObject.on('server:add-track-to-playlist', (data) => {
@@ -186,7 +193,7 @@ const Sandbox = () => {
 
     const getRoomPlaylistTracks = async (playlistID: string) => {
         const res = await fetch(`http://localhost:5000/api/track/${playlistID}?` + new URLSearchParams({
-            page: playlistTrackPage[playlistID].toString(),
+            page: playlistTrackPage[playlistID] ? playlistTrackPage[playlistID].toString() : "0",
             limit: "10"
         }), {
             method: "GET", headers: { "Content-Type": "application/json" }

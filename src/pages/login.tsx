@@ -14,6 +14,8 @@ const Login = () => {
         window.location.replace("http://localhost:5000/api/auth/login");
     }
 
+    document.title = "Socketfy"
+
     return (
         <div className="h-lvh">
             <div className="p-2">
