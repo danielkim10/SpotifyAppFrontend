@@ -12,7 +12,7 @@ const LeaveRoomDialog = (props: { open: boolean, memberID: string, onClose: () =
     const onSubmit = async () => {
         const res = await deleteMember(memberID);
         if (res) {
-            window.location.replace("http://localhost:3000/lobby");
+            window.location.replace("http://localhost:3000/home");
         }
         else {
             console.error("error");

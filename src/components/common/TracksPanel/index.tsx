@@ -32,6 +32,8 @@ const TracksPanel = (props: {
     const [track, setTrack] = useState<Track | null>(null);
     const [selectedTracks, setSelectedTracks] = useState<Track[]>([]);
 
+    const [playlistData, setPlaylistData] = useState<SavedTrack[]>(selectedPlaylistData);
+
     const token = useContext(TokenContext)
     const socketObject = useSocketContext();
 
@@ -40,7 +42,7 @@ const TracksPanel = (props: {
 
     useEffect(() => {
         socketObject.on('server:add-track-to-playlist', (data) => {
-
+            setPlaylistData(data[selectedPlaylist!!.id]);
         })
 
         socketObject.on('server:delete-playlist', (data) => {
@@ -133,8 +135,8 @@ const TracksPanel = (props: {
                                 <tbody>
                                     {
                                         
-                                        selectedPlaylistData.length > 0 ?
-                                        selectedPlaylistData.filter((savedTrack: SavedTrack) => {
+                                        playlistData.length > 0 ?
+                                        playlistData.filter((savedTrack: SavedTrack) => {
                                             return savedTrack.track.name.toLowerCase().startsWith(trackSearchText.toLowerCase())
                                         }).map((savedTrack: SavedTrack, index: number) => {
                                             return (

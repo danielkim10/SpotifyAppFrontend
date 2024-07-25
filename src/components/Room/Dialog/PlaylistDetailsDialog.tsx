@@ -31,7 +31,7 @@ const PlaylistDetailsDialog = (props: {open: boolean, playlist?: Playlist | null
     useEffect(() => {
         setName(playlist?.name?? "");
         setDescription(playlist?.description?? "")
-        setImage(playlist?.images[0]?.url?? "");
+        setImage(playlist?.image ?? "");
     }, [playlist])
 
     const onSubmitCreate = async () => {

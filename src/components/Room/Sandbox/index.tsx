@@ -254,7 +254,7 @@ const Sandbox = () => {
             setPlaylistsDownloading([...playlistsDownloading, focusedPlaylist.id])
             const playlist = await createPlaylist(user.spotify_id, token, focusedPlaylist.name, focusedPlaylist.description);
             if (playlist) {
-                const imageUploadSuccess = await addCustomPlaylistCoverImage(playlist.id, focusedPlaylist.images[0].url, token)
+                const imageUploadSuccess = await addCustomPlaylistCoverImage(playlist.id, focusedPlaylist.image, token)
                 console.log(imageUploadSuccess);
             }
             const tracks = await getTracksInPlaylist(focusedPlaylist.id);
@@ -292,7 +292,7 @@ const Sandbox = () => {
         if (focusedPlaylist) {
             let selectedPlaylistTracks = playlistTracks[focusedPlaylist.id];
             for (var i = 0; i < clipboard.selectedItems.length; i++) {
-                let newSavedTrack: SavedTrack = { added_at: Date.now().toString(), track: clipboard.selectedItems[i] }
+                let newSavedTrack: SavedTrack = { added_at: new Date(Date.now()).toString(), track: clipboard.selectedItems[i] }
                 selectedPlaylistTracks.push(newSavedTrack);
             }
 
@@ -356,7 +356,7 @@ const Sandbox = () => {
     }
 
     const roomDeletedOnClose = () => {
-        window.location.replace("http://localhost:3000/lobby")
+        window.location.replace("http://localhost:3000/home")
         setRoomDeletedDialogOpen(false)
     }
 

@@ -29,7 +29,7 @@ interface Playlist {
     owner: {
         name: string
     },
-    images: ImageInterface[],
+    image: "",
     updatedAt: string,
     tracks: number,
     downloaded: string

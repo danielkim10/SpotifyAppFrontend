@@ -16,6 +16,7 @@ const PlaylistItem = (props: {
     const { index, playlist, onClick, onRightClick, playlistDownload, playlistDownloading } = props;
 
     const onContextMenu = (e: MouseEvent<HTMLDivElement>, p: Playlist) => {
+        console.log(p);
         e.preventDefault();
         onRightClick(e, p);
     }
@@ -28,7 +29,7 @@ const PlaylistItem = (props: {
                     {
                         playlistDownloading ? <CircularProgress sx={{position: 'absolute', top: 15, left: 15, zIndex: 1}}/> : <></>
                     }
-                    <CoverImage id={playlist.id} url={playlist.images?.length > 0 ? playlist.images[0].url : ""} size="m"/>
+                    <CoverImage id={playlist.id} url={playlist.image?? ""} size="m"/>
                 </Box>
             </td>
             <td className="flex-1 text-left p-2 min-w-0"><p className="truncate">{playlist.name}</p></td>
