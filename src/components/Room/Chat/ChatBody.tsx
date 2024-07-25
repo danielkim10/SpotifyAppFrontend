@@ -13,13 +13,13 @@ const ChatBody = (props: {messages: MessageEvent[]}) => {
     const { messages } = props;
 
     return (
-        <div className="w-full flex-auto bg-black overflow-y-scroll">
+        <ul className="w-full flex-auto bg-black overflow-y-scroll">
             {
                 messages.map(m => {
                     return <ChatMessage message={m} />
                 })
             }
-        </div>
+        </ul>
     );
 }
 

@@ -13,7 +13,7 @@ const ChatMessage = (props: {message: MessageEvent}) => {
     const { message } = props;
 
     return (
-        <div className="w-full h-auto overflow-auto">
+        <li className="w-full h-auto overflow-auto">
             <div className="flex w-auto p-2">
                 {
                     message.imageURL === "" ? <Avatar alt={message.name}>{message.name.slice(0,1)}</Avatar>
@@ -25,7 +25,7 @@ const ChatMessage = (props: {message: MessageEvent}) => {
             <div className="float-left p-2">
                 <p className="w-full">{message.text}</p>
             </div>
-        </div>
+        </li>
     );
 }
 

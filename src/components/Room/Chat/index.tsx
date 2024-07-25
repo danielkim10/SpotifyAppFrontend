@@ -17,10 +17,6 @@ interface MessageEvent {
     timestamp: Date
 }
 
-interface ServerMessageEvent {
-    messageTemplate: string
-}
-
 const Chat = () => {
     const [messages, setMessages] = useState<MessageEvent[]>([]);
 
@@ -45,7 +41,6 @@ const Chat = () => {
     }, [socketObject, messages])
 
     const handleSendMessage = (message: string) => {
-        console.log('message', message);
         socketObject.emit('client:send-message', {
             text: message,
             socketID: socketObject.id,
