@@ -29,96 +29,98 @@ const Login = () => {
             </div>
             
             <table className="w-full mx-auto">
-                <tr className="flex">
-                    <td className="flex-1 col-span-3 my-5">
-                        <b className="text-4xl">Additional Links</b>
-                    </td>
-                </tr>
-                <tr className="flex">
-                    <td className="flex-1 text-center p-5">
-                        <a href="https://developer.spotify.com/documentation/web-api" target="_blank" rel="noreferrer">
-                            <img src={SpotifyLogo} alt="Spotify API Documentation" className="max-h-[80px] mx-auto"/>
-                        </a>
-                    </td>
-                    <td className="flex-1 text-center p-5">
-                        <img src={GithubLogo} alt="Github Repository" className="max-h-[80px] mx-auto"/>
-                    </td>
-                    <td className="flex-1 text-center p-5">
-                        <img src={YouTubeLogo} alt="Demo" className="max-h-[80px] mx-auto"/>
-                    </td>
-                </tr>
-                <tr className="flex">
-                    <td className="flex-1 text-center p-2">
-                        <p className="my-2">Read the Spotify API documentation</p>
-                    </td>
-                    <td className="flex-1 text-center p-2">
-                        <p className="my-2">View the repository on Github</p>
-                    </td>
-                    <td className="flex-1 text-center p-2">
-                        <p className="my-2">Watch a recorded demo on YouTube</p>
-                    </td>
-                </tr>
-                <tr className="flex">
-                    <td className="flex-1 col-span-3 mt-10 mb-5">
-                        <b className="text-4xl">Tech Stack</b>
-                    </td>
-                </tr>
-                <tr className="flex">
-                    <td className="flex-1 text-center p-5">
-                        <a href="https://react.dev/" target="_blank" rel="noreferrer">
-                            <img src={ReactLogo} alt="React Documentation" className="max-h-[80px] mx-auto"/>
-                        </a>
-                    </td>
-                    <td className="flex-1 text-center p-5">
-                        <a href="https://www.typescriptlang.org/" target="_blank" rel="noreferrer">
-                            <img src={TypeScriptLogo} alt="TypeScript Documentation" className="max-h-[80px] mx-auto"/>
-                        </a>
-                    </td>
-                    <td className="flex-1 text-center p-5">
-                        <a href="https://socket.io/" target="_blank" rel="noreferrer">
-                            <img src={SocketIOLogo} alt="Socket IO Documentation" className="max-h-[80px] mx-auto"/>
-                        </a>
-                    </td>
-                </tr>
-                <tr className="flex">
-                    <td className="flex-1 text-center p-2">
-                        <p className="my-2">Constructed with React and Material-UI</p>
-                    </td>
-                    <td className="flex-1 text-center p-2">
-                        <p className="my-2">Written in TypeScript</p>
-                    </td>
-                    <td className="flex-1 text-center p-2">
-                        <p className="my-2">Real-time communication built using Socket.IO</p>
-                    </td>
-                </tr>
-                <tr className="flex">
-                    <td className="flex-1 text-center p-5">
-                        <a href="https://nodejs.org/en" target="_blank" rel="noreferrer">
-                            <img src={NodeJSLogo} alt="Node.js Documentation" className="max-h-[80px] mx-auto"/>
-                        </a>
-                    </td>
-                    <td className="flex-1 text-center p-5">
-                        <a href="https://expressjs.com/" target="_blank" rel="noreferrer">
-                            <img src={ExpressLogo} alt="Express Documentation" className="max-h-[80px] mx-auto"/>
-                        </a>
-                    </td>
-                    <td className="flex-1 text-center p-5">
-                        <a href="https://www.mongodb.com/" target="_blank" rel="noreferrer">
-                            <img src={MongoDBLogo} alt="MongoDB Documentation" className="max-h-[80px] mx-auto"/>
-                        </a>
-                    </td>
-                </tr>
-                <tr className="flex">
-                    <td className="flex-1 text-center p-2">
-                        <p className="my-2">Server created with Node.js</p>
-                    </td>
-                    <td className="flex-1 text-center p-2">
-                        <p className="my-2">Routing and middleware handled with Express</p>
-                    </td>
-                    <td className="flex-1 text-center p-2">
-                        <p className="my-2">Data stored with MongoDB</p>
-                    </td>
-                </tr>
+                <tbody>
+                    <tr className="flex">
+                        <td className="flex-1 col-span-3 my-5">
+                            <b className="text-4xl">Additional Links</b>
+                        </td>
+                    </tr>
+                    <tr className="flex">
+                        <td className="flex-1 text-center p-5">
+                            <a href="https://developer.spotify.com/documentation/web-api" target="_blank" rel="noreferrer">
+                                <img src={SpotifyLogo} alt="Spotify API Documentation" className="max-h-[80px] mx-auto"/>
+                            </a>
+                        </td>
+                        <td className="flex-1 text-center p-5">
+                            <img src={GithubLogo} alt="Github Repository" className="max-h-[80px] mx-auto"/>
+                        </td>
+                        <td className="flex-1 text-center p-5">
+                            <img src={YouTubeLogo} alt="Demo" className="max-h-[80px] mx-auto"/>
+                        </td>
+                    </tr>
+                    <tr className="flex">
+                        <td className="flex-1 text-center p-2">
+                            <p className="my-2">Read the Spotify API documentation</p>
+                        </td>
+                        <td className="flex-1 text-center p-2">
+                            <p className="my-2">View the repository on Github</p>
+                        </td>
+                        <td className="flex-1 text-center p-2">
+                            <p className="my-2">Watch a recorded demo on YouTube</p>
+                        </td>
+                    </tr>
+                    <tr className="flex">
+                        <td className="flex-1 col-span-3 mt-10 mb-5">
+                            <b className="text-4xl">Tech Stack</b>
+                        </td>
+                    </tr>
+                    <tr className="flex">
+                        <td className="flex-1 text-center p-5">
+                            <a href="https://react.dev/" target="_blank" rel="noreferrer">
+                                <img src={ReactLogo} alt="React Documentation" className="max-h-[80px] mx-auto"/>
+                            </a>
+                        </td>
+                        <td className="flex-1 text-center p-5">
+                            <a href="https://www.typescriptlang.org/" target="_blank" rel="noreferrer">
+                                <img src={TypeScriptLogo} alt="TypeScript Documentation" className="max-h-[80px] mx-auto"/>
+                            </a>
+                        </td>
+                        <td className="flex-1 text-center p-5">
+                            <a href="https://socket.io/" target="_blank" rel="noreferrer">
+                                <img src={SocketIOLogo} alt="Socket IO Documentation" className="max-h-[80px] mx-auto"/>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr className="flex">
+                        <td className="flex-1 text-center p-2">
+                            <p className="my-2">Constructed with React and Material-UI</p>
+                        </td>
+                        <td className="flex-1 text-center p-2">
+                            <p className="my-2">Written in TypeScript</p>
+                        </td>
+                        <td className="flex-1 text-center p-2">
+                            <p className="my-2">Real-time communication built using Socket.IO</p>
+                        </td>
+                    </tr>
+                    <tr className="flex">
+                        <td className="flex-1 text-center p-5">
+                            <a href="https://nodejs.org/en" target="_blank" rel="noreferrer">
+                                <img src={NodeJSLogo} alt="Node.js Documentation" className="max-h-[80px] mx-auto"/>
+                            </a>
+                        </td>
+                        <td className="flex-1 text-center p-5">
+                            <a href="https://expressjs.com/" target="_blank" rel="noreferrer">
+                                <img src={ExpressLogo} alt="Express Documentation" className="max-h-[80px] mx-auto"/>
+                            </a>
+                        </td>
+                        <td className="flex-1 text-center p-5">
+                            <a href="https://www.mongodb.com/" target="_blank" rel="noreferrer">
+                                <img src={MongoDBLogo} alt="MongoDB Documentation" className="max-h-[80px] mx-auto"/>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr className="flex">
+                        <td className="flex-1 text-center p-2">
+                            <p className="my-2">Server created with Node.js</p>
+                        </td>
+                        <td className="flex-1 text-center p-2">
+                            <p className="my-2">Routing and middleware handled with Express</p>
+                        </td>
+                        <td className="flex-1 text-center p-2">
+                            <p className="my-2">Data stored with MongoDB</p>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
             
         </div>

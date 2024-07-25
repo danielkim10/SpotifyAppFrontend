@@ -61,7 +61,11 @@ const Room = () => {
         socketObject.on("server:change-snackpack", (data) => {
             changeSnackPackMessage(data);
         });
-    }, [socketObject]);
+
+        return () => {
+            socketObject.emit("client:leave-room", roomID);
+        }
+    }, [socketObject, roomID]);
 
     useEffect(() => {
         if (snackPack.length && !messageInfo) {
