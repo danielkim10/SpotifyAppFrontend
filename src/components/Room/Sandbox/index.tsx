@@ -40,6 +40,7 @@ interface DownloadObject {
 
 const Sandbox = () => {
     const [playlists, setPlaylists] = useState<Playlist[]>([]);
+    const [playlistsDownloading, setPlaylistsDownloading] = useState<string[]>([]);
     const [playlistTracks, setPlaylistTracks] = useState<Dictionary<SavedTrack[]>>({});
     const [playlistTrackPage, setPlaylistTrackPage] = useState<Dictionary<Number>>({});
     const [playlistDownloads, setPlaylistDownloads] = useState<Dictionary<string>>({});
@@ -250,6 +251,7 @@ const Sandbox = () => {
 
     const addPlaylistToLibrary = async () => {
         if (focusedPlaylist) {
+            setPlaylistsDownloading([...playlistsDownloading, focusedPlaylist.id])
             const playlist = await createPlaylist(user.spotify_id, token, focusedPlaylist.name, focusedPlaylist.description);
             if (playlist) {
                 const imageUploadSuccess = await addCustomPlaylistCoverImage(playlist.id, focusedPlaylist.images[0].url, token)
@@ -273,6 +275,8 @@ const Sandbox = () => {
                     socketObject.emit("client:playlist-downloaded", res, room.id);
                     snackPack.changeSnackPackMessage(`Downloaded playlist ${focusedPlaylist.name}`)
                 }
+
+                setPlaylistsDownloading(playlistsDownloading.filter(p => p !== focusedPlaylist.id))
             }
         }
     }
@@ -400,6 +404,7 @@ const Sandbox = () => {
                     selectPlaylistCallback={(id) => selectPlaylist(id)}
                     openContextMenuCallback={(p: Playlist) => setFocusedPlaylist(p)}
                     playlistDownloads={playlistDownloads}
+                    playlistsDownloading={playlistsDownloading}
                 /> :
                 <TracksPanel
                     cachePlaylist={cacheRoomPlaylistData}
