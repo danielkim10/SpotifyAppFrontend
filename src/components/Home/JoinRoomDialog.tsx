@@ -35,7 +35,7 @@ const JoinRoomDialog = (props: { open: boolean, onClose: () => void }) => {
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>Join Room</DialogTitle>
             <DialogContent>
-                <TextField id="password" label="Password" variant="standard" error={error} helperText="Invalid password" onChange={(e) => setCode(e.target.value)}/>
+                <TextField id="password" label="Password" variant="standard" error={error} helperText={error && "Invalid password"} onChange={(e) => setCode(e.target.value)}/>
             </DialogContent>
             <DialogActions>
                 <Button label="Cancel" bgColorScheme="red" handleClick={onClose}/>

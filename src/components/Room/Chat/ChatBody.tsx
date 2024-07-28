@@ -1,13 +1,5 @@
 import ChatMessage from './ChatMessage';
-
-interface MessageEvent {
-    text: string,
-    socketID: string,
-    userID: string,
-    name: string,
-    imageURL: string,
-    timestamp: Date
-}
+import MessageEvent from '../../../interfaces/MessageEvent';
 
 const ChatBody = (props: {messages: MessageEvent[]}) => {
     const { messages } = props;

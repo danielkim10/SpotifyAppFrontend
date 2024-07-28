@@ -1,13 +1,5 @@
 import Avatar from '@mui/material/Avatar';
-
-interface MessageEvent {
-    text: string,
-    socketID: string,
-    userID: string,
-    name: string,
-    imageURL: string,
-    timestamp: Date
-}
+import MessageEvent from '../../../interfaces/MessageEvent';
 
 const ChatMessage = (props: {message: MessageEvent}) => {
     const { message } = props;

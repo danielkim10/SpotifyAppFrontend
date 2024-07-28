@@ -1,7 +1,5 @@
 import { useState, KeyboardEvent } from 'react';
-
 import TextField from '@mui/material/TextField';
-import Input from '../../common/Input';
 
 const ChatInput = (props: {sendMessage: (m: string) => void}) => {
     const { sendMessage } = props;
