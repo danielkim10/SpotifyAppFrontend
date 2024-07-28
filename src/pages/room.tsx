@@ -11,6 +11,7 @@ import Track from '../interfaces/track';
 import SnackbarContext from '../utilities/context/SnackPackContext';
 import { getRoom } from '../utilities/functions/api/local/Room';
 import RoomContext from '../utilities/context/RoomContext';
+import MessageEvent from '../interfaces/MessageEvent';
 
 interface SnackbarMessage {
     message: string,
@@ -28,6 +29,7 @@ const Room = () => {
     const [snackPack, setSnackPack] = useState<SnackbarMessage[]>([]);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [messageInfo, setMessageInfo] = useState<SnackbarMessage | null>(null);
+    const [chatMessages, setChatMessages] = useState<MessageEvent[]>([]);
 
     const [roomID, setRoomID] = useState("");
     const [roomName, setRoomName] = useState("");
@@ -66,6 +68,12 @@ const Room = () => {
             socketObject.emit("client:leave-room", roomID);
         }
     }, [socketObject, roomID]);
+
+    useEffect(() => {
+        socketObject.on('server:receive-message', (data) => {
+            setChatMessages([...chatMessages, data]);
+        });
+    }, [socketObject, chatMessages]);
 
     useEffect(() => {
         if (snackPack.length && !messageInfo) {
@@ -110,6 +118,17 @@ const Room = () => {
         setMessageInfo(null);
     }
 
+    const handleSendMessage = (message: string) => {
+        socketObject.emit('client:send-message', {
+            text: message,
+            socketID: socketObject.id,
+            userID: user.id,
+            name: user.name,
+            imageURL: user.images.length > 0 ? user.images[0].url : "",
+            timestamp: new Date()
+        }, roomID);
+    }
+
     return (
         <ClipboardContext.Provider value={{
             items: clipboardItems,
@@ -124,7 +143,7 @@ const Room = () => {
             <SnackbarContext.Provider value={{
                 changeSnackPackMessage: changeSnackPackMessage
             }}>
-                <RoomContext.Provider value={{ id: roomID, name: roomName, owner: roomOwner, password: roomPassword }}>
+                <RoomContext.Provider value={{ id: roomID, name: roomName, owner: roomOwner, password: roomPassword, chatMessages: chatMessages, sendChatMessage: handleSendMessage }}>
                     <div className="flex min-h-default-page-height max-h-default-page-height">
                         <Snackbar key={messageInfo ? messageInfo.key : undefined}
                             open={snackbarOpen}

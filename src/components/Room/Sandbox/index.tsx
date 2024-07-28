@@ -22,6 +22,8 @@ import RoomDeletedDialog from '../Dialog/RoomDeletedDialog';
 import { refreshToken } from '../../../utilities/functions/api/local/Token';
 import RoomContext from '../../../utilities/context/RoomContext';
 import useHeaderCallback from '../../../utilities/hooks/context/useHeaderCallback';
+import { Fab } from '@mui/material';
+import { ChatRounded } from '@mui/icons-material';
 
 interface playlistTrack {
     order: Number,
@@ -416,7 +418,9 @@ const Sandbox = () => {
                     openContextMenuCallback={(t: Track | null) => { setFocusedTrack(t); console.log(t); }}
                     scrollToBottomCallback={(id: string) =>  onScrollToBottomCallback(id)}
                 />
+                
             }
+            
             {/*
                 selectedSharedPlaylist === "" ? 
                 <PlaylistsPanel
