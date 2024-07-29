@@ -1,44 +1,43 @@
-import { useState, useEffect, useContext } from 'react'
-import Button from '../../../common/Button';
+import { useState, useContext } from 'react'
 
-import useSocketContext from '../../../../utilities/hooks/context/useSocketContext';
-import { generateRoomCode } from '../../../../utilities/random';
+import Button from '../../../common/Button';
 import EditRoomDetails from './EditRoomDetails';
 import DeleteRoomDialog from './DeleteRoomDialog';
+import LeaveRoomDialog from './LeaveRoomDialog';
 import UserContext from '../../../../utilities/context/UserContext';
 import RoomContext from '../../../../utilities/context/RoomContext';
 
 const SidebarSettings = () => {
     const [deleteRoomDialogOpen, setDeleteRoomDialogOpen] = useState(false);
     const [leaveRoomDialogOpen, setLeaveRoomDialogOpen] = useState(false);
-    const [roomOwner, setRoomOwner] = useState("");
 
-    const socketObject = useSocketContext();
     const user = useContext(UserContext);
     const room = useContext(RoomContext);
 
-    const generateCode = async () => {
-        const newCode = generateRoomCode(6);
+    // const generateCode = async () => {
+    //     const newCode = generateRoomCode(6);
 
-        const res = await fetch(`http://localhost:5000/api/room/`, {
-            method: "PATCH", headers: { "Content-Type": "application/json" }
-        });
-        const json = await res.json();
-        if (res.ok) {
-            console.log(json);
-        }
-        else {
-            console.log(json.error);
-        }
-    }
+    //     const res = await fetch(`http://localhost:5000/api/room/`, {
+    //         method: "PATCH", headers: { "Content-Type": "application/json" }
+    //     });
+    //     const json = await res.json();
+    //     if (res.ok) {
+    //         console.log(json);
+    //     }
+    //     else {
+    //         console.log(json.error);
+    //     }
+    // }
 
     return (
         <div id="sidebar-settings" className="flex-auto">
             <EditRoomDetails />
-            <Button label={user.id === room.owner ? "Delete room" : "Leave room"} bgColorScheme="red" handleClick={() => setDeleteRoomDialogOpen(true)}/>
-            
+            <Button label={user.id === room.owner ? "Delete room" : "Leave room"} bgColorScheme="red" 
+                handleClick={() => user.id === room.owner ? setDeleteRoomDialogOpen(true) : setLeaveRoomDialogOpen(true)}
+            />
+
             <DeleteRoomDialog open={deleteRoomDialogOpen} roomID={room.id} onClose={() => setDeleteRoomDialogOpen(false)}/>
-            {/* <LeaveRoomDialog open={leaveRoomDialogOpen} memberID={""} onClose={() => setLeaveRoomDialogOpen(false)}/> */}
+            <LeaveRoomDialog open={leaveRoomDialogOpen} userID={user.id} roomID={room.id} onClose={() => setLeaveRoomDialogOpen(false)}/>
         </div>
     )
 }

@@ -15,8 +15,8 @@ export const updateMember = async (roomID: string, userID: string) => {
     }
 }
 
-export const deleteMember = async (memberID: string) => {
-    const res = await fetch(`${baseUrl}/${memberID}`, {
+export const deleteMemberByUser = async (userID: string, roomID: string) => {
+    const res = await fetch(`${baseUrl}/user/${userID}/room/${roomID}`, {
         method: "DELETE", headers: { "Content-Type": "application/json" },
     });
     
