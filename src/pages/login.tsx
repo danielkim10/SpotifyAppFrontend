@@ -42,10 +42,14 @@ const Login = () => {
                             </a>
                         </td>
                         <td className="flex-1 text-center p-5">
-                            <img src={GithubLogo} alt="Github Repository" className="max-h-[80px] mx-auto"/>
+                            <a href="https://github.com/danielkim10/SpotifyAppFrontend" target="_blank" rel="noreferrer">
+                                <img src={GithubLogo} alt="Github Repository" className="max-h-[80px] mx-auto"/>
+                            </a>
                         </td>
                         <td className="flex-1 text-center p-5">
-                            <img src={YouTubeLogo} alt="Demo" className="max-h-[80px] mx-auto"/>
+                            <a href="https://www.youtube.com/watch?v=WNACBp4g-jI" target="_blank" rel="noreferrer">
+                                <img src={YouTubeLogo} alt="Demo" className="max-h-[80px] mx-auto"/>
+                            </a>
                         </td>
                     </tr>
                     <tr className="flex">

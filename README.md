@@ -2,6 +2,8 @@
 
 Built with React, written in Typescript. Uses Socket.IO for real-time functionality.
 
+A link to a demo of the project can be found here: https://www.youtube.com/watch?v=WNACBp4g-jI. (Last updated: July 29 2024)
+
 A link to the backend repository can be found here: https://github.com/danielkim10/SpotifyAppBackend.
 
 ## Other necessary items
