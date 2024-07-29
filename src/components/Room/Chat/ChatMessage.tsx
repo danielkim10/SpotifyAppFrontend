@@ -1,5 +1,6 @@
 import Avatar from '@mui/material/Avatar';
 import MessageEvent from '../../../interfaces/MessageEvent';
+import SmartToyRoundedIcon from '@mui/icons-material/SmartToyRounded';
 
 const ChatMessage = (props: {message: MessageEvent}) => {
     const { message } = props;
@@ -8,6 +9,7 @@ const ChatMessage = (props: {message: MessageEvent}) => {
         <li className="w-full h-auto overflow-auto">
             <div className="flex w-auto p-2">
                 {
+                    message.imageURL === "server" ? <SmartToyRoundedIcon/> :
                     message.imageURL === "" ? <Avatar alt={message.name}>{message.name.slice(0,1)}</Avatar>
                     :
                     <Avatar alt={message.name} src={message.imageURL}/>

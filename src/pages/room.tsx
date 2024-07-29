@@ -57,7 +57,14 @@ const Room = () => {
 
     useEffect(() => {
         socketObject.on("server:join-room", (data) => {
-            console.log(`Joined room ${data}`);
+            // socketObject.emit('client:send-message', {
+            //     text: `${user.name} joined the room`,
+            //     socketID: socketObject.id,
+            //     userID: user.id,
+            //     name: "Server",
+            //     imageURL: "server",
+            //     timestamp: new Date()
+            // }, roomID);
         });
 
         socketObject.on("server:change-snackpack", (data) => {
@@ -66,8 +73,16 @@ const Room = () => {
 
         return () => {
             socketObject.emit("client:leave-room", roomID);
+            // socketObject.emit('client:send-message', {
+            //     text: `${user.name} left the room`,
+            //     socketID: socketObject.id,
+            //     userID: user.id,
+            //     name: "Server",
+            //     imageURL: "server",
+            //     timestamp: new Date()
+            // }, roomID);
         }
-    }, [socketObject, roomID]);
+    }, [socketObject, roomID, user]);
 
     useEffect(() => {
         socketObject.on('server:receive-message', (data) => {

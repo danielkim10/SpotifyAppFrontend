@@ -47,6 +47,7 @@ const Sandbox = () => {
     const [playlistTrackPage, setPlaylistTrackPage] = useState<Dictionary<Number>>({});
     const [playlistDownloads, setPlaylistDownloads] = useState<Dictionary<string>>({});
     const [selectedPlaylist, setSelectedPlaylist] = useState("");
+    const [activePlaylistPageNumber, setActivePlaylistPageNumber] = useState(0);
 
     const [playlistDetailsDialogOpen, setPlaylistDetailsDialogOpen] = useState(false);
     const [deletePlaylistDialogOpen, setDeletePlaylistDialogOpen] = useState(false);
@@ -194,27 +195,29 @@ const Sandbox = () => {
         }
     }, [room.id, user.id]);
 
-    const getRoomPlaylistTracks = async (playlistID: string) => {
+    const getRoomPlaylistTracks = async (playlistID: string, pageNumber: Number) => {
         const res = await fetch(`http://localhost:5000/api/track/${playlistID}?` + new URLSearchParams({
-            page: playlistTrackPage[playlistID] ? playlistTrackPage[playlistID].toString() : "0",
+            page: pageNumber.toString(),
             limit: "10"
         }), {
             method: "GET", headers: { "Content-Type": "application/json" }
         });
         const json = await res.json();
         if (res.ok) {
-            setPlaylistTrackPage(page => ({
-                ...page,
-                ...{
-                    [playlistID]: Number(playlistTrackPage[playlistID]) + 1
-                }
-            }))
+            // const newPageNumber = Number(playlistTrackPage[playlistID]) + 1;
+            // setPlaylistTrackPage(page => ({
+            //     ...page,
+            //     ...{
+            //         [playlistID]: newPageNumber
+            //     }
+            // }))
+            setActivePlaylistPageNumber(activePlaylistPageNumber + 1);
 
             let savedTracks = json.items.map((item: playlistTrack) => item.updatedAt)
             let trackIDs = json.items.map((item: playlistTrack) => item.spotify_id).join(",");
 
             if (trackIDs.length > 0) {
-                populateTrackData(trackIDs, savedTracks, playlistID, false);
+                populateTrackData(trackIDs, savedTracks, playlistID, pageNumber, false);
             }
         }
         else {
@@ -222,7 +225,7 @@ const Sandbox = () => {
         }
     }
 
-    const populateTrackData = async (trackIDs: string, savedTracks: string[], playlistID: string, retry: boolean) => {
+    const populateTrackData = async (trackIDs: string, savedTracks: string[], playlistID: string, pageNumber: Number, retry: boolean) => {
         const res = await fetch(`https://api.spotify.com/v1/tracks?ids=${trackIDs}`, {
             method: "GET", headers: { Authorization: `Bearer ${token.access_token}`}
         });
@@ -234,7 +237,13 @@ const Sandbox = () => {
             }
 
             let insertVal = {};
-            insertVal = {[playlistID]: [...playlistTracks[playlistID], ...tracks]};
+
+            if (pageNumber === 0) {
+                insertVal={[playlistID]: [...tracks]}
+            }
+            else {
+                insertVal = {[playlistID]: [...playlistTracks[playlistID], ...tracks]};
+            }
             cacheRoomPlaylistData(insertVal);
         }
         else {
@@ -242,7 +251,7 @@ const Sandbox = () => {
                 const refreshSuccess = await refreshToken(token.refresh_token);
                 if (refreshSuccess.ok) {
                     token.setAccessToken(refreshSuccess.access_token);
-                    populateTrackData(refreshSuccess.access_token, savedTracks, playlistID, true);
+                    populateTrackData(refreshSuccess.access_token, savedTracks, playlistID, pageNumber, true);
                 }
                 else {
                     console.log("The token failed to refresh")
@@ -352,9 +361,9 @@ const Sandbox = () => {
         /*{ name: "Share to chat", iconName: "share_rounded", function: () => null, visible: focusedTrack !== null }*/
     ];
 
-    const selectPlaylist = (id: string) => {
+    const selectPlaylist = async (id: string) => {
+        await getRoomPlaylistTracks(id, 0);
         setSelectedPlaylist(id);
-        getRoomPlaylistTracks(id);
     }
 
     const roomDeletedOnClose = () => {
@@ -363,7 +372,12 @@ const Sandbox = () => {
     }
 
     const onScrollToBottomCallback = (id: string) => {
-        getRoomPlaylistTracks(id);
+        getRoomPlaylistTracks(id, activePlaylistPageNumber);
+    }
+
+    const exitPlaylistFocusMode = () => {
+        setSelectedPlaylist("");
+        setActivePlaylistPageNumber(0);
     }
 
     // const cacheSharedPlaylistData = (insertVal: {}) => {
@@ -414,8 +428,8 @@ const Sandbox = () => {
                     selectedPlaylistData={playlistTracks[selectedPlaylist]}
                     showCloseButton={true}
                     contextMenuOptions={contextMenuOptionsTrack}
-                    onCloseCallback={() => setSelectedPlaylist("")}
-                    openContextMenuCallback={(t: Track | null) => { setFocusedTrack(t); console.log(t); }}
+                    onCloseCallback={exitPlaylistFocusMode}
+                    openContextMenuCallback={(t: Track | null) => { setFocusedTrack(t); }}
                     scrollToBottomCallback={(id: string) =>  onScrollToBottomCallback(id)}
                 />
                 

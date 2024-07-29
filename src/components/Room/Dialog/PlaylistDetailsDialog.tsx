@@ -41,7 +41,7 @@ const PlaylistDetailsDialog = (props: {open: boolean, playlist?: Playlist | null
                 const playlistModified = {
                     ...newPlaylist,
                     id: newPlaylist._id,
-                    images: [{url: newPlaylist.image}]
+                    image: newPlaylist.image
                 }
 
                 socketObject.emit('client:create-playlist', playlistModified, room.id);

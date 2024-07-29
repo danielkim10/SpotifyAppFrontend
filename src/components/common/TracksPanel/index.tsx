@@ -32,13 +32,17 @@ const TracksPanel = (props: {
     const [track, setTrack] = useState<Track | null>(null);
     const [selectedTracks, setSelectedTracks] = useState<Track[]>([]);
 
-    const [playlistData, setPlaylistData] = useState<SavedTrack[]>(selectedPlaylistData);
+    const [playlistData, setPlaylistData] = useState<SavedTrack[]>([]);
 
     const token = useContext(TokenContext)
     const socketObject = useSocketContext();
 
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [isBottom, setIsBottom] = useState(false);
+
+    useEffect(() => {
+        setPlaylistData(selectedPlaylistData);
+    }, [selectedPlaylistData])
 
     useEffect(() => {
         socketObject.on('server:add-track-to-playlist', (data) => {
